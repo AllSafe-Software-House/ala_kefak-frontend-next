@@ -1,0 +1,26 @@
+{
+  "requestProposal": "Request Proposal",
+  "WE_CREATE": "WE CREATE",
+  "DIGITAL": "DIGITAL",
+  "SOLUTIONS": "SOLUTIONS",
+  "VISIT_SITE": "Visit Site",
+  "JOIN_CLIENTS": "Join 150 clients",
+  "OUR_SERVICES": "Our Services",
+  "REQUEST_PROPOSAL": "Request Proposal",
+  "our_partners":"Our Partners",
+  "about_allsafe":"About All Safe",
+  "about_text": [
+    "At All Safe, we transform innovative ideas into practical, digital solutions.",
+    "With expertise in diverse fields like cybersecurity, website and app development, and digital marketing,",
+    " we are committed to delivering secure, accessible, and tailored services to businesses worldwide.",
+    "Our passionate team of over 100 professionals has successfully completed more than 250 projects",
+    "ranging from protecting and recovering critical data to crafting bespoke online platforms.",
+    "We pride ourselves on solving complex challenges and turning visionary concepts into reality, ensuring our clients achieve success."
+  ],
+  "we_create_digital_solutions": "We Create Digital Solutions",
+  "contact_us": "Contact Us",
+  "opening_hours": "Opening Hours",
+  "location": "Location",
+  "all_rights_reserved": "All Rights Reserved",
+  "all_safe_company": "All Safe Company"
+}
