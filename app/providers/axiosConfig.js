@@ -2,13 +2,13 @@
 import axios from "axios";
 
 // const baseUri = "http://localhost:8000";
-// const baseUri = "/api";
+const baseUri = "/api";
 
-const baseUri = "https://alaa-kaifak.allsafeeg-project.com/api";
+// const baseUri = "https://alaa-kaifak.allsafeeg-project.com/api";
 const version = "v1";
 
 const axiosInstance = axios.create({
-  baseURL: `${baseUri}/${version}`,
+  baseURL: `${baseUri}`,
   headers: {
     "Content-Type": "application/json",
   },
