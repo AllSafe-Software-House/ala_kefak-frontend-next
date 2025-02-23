@@ -62,7 +62,6 @@
 //   );
 // }
 
-
 "use client";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "./providers/Transslations";
@@ -72,6 +71,7 @@ import Footer from "./components/footer/Footer";
 import { FaChevronUp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Lenis from "lenis";
+import { usePathname } from "next/navigation";
 
 const Wraper = ({ children }) => {
   const { language } = useTranslation();
@@ -81,9 +81,9 @@ const Wraper = ({ children }) => {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2, 
-      // easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
-      smooth: true, 
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
     });
 
     const raf = (time) => {
@@ -99,17 +99,25 @@ const Wraper = ({ children }) => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      lenis.destroy(); 
+      lenis.destroy();
     };
   }, []);
+  const isInAuth = [
+    "login",
+    "sign-up",
+    "choose-type",
+    "verify",
+    "reset-password",
+    "welcome",
+  ].some((path) => usePathname().includes(path));
 
   return (
     <div
       className={`${theme} text-slate-900 dark:text-white bg-gray-100 dark:bg-darkbg min-h-screen animation`}
       dir={direction}
     >
-      <Navbar />
-      <div className="pt-[80px]">{children}</div>
+      {!isInAuth && <Navbar />}
+      <div className={isInAuth ? "pt-0" : "pt-[70px]"}>{children}</div>
       <Footer />
       {showScroll && <UpBtn />}
     </div>

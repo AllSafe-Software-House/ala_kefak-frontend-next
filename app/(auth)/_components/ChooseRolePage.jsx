@@ -13,7 +13,7 @@ const ChooseRolePage = () => {
   const router = useRouter();
   const { user } = useAuth();
 
-  const { showNotification } = useNotification();
+  const { showNotification } = useToast();
 
   const mutation = useMutation(
     (userData) => updateData(`users/${user.id}`, userData),
@@ -52,8 +52,8 @@ const ChooseRolePage = () => {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col justify-center items-center gap-8 p-8">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
+    <div className="w-[95%] lg:w-[70%] min-w-[400px] h-screen flex flex-col justify-center items-center gap-8 p-8">
+      <h2 className="text-2xl text-gray-900 dark:text-gray-300 md:text-3xl font-bold text-center mb-4">
         Continue As A
       </h2>
       <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4">

@@ -13,7 +13,7 @@ const VerifyPage = () => {
   const router = useRouter();
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [timer, setTimer] = useState(80);
-  const { showNotification } = useNotification();
+  const { showNotification } = useToast();
 
   // Mutation for verifying OTP
   const mutation = useMutation(verifyUser, {
@@ -69,8 +69,8 @@ const VerifyPage = () => {
   };
 
   return (
-    <div className="w-full bg-white p-6 pt-2 rounded-lg border-2  shadow-md">
-      <h2 className="text-3xl font-bold text-center mb-4">
+    <div className="w-[95%] lg:w-[50%] min-w-[400px] bg-white dark:bg-transparent p-6 pt-2 rounded-lg border  shadow-md">
+      <h2 className="text-3xl text-gray-900 dark:text-gray-300 font-bold text-center mb-4">
         Enter The Code We Sent To Your Email
       </h2>
 
@@ -83,11 +83,11 @@ const VerifyPage = () => {
             maxLength="1"
             value={digit}
             onChange={(e) => handleChange(e, index)}
-            className="w-16 h-16 text-center text-xl border border-gray-300 rounded-md focus:outline-none focus:border-primary"
+            className="w-16 h-16 text-center text-xl border dark:bg-darkinput border-gray-300 dark:border-darkbg text-gray-800 dark:text-gray-300 rounded-md focus:outline-none focus:border-primary"
           />
         ))}
       </div>
-      <div className="w-full text-end text-base text-gray-700 my-6">
+      <div className="w-full text-end text-base text-gray-700 dark:text-gray-300 my-6">
         {timer > 0
           ? `ends in ${Math.floor(timer / 60)}:${timer % 60}`
           : "Time expired"}

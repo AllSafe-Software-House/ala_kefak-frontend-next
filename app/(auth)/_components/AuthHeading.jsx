@@ -4,7 +4,7 @@ import React from 'react'
 const AuthHeading = () => {
   return (
     <div className=' w-full flex justify-start items-start'>
-      <h1 className='w-full text-2xl md:text-4xl font-bold text-black'>{mainInfo.name}</h1>
+      <img src="/images/logo1.png" alt="logo" className="w-[90px] md:w-[150px] h-[60px] md:h-[90px]"  />
     </div>
   )
 }
