@@ -107,7 +107,6 @@ const JobsLayout = ({ children }) => {
                 <SearchInput
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  onSearch={() => console.log("Searching:", searchQuery)}
                 />
               }
               filters={[

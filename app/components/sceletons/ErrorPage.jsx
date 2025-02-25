@@ -1,29 +1,39 @@
 "use client";
 
-import { useRouter } from 'next/navigation'
-import React from 'react'
+import { useRouter } from "next/navigation";
+import React from "react";
 
-const ErrorPage = () => {
-  const router = useRouter()
+const ErrorPage = ({ message = "Error Fetching Data" }) => {
+  const router = useRouter();
 
   return (
-    <div className="w-screen h-screen flex flex-col justify-center items-center bg-red-100">
-    <div className="p-6 bg-white rounded-lg shadow-lg text-center max-w-md">
-      <h1 className="text-2xl font-bold text-red-600 mb-4">
-        حدث خطأ أثناء تحميل البيانات
-      </h1>
-      <p className="text-gray-700 mb-4">
-        { "يرجى المحاولة مرة أخرى لاحقًا."}
-      </p>
-      <button
-        className="mt-4 px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-        onClick={() => router.refresh() }
-      >
-        إعادة تحميل الصفحة
-      </button>
-    </div>
-  </div>
-  )
-}
+    <div className="w-full h-full flex flex-col justify-center items-center ">
+      <div className=" text-center flex flex-col justify-center items-center gap-1 ">
+        <div className="size-[70%] mx-auto min-w-[350px] min-h-[350px] md:min-w-[500px] md:min-h-[500px] overflow-hidden">
+          <img
+            src="/images/err.png"
+            alt="error"
+            className="w-full h-full object-cover"
+          />
+        </div>
 
-export default ErrorPage
+        <div>
+          <h1 className="text-2xl md:text-5xl font-medium text-red-600 mb-2">
+            SomThing went wrong
+          </h1>
+          <p className="text-gray-700 dark:text-gray-300 text-xl md:text-3xl font-medium">
+            {message}
+          </p>
+        </div>
+        <button
+          className="mt-4 px-6 py-2 bg-danger text-white rounded-md hover:bg-dangerhover animation "
+          onClick={() => router.refresh()}
+        >
+          Refresh!
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default ErrorPage;

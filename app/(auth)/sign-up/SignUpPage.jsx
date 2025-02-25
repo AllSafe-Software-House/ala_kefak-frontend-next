@@ -5,107 +5,332 @@ import InputField from "../_components/InputField";
 import PrimaryButton from "../_components/PrimaryButton";
 import SocialAuthButton from "../_components/SocialAuthButton";
 import LinkComp from "../_components/LinkComp";
-import { FaApple } from "react-icons/fa";
+import { FaApple, FaArrowLeft } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { registerUser } from "@/app/providers/TheQueryProvider";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/app/components/toast/Toast";
-import { useAuth } from "@/app/providers/AuthContext";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import ChooseRolePage from "../_components/ChooseRolePage";
+import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { baseUrl } from "@/app/providers/axiosConfig";
 
 const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
+  first_name: yup.string().required("First name is required"),
+  last_name: yup.string().required("Last name is required"),
+  user_name: yup.string().required("Username is required"),
+
   email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+
+  mobile: yup.string().required("Phone number is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+  password_confirmation: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match")
+    .required("Password confirmation is required"),
 });
 
 export default function SignUpPage() {
   const router = useRouter();
-  const { login } = useAuth();
-  const { showNotification } = useToast();
+
+  const [selectedRole, setSelectedRole] = useState(null);
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
+  const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      const { data } = await axios.get(`${baseUrl}/countries`);
+      if (data.status) {
+        const uniqueCountries = [];
+        const seenCodes = new Set();
+        data.data.forEach((country) => {
+          if (!seenCodes.has(country.code)) {
+            seenCodes.add(country.code);
+            uniqueCountries.push(country);
+          }
+        });
+        setCountries(uniqueCountries);
+      }
+    };
+
+    fetchCountries();
+
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const registerUser = async (userData) => {
+    const response = await axios.post(`${baseUrl}/register`, userData, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+  };
+
   const mutation = useMutation(registerUser, {
     onSuccess: (data) => {
-      login(data?.user);
-      showNotification(
-        <div className="w-full h-full flex justify-center items-center">
-          <p className="text-3xl text-center">
-            Account created successfully! Welcome to the journey!
+      if (data.status) {
+        toast.success(
+          <div className="w-full h-full flex justify-center items-center">
+            <p className="text-3xl text-center">
+              Account created successfully! Welcome to the journey!
+            </p>
+          </div>
+        );
+        router.push("/login");
+      } else {
+        throw new Error(data.message || "Registration failed");
+      }
+    },
+    onError: (error) => {
+      console.log("error is", error.response.data.message);
+      toast.error(
+        <div className="w-fit h-full flex justify-center items-center">
+          <p className="text-xl text-center whitespace-nowrap ">
+            {error.response.data.message ||
+              "Registration failed. Please try again."}
           </p>
         </div>
       );
-      router.push("/verify");
-    },
-    onError: (error) => {
-      console.error("Registration failed:", error.message);
-      alert("Registration failed. Please try again.");
     },
   });
 
+  const handleSelectCountry = (country) => {
+    setSelectedCountry(country);
+    setValue("country_id", country.id);
+    console.log("country_id", country.id);
+    setIsDropdownOpen(false);
+  };
+
   const onSubmit = (data) => {
-    mutation.mutate(data);
+    mutation.mutate({
+      ...data,
+      type: selectedRole,
+      country_id: selectedCountry.id,
+    });
+  };
+
+  const handleSelectRole = (role) => {
+    setSelectedRole(role);
+  };
+  const transitionEffect = {
+    initial: { opacity: 0, y: 500 },
+    whileInView: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeInOut" },
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeInOut" },
+    },
+    exit: {
+      opacity: 0,
+      y: 20,
+      transition: { duration: 0.2, ease: "easeInOut" },
+    },
+    viewport: { once: false },
   };
 
   return (
-    <div className="w-[95%] lg:w-[50%] min-w-[400px]p-4 pt-2 rounded-lg border shadow-md">
-      <h2 className="text-xl md:text-3xl font-bold text-center mb-4">
-        Create Account
-      </h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <InputField
-          id="name"
-          type="text"
-          label="Name"
-          placeholder="Enter your full name"
-          {...register("name")}
-          error={errors.name?.message}
-        />
-        <InputField
-          id="email"
-          type="email"
-          label="Email"
-          placeholder="Enter your email"
-          {...register("email")}
-          error={errors.email?.message}
-        />
-        <InputField
-          id="password"
-          type="password"
-          label="Password"
-          placeholder="Create a password"
-          {...register("password")}
-          error={errors.password?.message}
-        />
-
-        <PrimaryButton label="Sign Up" />
-      </form>
-      <LinkComp
-        href={"/login"}
-        text={"Already have an account? Login"}
-        classNames="text-center mt-4"
-      />
-
-      <div className="flex flex-col gap-2 my-5">
-        <SocialAuthButton
-          icon={<FcGoogle className="text-3xl" />}
-          label="Sign Up with Google"
-          onClick={() => console.log("Google Sign Up")}
-        />
-        <SocialAuthButton
-          icon={<FaApple className="text-3xl text-gray-900" />}
-          label="Sign Up with Apple"
-          onClick={() => console.log("Apple Sign Up")}
-        />
+    <div className="w-[95%] lg:w-[70%] min-w-[350px] lg:min-w-[550px] h-fit animation bg-white dark:bg-darknav p-2 md:p-6 pt-2 rounded-lg shadow-md">
+      <div className="flex justify-between items-center mb-8">
+        {selectedRole ? (
+          <button
+            className="flex items-center justify-center gap-2"
+            onClick={() => setSelectedRole(null)}
+          >
+            <FaArrowLeft className="text-2xl" />
+          </button>
+        ) : (
+          <div></div>
+        )}
+        <h2 className="text-xl md:text-3xl font-bold text-center ">
+          Create Account
+        </h2>
+        <div></div>
       </div>
+      {selectedRole ? (
+        <motion.div
+          key={selectedRole ? "form" : "role-selection"}
+          {...transitionEffect}
+        >
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-2"
+          >
+            <div className="flex justify-start items-center gap-2">
+              <InputField
+                id="first_name"
+                type="text"
+                label="First Name"
+                placeholder="Enter your first name"
+                {...register("first_name")}
+                error={errors.first_name?.message}
+              />
+              <InputField
+                id="last_name"
+                type="text"
+                label="Last Name"
+                placeholder="Enter your last name"
+                {...register("last_name")}
+                error={errors.last_name?.message}
+              />
+            </div>
+            <InputField
+              id="user_name"
+              type="text"
+              label="Username"
+              placeholder="Enter your username"
+              {...register("user_name")}
+              error={errors.user_name?.message}
+            />
+            <InputField
+              id="email"
+              type="email"
+              label="Email"
+              placeholder="Enter your email"
+              {...register("email")}
+              error={errors.email?.message}
+            />
+
+            <div className="flex justify-start items-center gap-2">
+              <div className="relative w-full" ref={dropdownRef}>
+                <label className="block text-gray-700 dark:text-gray-300 text-sm md:text-xl font-medium">
+                  Country
+                </label>
+                <div
+                  className="w-full mt-1 px-3 py-2 border text-gray-900 dark:text-gray-300 border-gray-300 dark:border-gray-600 dark:bg-darkinput rounded-md flex items-center justify-between cursor-pointer"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  {selectedCountry ? (
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={selectedCountry.flag}
+                        alt={selectedCountry.name}
+                        className="w-6 h-4"
+                      />
+                      {selectedCountry.iso} ({selectedCountry.code})
+                    </div>
+                  ) : (
+                    <span className="text-gray-400">Select your country</span>
+                  )}
+                  <span>▼</span>
+                </div>
+
+                {isDropdownOpen && (
+                  <div
+                    data-lenis-prevent="true"
+                    className="absolute z-10 w-full bg-white dark:bg-darknav border border-gray-300 dark:border-gray-600 rounded-md mt-1 shadow-lg max-h-60 overflow-y-auto"
+                  >
+                    {countries.map((country) => (
+                      <div
+                        key={country.id}
+                        className="px-3 py-2 flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-darkinput cursor-pointer"
+                        onClick={() => handleSelectCountry(country)}
+                        {...register("country")}
+                      >
+                        <img
+                          src={country.flag}
+                          alt={country.name}
+                          className="w-6 h-4"
+                        />
+                        {country.iso} ({country.code})
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              {errors.country && (
+                <p className="text-red-500 text-sm">{errors.country.message}</p>
+              )}
+              <InputField
+                id="tel"
+                type="tel"
+                label="Phone Number"
+                placeholder="Enter your phone number"
+                {...register("mobile")}
+                error={errors.mobile?.message}
+              />
+            </div>
+
+            <InputField
+              id="password"
+              type="password"
+              label="Password"
+              placeholder="Create a password"
+              {...register("password")}
+              error={errors.password?.message}
+            />
+            <InputField
+              id="password_confirmation"
+              type="password"
+              label="Confirm Password"
+              placeholder="Confirm your password"
+              {...register("password_confirmation")}
+              error={errors.password_confirmation?.message}
+            />
+
+            <PrimaryButton
+              label={mutation.isLoading ? "Signing Up..." : "Sign Up"}
+              type="submit"
+              disabled={mutation.isLoading}
+              classNames="mt-4"
+            />
+          </form>
+          <LinkComp
+            href={"/login"}
+            text={"Already have an account? Login"}
+            classNames="text-center mt-4"
+          />
+
+          <div className="flex flex-col gap-2 my-5">
+            <SocialAuthButton
+              icon={<FcGoogle className="text-3xl" />}
+              label="Sign Up with Google"
+              onClick={() => console.log("Google Sign Up")}
+            />
+            <SocialAuthButton
+              icon={<FaApple className="text-3xl text-gray-900" />}
+              label="Sign Up with Apple"
+              onClick={() => console.log("Apple Sign Up")}
+            />
+          </div>
+        </motion.div>
+      ) : (
+        <motion.div
+          key={selectedRole ? "form" : "role-selection"}
+          {...transitionEffect}
+        >
+          <ChooseRolePage onRoleSelect={handleSelectRole} />
+        </motion.div>
+      )}
     </div>
   );
 }

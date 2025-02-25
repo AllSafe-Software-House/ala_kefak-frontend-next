@@ -47,9 +47,10 @@ const TitleModal = ({ about, closeModal }) => {
       <label className="flex flex-col gap-2">
         <span className="text-gray-700 dark:text-gray-200">Description</span>
         <textarea
+        data-lenis-prevent="true"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="  w-full flex-1 border p-2 rounded  dark:border-darkinput dark:bg-darknav dark:text-gray-300 h-72  resize-none "
+          className="  w-full flex-1 border p-2 rounded  dark:border-darkinput dark:bg-darknav dark:text-gray-300 min-h-60  resize-none "
           placeholder="Enter description"
         />
       </label>

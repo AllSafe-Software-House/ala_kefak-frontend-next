@@ -55,6 +55,9 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import FreelancerProfile from "./FreelancerProfile";
 import StackholderProfile from "./StackholderProfile";
+import ErrorPage from "@/app/components/sceletons/ErrorPage";
+import LoadingProjects from "@/app/components/sceletons/LoadingProjects";
+import UserSkeleton from "@/app/components/sceletons/UserSkeleton";
 
 const ProfileContent = () => {
   const { user } = useAuth();
@@ -77,11 +80,11 @@ const ProfileContent = () => {
   }, [data]);
 
   if (isLoading) {
-    return <p>Loading user data...</p>;
+    return <UserSkeleton />;
   }
 
   if (error) {
-    return <p>Error fetching user data: {error.message}</p>;
+    return <ErrorPage />;
   }
   return (
     <>

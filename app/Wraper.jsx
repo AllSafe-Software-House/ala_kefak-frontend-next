@@ -72,6 +72,7 @@ import { FaChevronUp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Lenis from "lenis";
 import { usePathname } from "next/navigation";
+import { Toaster } from "sonner";
 
 const Wraper = ({ children }) => {
   const { language } = useTranslation();
@@ -118,6 +119,9 @@ const Wraper = ({ children }) => {
     >
       {!isInAuth && <Navbar />}
       <div className={isInAuth ? "pt-0" : "pt-[70px]"}>{children}</div>
+      <Toaster richColors position="bottom-left" expand={false} toastOptions={{
+    className: "min-w-fit",
+  }} />
       <Footer />
       {showScroll && <UpBtn />}
     </div>

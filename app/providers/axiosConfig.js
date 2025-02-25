@@ -3,9 +3,10 @@ import axios from "axios";
 
 // const baseUri = "http://localhost:8000";
 const baseUri = "/api";
-
 // const baseUri = "https://alaa-kaifak.allsafeeg-project.com/api";
 const version = "v1";
+
+export const baseUrl = `https://alaa-kaifak.allsafeeg-project.com/api/${version}`;
 
 const axiosInstance = axios.create({
   baseURL: `${baseUri}`,

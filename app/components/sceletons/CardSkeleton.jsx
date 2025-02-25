@@ -3,7 +3,7 @@ import React from 'react'
 const CardSkeleton = () => {
   return (
     <div role="status" className="w-full border border-gray-300 rounded-lg p-4">
-    <div className="animate-pulse w-full bg-gray-300 h-48 rounded-lg mb-5 flex justify-center items-center">
+    <div className="animate-pulse w-full bg-gray-300 dark:bg-darkinput h-48 rounded-lg mb-5 flex justify-center items-center">
       <svg
         className="w-8 h-8 stroke-gray-400"
         viewBox="0 0 24 24"
@@ -20,10 +20,10 @@ const CardSkeleton = () => {
     </div>
     <div className=" w-full flex justify-between items-start animate-pulse">
       <div className="block">
-        <div className="h-3 bg-gray-300 rounded-full  w-48 mb-4"></div>
-        <div className="h-2 bg-gray-300 rounded-full w-32 mb-2.5"></div>
+        <div className="h-3 bg-gray-300 dark:bg-darkinput rounded-full  w-48 mb-4"></div>
+        <div className="h-2 bg-gray-300 dark:bg-darkinput rounded-full w-32 mb-2.5"></div>
       </div>
-      <span className="h-2 bg-gray-300 rounded-full w-16 "></span>
+      <span className="h-2 bg-gray-300 dark:bg-darkinput rounded-full w-16 "></span>
     </div>
   </div>
   )

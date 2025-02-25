@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoIosSearch, IoMdNotificationsOutline } from "react-icons/io";
 import { IoChatboxOutline } from "react-icons/io5";
 import { CiMenuFries } from "react-icons/ci";
@@ -13,20 +13,50 @@ import moment from "moment";
 import { FaRegUser } from "react-icons/fa";
 import Link from "next/link";
 import UserComp from "./UserComp";
+import MessageNotifySkeleton from "../sceletons/MessageNotifySkeleton";
+import ErrorSkeleton from "../sceletons/ErrorSkeleton";
+import { usePathname } from "next/navigation";
 
 const navinks = {
   freelancer: [
-    { id: 1, text: "Find Work", link: "/" },
-    { id: 2, text: "My Projects", link: "/my-projects" },
-    { id: 3, text: "My Proposals", link: "/my-proposals" },
+    {
+      id: 1,
+      text: "Find Work",
+      link: "/",
+      subs: ["most-recent", "saved-jobs"],
+    },
+    {
+      id: 2,
+      text: "My Projects",
+      link: "/my-projects",
+      subs: [
+        "my-projects",
+        "declined-projects",
+        "reviewed-projects",
+        "pending-projects",
+      ],
+    },
+    {
+      id: 3,
+      text: "My Proposals",
+      link: "/my-proposals",
+      subs: [
+        "my-proposals",
+        "declined-proposals",
+        "reviewed-proposals",
+        "pending-proposals",
+        "saved-proposals",
+      ],
+    },
   ],
   stakeholder: [
-    { id: 1, text: "Find Employee", link: "/find-employee" },
-    { id: 2, text: "Manage projects", link: "/manage-projects" },
+    { id: 1, text: "Find Employee", link: "/find-employee", subs: [] },
+    { id: 2, text: "Manage projects", link: "/manage-projects", subs: [] },
   ],
 };
 
 const Navbar = () => {
+  const pathname = usePathname();
   const [searchText, setSearchText] = useState("");
   const [linksToShow, setLinksToShow] = useState([
     { id: 1, text: "Find Work", link: "/" },
@@ -60,7 +90,12 @@ const Navbar = () => {
       <div className="hidden lg:flex flex-grow justify-between items-center">
         <div className="flex items-center gap-8 text-sm lg:text-xl font-medium text-gray-700 dark:text-white ps-6">
           {linksToShow?.map((link) => (
-            <NavLink key={link.id} href={link.link}>
+            <NavLink
+              key={link.id}
+              href={link.link}
+              subs={link.subs}
+              pathname={pathname}
+            >
               {link.text}
             </NavLink>
           ))}
@@ -91,20 +126,29 @@ const Navbar = () => {
       )}
     </nav>
   );
-}
+};
 
-export default Navbar
+export default Navbar;
 
-
-
-const NavLink = ({ href, children }) => (
-  <Link
-    href={href}
-    className="animation hover:text-primary text-gray-700 dark:text-white"
-  >
-    {children}
-  </Link>
-);
+const NavLink = ({ href, children, subs, pathname }) => {
+  useEffect(() => {
+    console.log(pathname)
+    console.log(href)
+  }, [pathname])
+  
+  const isActive = subs?.some((path) => pathname == `/${path}`);
+  const isHome = pathname === "/";
+  return (
+    <Link
+      href={href}
+      className={`animation hover:text-primary  ${
+        isActive || pathname === href ? "text-primary" : "text-gray-700 dark:text-white"
+      }`}
+    >
+      {children}
+    </Link>
+  );
+};
 
 const SearchInput = ({ value, onChange }) => (
   <div className="flex items-center bg-gray-100 dark:bg-darkinput px-4 py-2 border border-gray-400 rounded-full animation hover:border-gray-800  ">
@@ -123,10 +167,39 @@ const SearchInput = ({ value, onChange }) => (
 
 const RightSection = ({ UserData, isLoading }) => {
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const notificationsRef = useRef(null);
+  const messagesRef = useRef(null);
 
   const toggleDropdown = (dropdownType) => {
     setActiveDropdown((prev) => (prev === dropdownType ? null : dropdownType));
   };
+
+  // click outside notifications || messages modals
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        activeDropdown === "notifications" &&
+        notificationsRef.current &&
+        !notificationsRef.current.contains(event.target)
+      ) {
+        setActiveDropdown(null);
+      }
+
+      if (
+        activeDropdown === "messages" &&
+        messagesRef.current &&
+        !messagesRef.current.contains(event.target)
+      ) {
+        setActiveDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [activeDropdown]);
 
   return (
     <div className="flex items-center space-x-4 text-xl lg:text-3xl">
@@ -137,8 +210,16 @@ const RightSection = ({ UserData, isLoading }) => {
             className="relative cursor-pointer"
             onClick={() => toggleDropdown("notifications")}
           >
-            <IoMdNotificationsOutline className="w-10 h-10 lg:w-12 lg:h-12 p-2 text-gray-500 animation hover:text-primary bg-gray-100 dark:bg-darkinput rounded-full" />
-            {activeDropdown === "notifications" && <NotificationsDropdown />}
+            <IoMdNotificationsOutline
+              className={`w-10 h-10 lg:w-12 lg:h-12 p-2 text-gray-500 animation hover:text-primary bg-gray-100 dark:bg-darkinput rounded-full ${
+                activeDropdown === "notifications" ? "text-primary" : ""
+              } `}
+            />
+            {activeDropdown === "notifications" && (
+              <div ref={notificationsRef}>
+                <NotificationsDropdown />
+              </div>
+            )}
           </div>
 
           {/* Messages Icon */}
@@ -146,8 +227,16 @@ const RightSection = ({ UserData, isLoading }) => {
             className="relative cursor-pointer"
             onClick={() => toggleDropdown("messages")}
           >
-            <IoChatboxOutline className="w-10 h-10 lg:w-12 lg:h-12 p-2 text-gray-500 animation hover:text-primary bg-gray-100 dark:bg-darkinput rounded-full" />
-            {activeDropdown === "messages" && <MessagesDropdown />}
+            <IoChatboxOutline
+              className={`w-10 h-10 lg:w-12 lg:h-12 p-2 text-gray-500 animation hover:text-primary bg-gray-100 dark:bg-darkinput rounded-full ${
+                activeDropdown === "messages" ? "text-primary" : ""
+              } `}
+            />
+            {activeDropdown === "messages" && (
+              <div ref={messagesRef}>
+                <MessagesDropdown />
+              </div>
+            )}
           </div>
         </>
       )}
@@ -160,8 +249,6 @@ const RightSection = ({ UserData, isLoading }) => {
     </div>
   );
 };
-
-
 const MobileMenu = ({ isOpen, toggleMenu, searchText, setSearchText }) => (
   <div className="absolute top-full left-0 w-full lg:hidden">
     <motion.div
@@ -190,26 +277,25 @@ const MobileMenu = ({ isOpen, toggleMenu, searchText, setSearchText }) => (
 );
 
 const NotificationsDropdown = () => {
-  const { data, isLoading, error } = useQuery("notifications", () =>
+  const { data, isLoading, error, refetch } = useQuery("notifications", () =>
     getData("notifications")
   );
 
   return (
     <div
-      className="absolute top-full right-0 w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-4 z-50 border"
+      className="absolute top-full right-0 w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput "
       data-lenis-prevent="true"
     >
-      <h3 className="text-lg font-semibold mb-2">Notifications</h3>
       {isLoading ? (
-        <p>Loading...</p>
+        <MessageNotifySkeleton />
       ) : error ? (
-        <p>Error loading notifications</p>
+        <ErrorSkeleton func={refetch} />
       ) : (
         <div className="max-h-[50vh] overflow-y-scroll">
           {data?.notifications?.map((notification) => (
             <Link
-            href={`/notifications?notificationid=${notification.id}`} 
-            key={notification.id}
+              href={`/notifications?notificationid=${notification.id}`}
+              key={notification.id}
               className="flex justify-start items-center gap-4 animation hover:bg-primary/20 rounded-lg p-2"
             >
               <div className="rounded-full text-xl p-3 bg-gray-100 text-slate-900">
@@ -227,34 +313,34 @@ const NotificationsDropdown = () => {
       )}
       <Link
         href={"/notifications"}
-        className="w-full block text-lg font-semibold mb-2 animation hover:text-primary "
+        className="w-full text-lg font-semibold mb-2 animation flex justify-start items-center gap-2 mt-3 text-gray-900 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
       >
-        Show All Notifications
+        <IoMdNotificationsOutline className="text-3xl" />
+        <span>Show All Notifications</span>
       </Link>
     </div>
   );
 };
 
 const MessagesDropdown = () => {
-  const { data, isLoading, error } = useQuery("conversations", () =>
+  const { data, isLoading, error, refetch } = useQuery("conversations", () =>
     getData("conversations")
   );
 
   return (
     <div
-      className="absolute top-full right-0 w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-4 z-50 border "
+      className="absolute top-full right-0 w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput "
       data-lenis-prevent="true"
     >
-      <h3 className="text-lg font-semibold mb-2">Messages</h3>
       {isLoading ? (
-        <p>Loading...</p>
+        <MessageNotifySkeleton />
       ) : error ? (
-        <p>Error loading messages</p>
+        <ErrorSkeleton func={refetch} />
       ) : (
         <div className="max-h-[50vh] overflow-y-scroll">
           {data?.conversations?.map((conversation) => (
             <Link
-            href={`/messages?conversationid=${conversation.id}`}
+              href={`/messages?conversationid=${conversation.id}`}
               key={conversation.id}
               className="flex justify-start items-center gap-4 animation hover:bg-primary/20 rounded-lg p-2"
             >
@@ -280,11 +366,14 @@ const MessagesDropdown = () => {
           ))}
         </div>
       )}
+
       <Link
         href={"/messages"}
-        className="w-full block text-lg font-semibold mb-2 animation hover:text-primary"
+        className="w-full text-lg font-semibold mb-2 animation flex justify-start items-center gap-2 mt-3 text-gray-900 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
       >
+        <IoChatboxOutline className="text-3xl" />
         Show All Messages
+        <span></span>
       </Link>
     </div>
   );

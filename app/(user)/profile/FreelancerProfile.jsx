@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { FaStar, FaRegStar, FaShareSquare, FaEye, FaEdit } from "react-icons/fa";
+import {
+  FaStar,
+  FaRegStar,
+  FaShareSquare,
+  FaEye,
+  FaEdit,
+} from "react-icons/fa";
 import GeneralModal from "./modals/GeneralModal";
 import { useAuth } from "@/app/providers/AuthContext";
 import { getData } from "@/app/providers/TheQueryProvider";
@@ -17,13 +23,13 @@ import Badges from "./ContentItems/Badges";
 import Complete from "./ContentItems/Complete";
 import VerifyAccount from "./ContentItems/VerifyAccount";
 import { MdOutlineModeEdit } from "react-icons/md";
-import { MainBtn } from "@/app/components/generalComps/Btns";
+import { MainBtn, SecondaryBtn } from "@/app/components/generalComps/Btns";
 
 const FreelancerProfile = () => {
   const { user } = useAuth();
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null); 
+  const [imagePreview, setImagePreview] = useState(null);
 
   const { data, isLoading, error } = useQuery(
     ["userData", user?.user?.id],
@@ -56,7 +62,7 @@ const FreelancerProfile = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result); 
+        setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -64,7 +70,11 @@ const FreelancerProfile = () => {
 
   return (
     <div className="min-h-screen mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100 dark:bg-transparent ">
-      <Hero user={data.user} openModal={openModal} handleImageChange={handleImageChange} />
+      <Hero
+        user={data.user}
+        openModal={openModal}
+        handleImageChange={handleImageChange}
+      />
       <Content user={data.user} openModal={openModal} closeModal={closeModal} />
       {isModalOpen && (
         <GeneralModal content={modalContent} onClose={closeModal} />
@@ -75,7 +85,7 @@ const FreelancerProfile = () => {
 
 export default FreelancerProfile;
 
-const Hero = ({ user, openModal,handleImageChange }) => {
+const Hero = ({ user, openModal, handleImageChange }) => {
   const fullStars = Math.floor(user.rating);
   const emptyStars = 5 - fullStars;
 
@@ -90,15 +100,23 @@ const Hero = ({ user, openModal,handleImageChange }) => {
 
   return (
     <div className="w-full flex flex-col items-center text-center">
-      <div className="w-full flex justify-end items-center gap-6">
-        <button className="flex justify-center items-center gap-2 border-primary border-2 bg-white dark:bg-darkinput text-primary py-2 px-4 rounded-xl hover:bg-primary hover:text-white animation">
-          <span>Share</span>
-          <FaShareSquare />
-        </button>
-        <button className="flex justify-center items-center gap-2 bg-primary text-white py-2 px-4 rounded-xl hover:bg-primaryhover animation">
-          <span>Preview</span>
-          <FaEye />
-        </button>
+      <div className="w-full flex justify-end items-center gap-6 mt-4">
+        <SecondaryBtn
+          text={
+            <div className="flex justify-center items-center gap-2">
+              <span>Share</span>
+              <FaShareSquare />
+            </div>
+          }
+        />
+        <MainBtn
+          text={
+            <div className="flex justify-center items-center gap-2">
+              <span>Preview</span>
+              <FaEye />
+            </div>
+          }
+        />
       </div>
       <div className="relative w-56 h-56">
         <img
@@ -111,7 +129,6 @@ const Hero = ({ user, openModal,handleImageChange }) => {
           onClick={openImageModal}
         >
           <MdOutlineModeEdit />
-
         </button>
       </div>
       <h2 className="mt-4 text-2xl font-medium">{user.name}</h2>
@@ -141,20 +158,14 @@ const ImageChangeModal = ({ currentImage, onImageChange }) => {
       </div>
 
       <div className="flex justify-between items-center">
-    <label
-      className="cursor-pointer bg-white hover:bg-primary text-primary hover:text-white border-primary animation border-[1px] 
+        <label
+          className="cursor-pointer bg-white hover:bg-primary text-primary hover:text-white border-primary animation border-[1px] 
         rounded-lg px-4 py-2 font-medium  dark:text-primary dark:bg-darknav dark:hover:bg-primary/20 "
-    >
-      Change photo
-      <input
-        type="file"
-        className="hidden"
-        onChange={onImageChange}
-      />
-
-    </label>
+        >
+          Change photo
+          <input type="file" className="hidden" onChange={onImageChange} />
+        </label>
         <MainBtn text="Save Changes" />
-    
       </div>
     </div>
   );
