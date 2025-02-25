@@ -9,14 +9,15 @@ const UserLayout = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    const token = localStorage.getItem("token");
+    if (!token) {
       router.push("/login");
     }
   }, [user, loading, router]);
 
-  if (!user) {
-    return null;
-  }
+  // if (!user) {
+  //   return null;
+  // }
 
   return <>{children}</>;
 };

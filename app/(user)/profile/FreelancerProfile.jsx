@@ -25,27 +25,27 @@ import VerifyAccount from "./ContentItems/VerifyAccount";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MainBtn, SecondaryBtn } from "@/app/components/generalComps/Btns";
 
-const FreelancerProfile = () => {
-  const { user } = useAuth();
+const FreelancerProfile = ({user}) => {
+  // const { user } = useAuth();
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
-  const { data, isLoading, error } = useQuery(
-    ["userData", user?.user?.id],
-    () => getData(`user?id=${user?.user?.id}`),
-    {
-      enabled: !!user?.user?.id,
-    }
-  );
+  // const { data, isLoading, error } = useQuery(
+  //   ["userData", user?.user?.id],
+  //   () => getData(`user?id=${user?.user?.id}`),
+  //   {
+  //     enabled: !!user?.user?.id,
+  //   }
+  // );
 
-  if (isLoading) {
-    return <p>Loading user data...</p>;
-  }
+  // if (isLoading) {
+  //   return <p>Loading user data...</p>;
+  // }
 
-  if (error) {
-    return <p>Error fetching user data: {error.message}</p>;
-  }
+  // if (error) {
+  //   return <p className="pt-[500px]">Error fetching user data: {error.message}</p>;
+  // }
 
   const openModal = (content) => {
     setModalContent(content);
@@ -71,14 +71,14 @@ const FreelancerProfile = () => {
   return (
     <div className="min-h-screen mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100 dark:bg-transparent ">
       <Hero
-        user={data.user}
+        user={user}
         openModal={openModal}
         handleImageChange={handleImageChange}
       />
-      <Content user={data.user} openModal={openModal} closeModal={closeModal} />
+      {/* <Content user={data.user} openModal={openModal} closeModal={closeModal} />
       {isModalOpen && (
         <GeneralModal content={modalContent} onClose={closeModal} />
-      )}
+      )} */}
     </div>
   );
 };
@@ -86,8 +86,8 @@ const FreelancerProfile = () => {
 export default FreelancerProfile;
 
 const Hero = ({ user, openModal, handleImageChange }) => {
-  const fullStars = Math.floor(user.rating);
-  const emptyStars = 5 - fullStars;
+  // const fullStars = Math.floor(user.rating);
+  // const emptyStars = 5 - fullStars;
 
   const openImageModal = () => {
     openModal(
@@ -120,7 +120,7 @@ const Hero = ({ user, openModal, handleImageChange }) => {
       </div>
       <div className="relative w-56 h-56">
         <img
-          src={user?.image}
+          src={user?.personal_image}
           alt="Freelancer"
           className="w-full h-full object-cover rounded-full border-gray-700 border-2"
         />
@@ -131,16 +131,16 @@ const Hero = ({ user, openModal, handleImageChange }) => {
           <MdOutlineModeEdit />
         </button>
       </div>
-      <h2 className="mt-4 text-2xl font-medium">{user.name}</h2>
-      <p className="text-gray-500">{user.location}</p>
-      <div className="flex items-center mt-2">
+      <h2 className="mt-4 text-2xl font-medium">{user.user_name}</h2>
+      <p className="text-gray-500">{user.country_name}</p>
+      {/* <div className="flex items-center mt-2">
         {[...Array(fullStars)].map((_, index) => (
           <FaStar key={index} className="text-yellow-500" />
         ))}
         {[...Array(emptyStars)].map((_, index) => (
           <FaRegStar key={index} className="text-yellow-500" />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

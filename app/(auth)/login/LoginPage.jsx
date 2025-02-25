@@ -47,6 +47,7 @@ export default function LoginPage() {
 
   const mutation = useMutation(loginUser, {
     onSuccess: (data) => {
+      console.log("data is", data);
       if (data.status) {
         if (data.data.otp == 0) {
           toast.success(
@@ -69,6 +70,7 @@ export default function LoginPage() {
   });
 
   const onSubmit = (data) => {
+    localStorage.setItem("userEmail", data.email_or_username);
     mutation.mutate(data);
   };
 

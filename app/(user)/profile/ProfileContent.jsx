@@ -1,100 +1,40 @@
-// "use client";
-
-// import { useAuth } from "@/app/providers/AuthContext";
-// import { getData } from "@/app/providers/TheQueryProvider";
-// import { useEffect, useState } from "react";
-// import { useQuery } from "react-query";
-// import FreelancerProfile from "./FreelancerProfile";
-// import StackholderProfile from "./StackholderProfile";
-
-// const ProfileContent = () => {
-//   const { user } = useAuth();
-//   const [userType, setUserType] = useState(null);
-
-//   const { data, isLoading, error } = useQuery(
-//     ["userData", user?.user?.id],
-//     () => getData(`users/${user?.user?.id}`),
-//     {
-//       enabled: !!user?.user?.id,
-//     }
-//   );
-//   useEffect(() => {
-//     if (data) {
-//       console.log(data?.user?.name);
-//       setUserType(data?.user?.acountType);
-//     }
-//   }, [user?.user?.id]);
-
-//   if (isLoading) {
-//     return <p>Loading user data...</p>;
-//   }
-
-//   if (error) {
-//     return <p>Error fetching user data: {error.message}</p>;
-//   }
-//   return (
-//     <>
-//       {userType == "freelancer" ? (
-//         <FreelancerProfile />
-//       ) : (
-//         <StackholderProfile />
-//       )}
-//     </>
-//   );
-// };
-
-// export default ProfileContent;
-
-
-
 "use client";
 
-import { useAuth } from "@/app/providers/AuthContext";
-import { getData } from "@/app/providers/TheQueryProvider";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import axios from "axios";
 import FreelancerProfile from "./FreelancerProfile";
 import StackholderProfile from "./StackholderProfile";
 import ErrorPage from "@/app/components/sceletons/ErrorPage";
-import LoadingProjects from "@/app/components/sceletons/LoadingProjects";
 import UserSkeleton from "@/app/components/sceletons/UserSkeleton";
+import { baseUrl } from "@/app/providers/axiosConfig";
 
 const ProfileContent = () => {
-  const { user } = useAuth();
   const [userType, setUserType] = useState(null);
 
-  const { data, isLoading, error } = useQuery(
-    ["userData", user?.user?.id],
-    () => getData(`users/${user?.user?.id}`),
-    {
-      enabled: !!user?.user?.id,
-    }
-  );
+  const { data, isLoading, error } = useQuery("userData", async () => {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${baseUrl}/auth/profile`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  });
+
   useEffect(() => {
-    console.log(user.user.id)
-    console.log(data)
     if (data) {
-      console.log(data?.user?.name);
-      setUserType(data?.user?.acountType);
+      // console.log("data", data.data);
+      setUserType(data.data.type);
     }
   }, [data]);
 
-  if (isLoading) {
-    return <UserSkeleton />;
-  }
+  if (isLoading) return <UserSkeleton />;
+  if (error) return <ErrorPage />;
 
-  if (error) {
-    return <ErrorPage />;
-  }
-  return (
-    <>
-      {userType == "freelancer" ? (
-        <FreelancerProfile />
-      ) : (
-        <StackholderProfile />
-      )}
-    </>
-  );
+  return <FreelancerProfile user={data.data} /> 
+  // return userType == 2 ? <FreelancerProfile user={data.data} /> : <StackholderProfile />;
 };
 
 export default ProfileContent;

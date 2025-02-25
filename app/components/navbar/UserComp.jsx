@@ -20,6 +20,10 @@ const UserComp = ({ UserData, isLoading }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+useEffect(() => {
+  console.log(UserData?.data)
+
+}, [UserData])
 
   if (isLoading)
     return <div className="h-10 w-10 bg-gray-300 rounded-full"></div>;
@@ -43,14 +47,14 @@ const UserComp = ({ UserData, isLoading }) => {
         onClick={() => setMenuOpen(!menuOpen)}
         className="w-10 h-10 lg:w-12 lg:h-12 rounded-full overflow-hidden bg-green-400 flex items-center justify-center text-white text-xl lg:text-2xl font-medium cursor-pointer"
       >
-        {UserData?.image ? (
+        {UserData?.data?.personal_image ? (
           <img
-            src={UserData?.image}
+            src={UserData?.data?.personal_image}
             alt="user"
             className="w-full h-full object-cover"
           />
         ) : (
-          <span className="text-white">{UserData.name?.charAt(0)}</span>
+          <span className="text-white">{UserData?.data?.name?.charAt(0)}</span>
         )}
       </div>
 
@@ -62,12 +66,12 @@ const UserComp = ({ UserData, isLoading }) => {
             onClick={() => setMenuOpen(false)}
           >
             <img
-              src={UserData.image}
+              src={UserData?.data?.personal_image}
               alt="user"
               className="w-16 h-16 lg:w-28 lg:h-28 rounded-full object-cover border-2 border-slate-900"
             />
-            <p className="text-base">{UserData.name}</p>
-            <p className="text-sm">{UserData.acountType}</p>
+            <p className="text-base">{UserData?.data?.name}</p>
+            <p className="text-sm">{UserData?.data?.acountType}</p>
           </Link>
           {menuItems.map(({ icon: Icon, text, link }, index) =>
             link ? (

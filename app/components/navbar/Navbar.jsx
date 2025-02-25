@@ -16,6 +16,8 @@ import UserComp from "./UserComp";
 import MessageNotifySkeleton from "../sceletons/MessageNotifySkeleton";
 import ErrorSkeleton from "../sceletons/ErrorSkeleton";
 import { usePathname } from "next/navigation";
+import { baseUrl } from "@/app/providers/axiosConfig";
+import axios from "axios";
 
 const navinks = {
   freelancer: [
@@ -58,38 +60,39 @@ const navinks = {
 const Navbar = () => {
   const pathname = usePathname();
   const [searchText, setSearchText] = useState("");
-  const [linksToShow, setLinksToShow] = useState([
-    { id: 1, text: "Find Work", link: "/" },
-  ]);
+  const [linksToShow, setLinksToShow] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [UserData, setUserData] = useState(null);
-  const { user } = useAuth();
-  const { data, isLoading, error } = useQuery(
-    ["userData", user?.user?.id],
-    () => getData(`user?id=${user?.user?.id}`),
-    {
-      enabled: !!user?.user?.id,
-    }
-  );
+
+  const {
+    data: UserData,
+    isLoading,
+    error,
+  } = useQuery("userData", async () => {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${baseUrl}/auth/profile`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  });
 
   useEffect(() => {
-    if (data) {
-      const currentUser = data?.user;
-      const userType = data?.user?.acountType;
-      setUserData(currentUser);
-      setLinksToShow(
-        userType === "freelancer" ? navinks.freelancer : navinks.stakeholder
-      );
+    if (!isLoading && !error && UserData) {
+      const userType = UserData.data.type;
+      setLinksToShow(userType === 2 ? navinks.freelancer : navinks.stakeholder);
     }
-  }, [data, user?.user?.id]);
+  }, [UserData]);
 
   return (
     <nav className="z-[99] fixed top-0 left-0 w-full flex items-center justify-between px-4 py-2 lg:px-6 bg-white dark:bg-darknav">
       <Logo />
+
       {/* Large Screen Menu */}
       <div className="hidden lg:flex flex-grow justify-between items-center">
         <div className="flex items-center gap-8 text-sm lg:text-xl font-medium text-gray-700 dark:text-white ps-6">
-          {linksToShow?.map((link) => (
+          {linksToShow.map((link) => (
             <NavLink
               key={link.id}
               href={link.link}
@@ -108,6 +111,7 @@ const Navbar = () => {
           <RightSection UserData={UserData} isLoading={isLoading} />
         </div>
       </div>
+
       {/* Mobile Menu Toggle */}
       <div
         className="text-2xl lg:hidden cursor-pointer"
@@ -115,6 +119,7 @@ const Navbar = () => {
       >
         <CiMenuFries />
       </div>
+
       {/* Mobile Menu */}
       {menuOpen && (
         <MobileMenu
@@ -132,17 +137,19 @@ export default Navbar;
 
 const NavLink = ({ href, children, subs, pathname }) => {
   useEffect(() => {
-    console.log(pathname)
-    console.log(href)
-  }, [pathname])
-  
+    console.log(pathname);
+    console.log(href);
+  }, [pathname]);
+
   const isActive = subs?.some((path) => pathname == `/${path}`);
   const isHome = pathname === "/";
   return (
     <Link
       href={href}
       className={`animation hover:text-primary  ${
-        isActive || pathname === href ? "text-primary" : "text-gray-700 dark:text-white"
+        isActive || pathname === href
+          ? "text-primary"
+          : "text-gray-700 dark:text-white"
       }`}
     >
       {children}
