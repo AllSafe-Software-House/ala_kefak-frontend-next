@@ -50,7 +50,7 @@ export default function LoginPage() {
       if (data.status) {
         if (data.data.otp == 0) {
           toast.success(
-            "you Didn't Virefy your Email yet, Please check your email for OTP"
+            "you Didn't Virefy your Acount yet, Please check your email for OTP"
           );
           router.push("/verify");
         } else {
