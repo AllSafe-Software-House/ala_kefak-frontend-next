@@ -1,30 +1,34 @@
 "use client";
 import axios from "axios";
 
-// const baseUri = "http://localhost:8000";
 const baseUri = "/api";
 // const baseUri = "https://alaa-kaifak.allsafeeg-project.com/api";
 const version = "v1";
 
 export const baseUrl = `https://alaa-kaifak.allsafeeg-project.com/api/${version}`;
 
+
+
 const axiosInstance = axios.create({
-  baseURL: `${baseUri}`,
+  baseURL: `${baseUrl}`,
   headers: {
     "Content-Type": "application/json",
+
   },
 });
 
 // Interceptor لإضافة التوكن
 axiosInstance.interceptors.request.use(
   (config) => {
-    const lang = localStorage.getItem("language") || "en"; 
-    const token = localStorage.getItem("token"); // الحصول على التوكن من localStorage
+    const lang = localStorage.getItem("alakefaklang") || "ar"; 
+    console.log(lang)
+    const token = localStorage.getItem("token"); 
 
     config.headers["Accept-Language"] = lang;
 
     if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`; // إضافة التوكن في الهيدرز
+      console.log(lang)
+      config.headers["Authorization"] = `Bearer ${token}`; 
     }
 
     return config;

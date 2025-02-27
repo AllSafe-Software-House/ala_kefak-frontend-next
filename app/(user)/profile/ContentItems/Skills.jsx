@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditBtn from "../UIItems/EditBtn";
 import Heading from "../UIItems/Heading";
 import { IoClose } from "react-icons/io5";
 import { MainBtn, SecondaryBtn } from "@/app/components/generalComps/Btns";
 
 const Skills = ({ user, openModal, closeModal }) => {
-  const [skills, setSkills] = useState(user.skills);
+
+
+  const [skills, setSkills] = useState(user?.skills);
 
   const handleSave = (updatedSkills) => {
     console.log("Updated Skills:", updatedSkills);
@@ -23,6 +25,11 @@ const Skills = ({ user, openModal, closeModal }) => {
     );
   };
 
+
+
+
+
+
   return (
     <div className="w-full rounded-2xl bg-white p-3 md:p-6 border flex flex-col gap-6 dark:bg-darknav dark:border-darkinput dark:text-gray-300">
       <Heading
@@ -35,7 +42,7 @@ const Skills = ({ user, openModal, closeModal }) => {
             key={i}
             className="text-gray-500 rounded-full text-sm md:text-base p-2 px-3 md:px-4 border-gray-800 bg-gray-100 dark:bg-darkinput dark:border-darkinput dark:text-gray-300"
           >
-            {skill}
+            {skill.name}
           </span>
         ))}
       </div>
@@ -70,7 +77,7 @@ const ModalContent = ({ initialSkills, onSave, closeModal }) => {
             key={index}
             className="flex items-center gap-2 text-gray-500 rounded-full text-sm md:text-base p-2 px-3 md:px-4 border-gray-800 bg-gray-100 dark:bg-darkinput dark:border-darkinput dark:text-gray-400"
           >
-            <span>{skill}</span>
+            <span>{skill.name}</span>
             <button
               onClick={() => handleDelete(skill)}
               className="text-red-500 hover:text-red-700 animation"

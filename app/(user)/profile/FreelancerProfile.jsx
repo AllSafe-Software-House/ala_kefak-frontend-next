@@ -75,10 +75,10 @@ const FreelancerProfile = ({user}) => {
         openModal={openModal}
         handleImageChange={handleImageChange}
       />
-      {/* <Content user={data.user} openModal={openModal} closeModal={closeModal} />
+      <Content user={user} openModal={openModal} closeModal={closeModal} />
       {isModalOpen && (
         <GeneralModal content={modalContent} onClose={closeModal} />
-      )} */}
+      )}
     </div>
   );
 };
@@ -86,13 +86,13 @@ const FreelancerProfile = ({user}) => {
 export default FreelancerProfile;
 
 const Hero = ({ user, openModal, handleImageChange }) => {
-  // const fullStars = Math.floor(user.rating);
-  // const emptyStars = 5 - fullStars;
+  const fullStars = Math.floor(user?.rate);
+  const emptyStars = 5 - fullStars;
 
   const openImageModal = () => {
     openModal(
       <ImageChangeModal
-        currentImage={user?.image}
+        currentImage={user?.personal_image}
         onImageChange={handleImageChange}
       />
     );
@@ -131,16 +131,16 @@ const Hero = ({ user, openModal, handleImageChange }) => {
           <MdOutlineModeEdit />
         </button>
       </div>
-      <h2 className="mt-4 text-2xl font-medium">{user.user_name}</h2>
-      <p className="text-gray-500">{user.country_name}</p>
-      {/* <div className="flex items-center mt-2">
+      <h2 className="mt-4 text-2xl font-medium">{`${user?.first_name} ${user?.last_name}`}</h2>
+      <p className=" ytext-lg font-medium text-gray-500">{user.country.name}</p>
+      <div className="flex items-center mt-2">
         {[...Array(fullStars)].map((_, index) => (
           <FaStar key={index} className="text-yellow-500" />
         ))}
         {[...Array(emptyStars)].map((_, index) => (
           <FaRegStar key={index} className="text-yellow-500" />
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };
@@ -175,7 +175,7 @@ const Content = ({ user, openModal, closeModal }) => {
   return (
     <div className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8">
       <div className="w-full flex flex-col gap-10">
-        <Title user={user} openModal={openModal} closeModal={closeModal} />
+        {/* <Title user={user} openModal={openModal} closeModal={closeModal} /> */}
         <Skills user={user} openModal={openModal} closeModal={closeModal} />
         <Projects user={user} openModal={openModal} closeModal={closeModal} />
         <Templates user={user} openModal={openModal} closeModal={closeModal} />
@@ -184,22 +184,25 @@ const Content = ({ user, openModal, closeModal }) => {
           openModal={openModal}
           closeModal={closeModal}
         />
+        {/* 
         <Education user={user} openModal={openModal} closeModal={closeModal} />
         <Certificates
           user={user}
           openModal={openModal}
           closeModal={closeModal}
-        />
+        /> */}
       </div>
 
       <div className="w-full flex flex-col justify-start items-start gap-10">
         <Badges user={user} openModal={openModal} closeModal={closeModal} />
-        <Complete user={user} openModal={openModal} closeModal={closeModal} />
-        <VerifyAccount
+        {/* <Complete user={user} openModal={openModal} closeModal={closeModal} /> */}
+        {user?.verify_account === false && <VerifyAccount
           user={user}
           openModal={openModal}
           closeModal={closeModal}
-        />
+        /> } 
+        {/* 
+       */}
       </div>
     </div>
   );

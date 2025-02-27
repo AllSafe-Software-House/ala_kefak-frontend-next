@@ -11,9 +11,9 @@ const Badges = ({ user }) => {
             key={badge.id}
             badge={badge}
           >
-            <img src={badge?.image} alt="badge" className="w-10 h-10" />
+            <img src={badge?.image} alt="badge" className="w-10 h-10 rounded-full" />
             <div className="flex flex-col">
-              <h3 className="text-sm md:text-base font-medium">{badge.title}</h3>
+              <h3 className="text-sm md:text-base font-medium">{badge.name}</h3>
               <p className="text-xs md:text-sm">{badge.description}</p>
             </div>
           </div>

@@ -16,7 +16,7 @@ import UserComp from "./UserComp";
 import MessageNotifySkeleton from "../sceletons/MessageNotifySkeleton";
 import ErrorSkeleton from "../sceletons/ErrorSkeleton";
 import { usePathname } from "next/navigation";
-import { baseUrl } from "@/app/providers/axiosConfig";
+import axiosInstance, { baseUrl } from "@/app/providers/axiosConfig";
 import axios from "axios";
 
 const navinks = {
@@ -69,7 +69,7 @@ const Navbar = () => {
     error,
   } = useQuery("userData", async () => {
     const token = localStorage.getItem("token");
-    const response = await axios.get(`${baseUrl}/auth/profile`, {
+    const response = await axiosInstance.get(`${baseUrl}/auth/profile`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -136,10 +136,7 @@ const Navbar = () => {
 export default Navbar;
 
 const NavLink = ({ href, children, subs, pathname }) => {
-  useEffect(() => {
-    console.log(pathname);
-    console.log(href);
-  }, [pathname]);
+
 
   const isActive = subs?.some((path) => pathname == `/${path}`);
   const isHome = pathname === "/";

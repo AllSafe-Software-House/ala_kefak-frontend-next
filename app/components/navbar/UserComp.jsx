@@ -20,10 +20,6 @@ const UserComp = ({ UserData, isLoading }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-useEffect(() => {
-  console.log(UserData?.data)
-
-}, [UserData])
 
   if (isLoading)
     return <div className="h-10 w-10 bg-gray-300 rounded-full"></div>;
@@ -54,7 +50,9 @@ useEffect(() => {
             className="w-full h-full object-cover"
           />
         ) : (
-          <span className="text-white">{UserData?.data?.name?.charAt(0)}</span>
+          <span className="text-white">
+            {UserData?.data?.first_name?.charAt(0)}
+          </span>
         )}
       </div>
 
@@ -70,7 +68,7 @@ useEffect(() => {
               alt="user"
               className="w-16 h-16 lg:w-28 lg:h-28 rounded-full object-cover border-2 border-slate-900"
             />
-            <p className="text-base">{UserData?.data?.name}</p>
+            <p className="text-base">{`${UserData?.data?.first_name} ${UserData?.data?.last_name}`}</p>
             <p className="text-sm">{UserData?.data?.acountType}</p>
           </Link>
           {menuItems.map(({ icon: Icon, text, link }, index) =>

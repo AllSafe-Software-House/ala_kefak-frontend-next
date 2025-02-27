@@ -9,7 +9,7 @@ import { MdDelete } from "react-icons/md";
 import { MainBtn, SecondaryBtn } from "@/app/components/generalComps/Btns";
 
 const WorkExperince = ({ user, openModal, closeModal }) => {
-  const [workExperiences, setWorkExperiences] = useState(user.workExperience);
+  const [workExperiences, setWorkExperiences] = useState(user.experiences);
 
   const handleSave = (updatedExperiences) => {
     console.log("Updated Work Experiences:", updatedExperiences);

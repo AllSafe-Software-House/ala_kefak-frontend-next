@@ -17,7 +17,7 @@ const Templates = ({ user }) => {
         actions={[<AddBtn key="add" onClick={handleNavigate} />]}
       />
       <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-4">
-        {user.templates.map((template) => (
+        {user?.templates.map((template) => (
           <TemplateCard key={template.id} project={template} />
         ))}
       </div>
