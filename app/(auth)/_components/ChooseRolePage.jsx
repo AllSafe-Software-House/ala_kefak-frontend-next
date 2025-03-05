@@ -8,13 +8,14 @@ import { useToast } from "@/app/components/toast/Toast";
 import { useMutation } from "react-query";
 import { updateData } from "@/app/providers/TheQueryProvider";
 import LinkComp from "./LinkComp";
+import { useTranslation } from "@/app/providers/Transslations";
 
 const ChooseRolePage = ({ onRoleSelect }) => {
   const [selectedRole, setSelectedRole] = useState(null);
   const router = useRouter();
   const { user } = useAuth();
-
   const { showNotification } = useToast();
+  const { translate } = useTranslation();
 
   const mutation = useMutation(
     (userData) => updateData(`users/${user.id}`, userData),
@@ -22,14 +23,16 @@ const ChooseRolePage = ({ onRoleSelect }) => {
       onSuccess: () => {
         showNotification(
           <div className="w-full h-full flex justify-center items-center">
-            <p className="text-3xl text-center">Role selected successfully</p>
+            <p className="text-3xl text-center">
+              {translate("signup.role_selected_success")}
+            </p>
           </div>
         );
         router.push("/login");
       },
       onError: (error) => {
         console.error("Role selection failed:", error.message);
-        alert("Role selection failed. Please try again.");
+        alert(translate("signup.role_selection_failed"));
       },
     }
   );
@@ -38,7 +41,7 @@ const ChooseRolePage = ({ onRoleSelect }) => {
     e.preventDefault();
 
     if (!selectedRole) {
-      alert("Please select a role.");
+      alert(translate("signup.select_role_alert"));
       return;
     }
 
@@ -48,20 +51,20 @@ const ChooseRolePage = ({ onRoleSelect }) => {
   return (
     <div className="w-full min-w-[400px] h-full flex flex-col justify-center items-center gap-8 p-8">
       <h2 className="text-2xl text-gray-900 dark:text-gray-300 md:text-3xl font-bold text-center mb-4">
-        Continue As A
+        {translate("signup.role_selection")}
       </h2>
       <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4">
         <RoleCard
-          title="A Stackholder"
-          description="Hiring for a project"
+          title={translate("signup.stakeholder")}
+          description={translate("signup.stakeholder_description")}
           imageSrc="/images/stackholder.png"
           selected={selectedRole === "1"}
           onClick={() => setSelectedRole("1")}
         />
 
         <RoleCard
-          title="A Freelancer"
-          description="Looking for job"
+          title={translate("signup.freelancer")}
+          description={translate("signup.freelancer_description")}
           imageSrc="/images/freelancer.png"
           selected={selectedRole === "2"}
           onClick={() => setSelectedRole("2")}
@@ -69,14 +72,14 @@ const ChooseRolePage = ({ onRoleSelect }) => {
       </div>
 
       <PrimaryButton
-        label="Continue"
+        label={translate("signup.continue_button")}
         onClick={handleSubmit}
         className="w-[60%] md:w-[40%]"
         disabled={!selectedRole}
       />
       <LinkComp
         href={"/login"}
-        text={"Already have an account? Login"}
+        text={translate("signup.already_have_account")}
         classNames="text-center mt-4"
       />
     </div>

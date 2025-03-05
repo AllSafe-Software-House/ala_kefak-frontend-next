@@ -20,14 +20,12 @@ const axiosInstance = axios.create({
 // Interceptor لإضافة التوكن
 axiosInstance.interceptors.request.use(
   (config) => {
-    const lang = localStorage.getItem("alakefaklang") || "ar"; 
-    console.log(lang)
+    const lang = localStorage.getItem("alakefaklang") ; 
     const token = localStorage.getItem("token"); 
 
     config.headers["Accept-Language"] = lang;
 
     if (token) {
-      console.log(lang)
       config.headers["Authorization"] = `Bearer ${token}`; 
     }
 

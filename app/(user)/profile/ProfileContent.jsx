@@ -8,12 +8,18 @@ import StackholderProfile from "./StackholderProfile";
 import ErrorPage from "@/app/components/sceletons/ErrorPage";
 import UserSkeleton from "@/app/components/sceletons/UserSkeleton";
 import axiosInstance, { baseUrl } from "@/app/providers/axiosConfig";
+import { useTranslation } from "@/app/providers/Transslations";
 
 const ProfileContent = () => {
   const [userType, setUserType] = useState(null);
+  const { language, setLanguage, translate } = useTranslation();
 
-  const { data, isLoading, error } = useQuery("userData", async () => {
-    const response = await axiosInstance.get(`/auth///profile3333333`);
+  const { data, isLoading, error } = useQuery(["userData", language], async () => {
+    const response = await axiosInstance.get(`/auth/profile`, {
+      headers: {
+        "Accept-Language": "language",
+      },
+    });
     return response.data;
   });
 

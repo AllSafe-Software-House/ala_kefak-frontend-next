@@ -10,7 +10,7 @@ export default function InputField({
     <div className="w-full text-sm md:text-lg font-medium">
       <label
         htmlFor={id}
-        className="block m-0 text-gray-700 dark:text-gray-300"
+        className="block m-0 text-gray-700 dark:text-gray-300 mb-2"
       >
         {label}
       </label>

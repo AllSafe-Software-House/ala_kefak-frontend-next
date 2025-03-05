@@ -17,14 +17,13 @@ import ChooseRolePage from "../_components/ChooseRolePage";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { baseUrl } from "@/app/providers/axiosConfig";
+import { useTranslation } from "@/app/providers/Transslations";
 
 const schema = yup.object().shape({
   first_name: yup.string().required("First name is required"),
   last_name: yup.string().required("Last name is required"),
   user_name: yup.string().required("Username is required"),
-
   email: yup.string().email("Invalid email").required("Email is required"),
-
   mobile: yup.string().required("Phone number is required"),
   password: yup
     .string()
@@ -38,8 +37,8 @@ const schema = yup.object().shape({
 
 export default function SignUpPage() {
   const router = useRouter();
-
   const [selectedRole, setSelectedRole] = useState(null);
+  const { language, setLanguage, translate } = useTranslation();
 
   const {
     register,
@@ -98,7 +97,7 @@ export default function SignUpPage() {
         toast.success(
           <div className="w-full h-full flex justify-center items-center">
             <p className="text-3xl text-center">
-              Account created successfully! Welcome to the journey!
+              {translate("signup.signup_success")}
             </p>
           </div>
         );
@@ -113,7 +112,7 @@ export default function SignUpPage() {
         <div className="w-fit h-full flex justify-center items-center">
           <p className="text-xl text-center whitespace-nowrap ">
             {error.response.data.message ||
-              "Registration failed. Please try again."}
+              translate("signup.signup_failed")}
           </p>
         </div>
       );
@@ -123,7 +122,6 @@ export default function SignUpPage() {
   const handleSelectCountry = (country) => {
     setSelectedCountry(country);
     setValue("country_id", country.id);
-    console.log("country_id", country.id);
     setIsDropdownOpen(false);
   };
 
@@ -138,6 +136,7 @@ export default function SignUpPage() {
   const handleSelectRole = (role) => {
     setSelectedRole(role);
   };
+
   const transitionEffect = {
     initial: { opacity: 0, y: 500 },
     whileInView: {
@@ -172,7 +171,7 @@ export default function SignUpPage() {
           <div></div>
         )}
         <h2 className="text-xl md:text-3xl font-bold text-center ">
-          Create Account
+          {translate("signup.title")}
         </h2>
         <div></div>
       </div>
@@ -189,16 +188,16 @@ export default function SignUpPage() {
               <InputField
                 id="first_name"
                 type="text"
-                label="First Name"
-                placeholder="Enter your first name"
+                label={translate("signup.first_name")}
+                placeholder={translate("signup.first_name")}
                 {...register("first_name")}
                 error={errors.first_name?.message}
               />
               <InputField
                 id="last_name"
                 type="text"
-                label="Last Name"
-                placeholder="Enter your last name"
+                label={translate("signup.last_name")}
+                placeholder={translate("signup.last_name")}
                 {...register("last_name")}
                 error={errors.last_name?.message}
               />
@@ -206,16 +205,16 @@ export default function SignUpPage() {
             <InputField
               id="user_name"
               type="text"
-              label="Username"
-              placeholder="Enter your username"
+              label={translate("signup.username")}
+              placeholder={translate("signup.username")}
               {...register("user_name")}
               error={errors.user_name?.message}
             />
             <InputField
               id="email"
               type="email"
-              label="Email"
-              placeholder="Enter your email"
+              label={translate("signup.email")}
+              placeholder={translate("signup.email")}
               {...register("email")}
               error={errors.email?.message}
             />
@@ -223,7 +222,7 @@ export default function SignUpPage() {
             <div className="flex justify-start items-center gap-2">
               <div className="relative w-full" ref={dropdownRef}>
                 <label className="block text-gray-700 dark:text-gray-300 text-sm md:text-xl font-medium">
-                  Country
+                  {translate("signup.select_country")}
                 </label>
                 <div
                   className="w-full mt-1 px-3 py-2 border text-gray-900 dark:text-gray-300 border-gray-300 dark:border-gray-600 dark:bg-darkinput rounded-md flex items-center justify-between cursor-pointer"
@@ -239,7 +238,9 @@ export default function SignUpPage() {
                       {selectedCountry.iso} ({selectedCountry.code})
                     </div>
                   ) : (
-                    <span className="text-gray-400">Select your country</span>
+                    <span className="text-gray-400">
+                      {translate("signup.select_country")}
+                    </span>
                   )}
                   <span>▼</span>
                 </div>
@@ -273,8 +274,8 @@ export default function SignUpPage() {
               <InputField
                 id="tel"
                 type="tel"
-                label="Phone Number"
-                placeholder="Enter your phone number"
+                label={translate("signup.phone")}
+                placeholder={translate("signup.phone")}
                 {...register("mobile")}
                 error={errors.mobile?.message}
               />
@@ -283,22 +284,26 @@ export default function SignUpPage() {
             <InputField
               id="password"
               type="password"
-              label="Password"
-              placeholder="Create a password"
+              label={translate("signup.password")}
+              placeholder={translate("signup.password")}
               {...register("password")}
               error={errors.password?.message}
             />
             <InputField
               id="password_confirmation"
               type="password"
-              label="Confirm Password"
-              placeholder="Confirm your password"
+              label={translate("signup.confirm_password")}
+              placeholder={translate("signup.confirm_password")}
               {...register("password_confirmation")}
               error={errors.password_confirmation?.message}
             />
 
             <PrimaryButton
-              label={mutation.isLoading ? "Signing Up..." : "Sign Up"}
+              label={
+                mutation.isLoading
+                  ? translate("signup.signing_up")
+                  : translate("signup.sign_up_button")
+              }
               type="submit"
               disabled={mutation.isLoading}
               classNames="mt-4"
@@ -306,19 +311,19 @@ export default function SignUpPage() {
           </form>
           <LinkComp
             href={"/login"}
-            text={"Already have an account? Login"}
+            text={translate("signup.already_have_account")}
             classNames="text-center mt-4"
           />
 
           <div className="flex flex-col gap-2 my-5">
             <SocialAuthButton
               icon={<FcGoogle className="text-3xl" />}
-              label="Sign Up with Google"
+              label={translate("signup.signup_with_google")}
               onClick={() => console.log("Google Sign Up")}
             />
             <SocialAuthButton
               icon={<FaApple className="text-3xl text-gray-900" />}
-              label="Sign Up with Apple"
+              label={translate("signup.signup_with_apple")}
               onClick={() => console.log("Apple Sign Up")}
             />
           </div>

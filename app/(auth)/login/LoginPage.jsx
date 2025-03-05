@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { baseUrl } from "@/app/providers/axiosConfig";
 import { useAuth } from "@/app/providers/AuthContext";
+import { useTranslation } from "@/app/providers/Transslations";
 
 const schema = yup.object().shape({
   email_or_username: yup
@@ -26,8 +27,7 @@ const schema = yup.object().shape({
 });
 
 export default function LoginPage() {
-  const { login } = useAuth();
-
+  const { language, setLanguage, translate } = useTranslation();
   const router = useRouter();
 
   const {
@@ -50,12 +50,10 @@ export default function LoginPage() {
       console.log("data is", data);
       if (data.status) {
         if (data.data.otp == 0) {
-          toast.success(
-            "you Didn't Virefy your Acount yet, Please check your email for OTP"
-          );
+          toast.success(translate("login.verify_account"));
           router.push("/verify");
         } else {
-          toast.success("Login successful! Welcome back.");
+          toast.success(translate("login.login_success"));
           router.push("/");
         }
       } else {
@@ -76,45 +74,47 @@ export default function LoginPage() {
 
   return (
     <div className="w-[95%] lg:w-[50%] min-w-[400px] h-full bg-white dark:bg-darknav p-2 md:p-6 pt-2 rounded-lg shadow-md">
-      <h2 className="text-xl md:text-3xl font-bold text-center mb-4">Login</h2>
+      <h2 className="text-xl md:text-3xl font-bold text-center mb-4">
+        {translate("login.title")}
+      </h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <InputField
           id="email_or_username"
           type="email"
-          label="Email or Username"
-          placeholder="Enter your email or username"
+          label={translate("login.email_or_username")}
+          placeholder={translate("login.email_or_username")}
           {...register("email_or_username")}
           error={errors.email_or_username?.message}
         />
         <InputField
           id="password"
           type="password"
-          label="Password"
-          placeholder="Enter your password"
+          label={translate("login.password")}
+          placeholder={translate("login.password")}
           {...register("password")}
           error={errors.password?.message}
         />
         <LinkComp
           href="/forget-password"
-          text="Forget Password?"
+          text={translate("login.forget_password")}
           classNames="text-end"
         />
-        <PrimaryButton label="Login" />
+        <PrimaryButton label={translate("login.login_button")} />
       </form>
       <LinkComp
         href="/sign-up"
-        text="Create Account?"
+        text={translate("login.create_account")}
         classNames="text-center"
       />
       <div className="flex flex-col gap-4 my-5">
         <SocialAuthButton
           icon={<FcGoogle className="text-3xl" />}
-          label="Login with Google"
+          label={translate("login.login_with_google")}
           onClick={() => console.log("Google Login")}
         />
         <SocialAuthButton
           icon={<FaApple className="text-3xl text-gray-900" />}
-          label="Login with Apple"
+          label={translate("login.login_with_apple")}
           onClick={() => console.log("Apple Login")}
         />
       </div>

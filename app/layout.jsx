@@ -1,15 +1,9 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import { mainInfo } from "./constants/info";
 import AppProviders from "./providers/AppProviders";
 import Wraper from "./Wraper";
-
-const interFont = Inter({
-  subsets: ["latin"],
-  weight: ["400", "900"],
-});
 
 export const metadata = {
   title: mainInfo.name,
@@ -20,8 +14,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={` ${interFont.className} `}>
+    <html lang="en" className={` `}>
+      <body
+        className={` `}
+        // style={{
+        //   backgroundColor: "#F3F4F6", // خلفية فاتحة
+        //   darkMode: { backgroundColor: "#1E1F1D" }, // خلفية الوضع الليلي
+        // }}
+      >
         <AppProviders>
           <Wraper>{children}</Wraper>
         </AppProviders>

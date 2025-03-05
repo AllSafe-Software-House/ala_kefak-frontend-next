@@ -8,6 +8,15 @@
   box-sizing: border-box;
 }
 
+body.light {
+  @apply bg-gray-100 ;
+}
+
+body.dark {
+  @apply bg-darkbg; ;
+
+}
+
 ::-webkit-scrollbar {
   @apply w-[12px] h-3;
 }

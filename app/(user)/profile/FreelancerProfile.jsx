@@ -24,9 +24,11 @@ import Complete from "./ContentItems/Complete";
 import VerifyAccount from "./ContentItems/VerifyAccount";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MainBtn, SecondaryBtn } from "@/app/components/generalComps/Btns";
+import { useTranslation } from "@/app/providers/Transslations";
 
 const FreelancerProfile = ({user}) => {
   // const { user } = useAuth();
+  const { language, setLanguage, translate } = useTranslation();
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -86,6 +88,7 @@ const FreelancerProfile = ({user}) => {
 export default FreelancerProfile;
 
 const Hero = ({ user, openModal, handleImageChange }) => {
+  const { translate } = useTranslation();
   const fullStars = Math.floor(user?.rate);
   const emptyStars = 5 - fullStars;
 
@@ -104,7 +107,7 @@ const Hero = ({ user, openModal, handleImageChange }) => {
         <SecondaryBtn
           text={
             <div className="flex justify-center items-center gap-2">
-              <span>Share</span>
+              <span>{translate("profile.share")}</span>
               <FaShareSquare />
             </div>
           }
@@ -112,7 +115,7 @@ const Hero = ({ user, openModal, handleImageChange }) => {
         <MainBtn
           text={
             <div className="flex justify-center items-center gap-2">
-              <span>Preview</span>
+              <span>{translate("profile.preview")}</span>
               <FaEye />
             </div>
           }
@@ -146,9 +149,10 @@ const Hero = ({ user, openModal, handleImageChange }) => {
 };
 
 const ImageChangeModal = ({ currentImage, onImageChange }) => {
+  const { translate } = useTranslation();
   return (
     <div className="p-4">
-      <h2 className="text-2xl">Edit Profile Photo</h2>
+      <h2 className="text-2xl">{translate("profile.edit_photo")}</h2>
       <div className="my-10 w-full flex justify-center items-center ">
         <img
           src={currentImage}
@@ -162,10 +166,10 @@ const ImageChangeModal = ({ currentImage, onImageChange }) => {
           className="cursor-pointer bg-white hover:bg-primary text-primary hover:text-white border-primary animation border-[1px] 
         rounded-lg px-4 py-2 font-medium  dark:text-primary dark:bg-darknav dark:hover:bg-primary/20 "
         >
-          Change photo
+        {translate("profile.change_photo")}
           <input type="file" className="hidden" onChange={onImageChange} />
         </label>
-        <MainBtn text="Save Changes" />
+        <MainBtn text={translate("profile.save_changes")} />
       </div>
     </div>
   );

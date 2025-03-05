@@ -3,9 +3,11 @@ import EditBtn from "../UIItems/EditBtn";
 import Heading from "../UIItems/Heading";
 import { IoClose } from "react-icons/io5";
 import { MainBtn, SecondaryBtn } from "@/app/components/generalComps/Btns";
+import { useTranslation } from "@/app/providers/Transslations";
 
 const Skills = ({ user, openModal, closeModal }) => {
 
+  const { translate } = useTranslation();
 
   const [skills, setSkills] = useState(user?.skills);
 
@@ -33,7 +35,7 @@ const Skills = ({ user, openModal, closeModal }) => {
   return (
     <div className="w-full rounded-2xl bg-white p-3 md:p-6 border flex flex-col gap-6 dark:bg-darknav dark:border-darkinput dark:text-gray-300">
       <Heading
-        text={"Skills"}
+        text={translate("profile.skills")}
         actions={[<EditBtn key="edit" onClick={handleEdit} />]}
       />
       <div className="w-full flex justify-start items-center flex-wrap gap-2 md:gap-3 ">
