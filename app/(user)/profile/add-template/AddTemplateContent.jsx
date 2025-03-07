@@ -1,8 +1,9 @@
 "use client";
 import { MainBtn } from "@/app/components/generalComps/Btns";
+import { useTranslation } from "@/app/providers/Transslations";
 import Link from "next/link";
 import React, { useState } from "react";
-import { FaArrowLeft, FaImage } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaImage } from "react-icons/fa";
 
 const FileInput = ({ label, onFileChange, fileNames }) => {
   const handleFileChange = (e) => {
@@ -37,6 +38,8 @@ const AddTempContent = () => {
   const [projectLink, setProjectLink] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [files, setFiles] = useState([]);
+const { translate,language } = useTranslation();
+
 
   const handleFileChange = (newFiles) => {
     setFiles(newFiles);
@@ -61,129 +64,130 @@ const AddTempContent = () => {
   };
 
   return (
-    <div className="h-screen w-[90%] mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100 dark:bg-transparent ">
-      <div className="head text-3xl">
-        <Link
+    <div className="h-screen w-[90%] mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100 dark:bg-transparent mt-8 ">
+
+      <div className="head text-3xl  ">
+      <Link
           className="flex justify-start items-center gap-4 font-medium"
           href={"/profile"}
         >
-          <FaArrowLeft />
-          <span>Add Template</span>
+          {language === "en" ? <FaArrowLeft /> : <FaArrowRight />}
+          <span>{language === "en" ? "Add Template" : "إضافة قالب"}</span>
         </Link>
       </div>
 
       <form
-        onSubmit={handleSubmit}
-        className="w-full grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8"
-      >
-        <div>
-          {/* Project Title */}
-          <div className="flex flex-col">
-            <label htmlFor="title" className="font-medium mb-2">
-              Template Title
-            </label>
-            <input
-              id="title"
-              type="text"
-              className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
-
-          {/* Description */}
-          <div className="flex flex-col">
-            <label htmlFor="description" className="font-medium mb-2">
-              Description
-            </label>
-            <textarea
-              id="description"
-              className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={4}
-              required
-            />
-          </div>
-
-          {/* Date of Project */}
-          <div className="flex flex-col">
-            <label htmlFor="date" className="font-medium mb-2">
-              Date of Template
-            </label>
-            <input
-              id="date"
-              type="date"
-              className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
-            />
-          </div>
-
-          {/* Add Files */}
-          <div className="flex flex-col">
-            <label htmlFor="files" className="font-medium mb-2">
-              Add Files
-            </label>
-            <FileInput
-              label="Upload Project Files"
-              fileNames={files.map((file) => file.name)}
-              onFileChange={handleFileChange}
-            />
-          </div>
-
-          {/* Skills */}
-          <div className="flex flex-col">
-            <label htmlFor="skills" className="font-medium mb-2">
-              Skills
-            </label>
-            <input
-              id="skills"
-              type="text"
-              className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
-              value={skills}
-              onChange={(e) => setSkills(e.target.value)}
-              required
-            />
-          </div>
-        </div>
-
-        <div>
-          {/* Cover Photo */}
-          <div className="flex flex-col">
-            <label htmlFor="coverImage" className="font-medium mb-2">
-              Cover Photo
-            </label>
-            <FileInput
-              label="Upload Cover Photo"
-              fileNames={coverImage ? [coverImage.name] : []}
-              onFileChange={handleCoverImageChange}
-            />
-          </div>
-
-          {/* Project Link */}
-          <div className="flex flex-col">
-            <label htmlFor="projectLink" className="font-medium mb-2">
-              Project Link
-            </label>
-            <input
-              id="projectLink"
-              type="url"
-              className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
-              value={projectLink}
-              onChange={(e) => setProjectLink(e.target.value)}
-              required
-            />
-          </div>
-        </div>
-
-        {/* Submit Button */}
-        <div className="mt-6 flex justify-end w-full">
-          <MainBtn text="Send Request" />
-        </div>
-      </form>
+            onSubmit={handleSubmit}
+            className="w-full grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8"
+          >
+            <div>
+              {/* Project Title */}
+              <div className="flex flex-col">
+                <label htmlFor="title" className="font-medium mb-2">
+                  {language === "en" ? "Project Title" : "عنوان القالب"}
+                </label>
+                <input
+                  id="title"
+                  type="text"
+                  className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+              </div>
+    
+              {/* Date of Project */}
+              <div className="flex flex-col">
+                <label htmlFor="date" className="font-medium mb-2">
+                  {language === "en" ? "Date of Project" : "تاريخ القالب"}
+                </label>
+                <input
+                  id="date"
+                  type="date"
+                  className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  required
+                />
+              </div>
+    
+              {/* Description */}
+              <div className="flex flex-col">
+                <label htmlFor="description" className="font-medium mb-2">
+                  {language === "en" ? "Description" : "وصف القالب"}
+                </label>
+                <textarea
+                  id="description"
+                  className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={4}
+                  required
+                />
+              </div>
+    
+              {/* Add Files */}
+              <div className="flex flex-col">
+                <label htmlFor="files" className="font-medium mb-2">
+                  {language === "en" ? "Project Files" : "ملفات القالب"}
+                </label>
+                <FileInput
+                  label="Upload Project Files"
+                  fileNames={files.map((file) => file.name)}
+                  onFileChange={handleFileChange}
+                />
+              </div>
+    
+              {/* Skills */}
+              <div className="flex flex-col">
+                <label htmlFor="skills" className="font-medium mb-2">
+                  {language === "en" ? "Skills" : "مهارات القالب"}
+                </label>
+                <input
+                  id="skills"
+                  type="text"
+                  className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
+                  value={skills}
+                  onChange={(e) => setSkills(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+    
+            <div>
+              {/* Cover Photo */}
+              <div className="flex flex-col">
+                <label htmlFor="coverImage" className="font-medium mb-2">
+                  {language === "en" ? "Cover Photo" : "صورة الغلاف"}
+                </label>
+                <FileInput
+                  label={language === "en" ? "Upload Cover Photo" : "تحميل صورة الغلاف"}
+                  fileNames={coverImage ? [coverImage.name] : []}
+                  onFileChange={handleCoverImageChange}
+                />
+              </div>
+    
+              {/* Project Link */}
+              <div className="flex flex-col">
+                <label htmlFor="projectLink" className="font-medium mb-2">
+                  {language === "en" ? "Project Link" : "رابط القالب"}
+                </label>
+                <input
+                  id="projectLink"
+                  type="url"
+                  className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
+                  value={projectLink}
+                  onChange={(e) => setProjectLink(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+    
+            {/* Submit Button */}
+            <div className="mt-6 flex justify-end w-full">
+              <MainBtn text={translate("btns.add")}/>
+            </div>
+          </form>
     </div>
   );
 };

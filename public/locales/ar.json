@@ -60,9 +60,36 @@
     "education": "التعليم",
     "certificates": "الشهادات",
     "badges": "الأوسمة",
-    "completion_status": "حالة الاكتمال",
+    "badge": "وسام",
+    "completion_status": "حالة إكتمال البيانات",
     "verify_account": "لم يتم التحقق من الحساب",
     "select_file": "اختر ملفاً",
-    "upload": "رفع"
+    "steps": "خطوات",
+    "edit_skills": "تعديل المهارات",
+    "upload": "رفع",
+    "edit_experience": "تعديل الخبرة",
+    "add_experience": "إضافة خبرة",
+    "job_title": "المسمى الوظيفي",
+    "company_name": "اسم الشركة",
+    "start_date": "تاريخ البدء",
+    "end_date": "تاريخ الانتهاء",
+    "description": "الوصف",
+    "edit_education": "تعديل التعليم",
+    "add_education": "إضافة تعليم",
+    "degree": "الدرجة العلمية",
+    "institution": "المؤسسة التعليمية",
+    "link": "الرابط",
+    "field_of_study": "مجال الدراسة",
+    "edit_certificate": "تعديل الشهادة",
+    "add_certificate": "إضافة شهادة",
+    "certificate_title": "عنوان الشهادة",
+    "organization": "المؤسسة",
+    "date": "التاريخ"
+  },
+  "btns": {
+    "add": "اضافة",
+    "cancel": "الغاء",
+    "save": "حفظ",
+    "delete": "حذف"
   }
 }

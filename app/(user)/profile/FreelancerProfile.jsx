@@ -135,7 +135,7 @@ const Hero = ({ user, openModal, handleImageChange }) => {
         </button>
       </div>
       <h2 className="mt-4 text-2xl font-medium">{`${user?.first_name} ${user?.last_name}`}</h2>
-      <p className=" ytext-lg font-medium text-gray-500">{user.country.name}</p>
+      <p className=" ytext-lg font-medium text-gray-500">{user.user_name}</p>
       <div className="flex items-center mt-2">
         {[...Array(fullStars)].map((_, index) => (
           <FaStar key={index} className="text-yellow-500" />
@@ -188,25 +188,29 @@ const Content = ({ user, openModal, closeModal }) => {
           openModal={openModal}
           closeModal={closeModal}
         />
-        {/* 
         <Education user={user} openModal={openModal} closeModal={closeModal} />
+        
         <Certificates
           user={user}
           openModal={openModal}
           closeModal={closeModal}
-        /> */}
+        />
       </div>
 
       <div className="w-full flex flex-col justify-start items-start gap-10">
         <Badges user={user} openModal={openModal} closeModal={closeModal} />
-        {/* <Complete user={user} openModal={openModal} closeModal={closeModal} /> */}
+        {user?.complete_profile === 1 && <Complete
+          user={user}
+          openModal={openModal}
+          closeModal={closeModal}
+        /> } 
         {user?.verify_account === false && <VerifyAccount
           user={user}
           openModal={openModal}
           closeModal={closeModal}
         /> } 
-        {/* 
-       */}
+  
+  
       </div>
     </div>
   );

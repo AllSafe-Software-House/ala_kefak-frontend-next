@@ -7,7 +7,7 @@ import { useTranslation } from "@/app/providers/Transslations";
 
 const Skills = ({ user, openModal, closeModal }) => {
 
-  const { translate } = useTranslation();
+  const { translate,language } = useTranslation();
 
   const [skills, setSkills] = useState(user?.skills);
 
@@ -57,7 +57,7 @@ export default Skills;
 const ModalContent = ({ initialSkills, onSave, closeModal }) => {
   const [skills, setSkills] = useState(initialSkills);
   const [newSkill, setNewSkill] = useState("");
-
+  const { translate,language } = useTranslation();
   const handleDelete = (skillToDelete) => {
     setSkills(skills.filter((skill) => skill !== skillToDelete));
   };
@@ -71,7 +71,9 @@ const ModalContent = ({ initialSkills, onSave, closeModal }) => {
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-3xl">Edit Skills</h1>
+      <h1 className="text-3xl">
+      {translate("profile.edit_skills")}
+        </h1>
 
       <div className="w-full flex justify-start items-center flex-wrap gap-2 md:gap-3 ">
         {skills.map((skill, index) => (
@@ -96,16 +98,16 @@ const ModalContent = ({ initialSkills, onSave, closeModal }) => {
           type="text"
           value={newSkill}
           onChange={(e) => setNewSkill(e.target.value)}
-          placeholder="Add a new skill"
+          placeholder={language === "ar" ? "أضف مهارة جديدة" : "Add a new skill"}
           className="flex-1 border p-2 rounded  dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
         />
-        <MainBtn text="Add" onClick={handleAddSkill} />
+        <MainBtn text={translate("btns.add")} onClick={handleAddSkill} />
       </div>
 
       {/* Action Buttons */}
       <div className="w-full flex justify-end items-center gap-4 mt-4">
-        <SecondaryBtn text="Cancel" onClick={closeModal} />
-        <MainBtn text="Save" onClick={() => onSave(skills)} />
+        <SecondaryBtn text={translate("btns.cancel")} onClick={closeModal} />
+        <MainBtn text={translate("btns.save")}onClick={() => onSave(skills)} />
       </div>
     </div>
   );

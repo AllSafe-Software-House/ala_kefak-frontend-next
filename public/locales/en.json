@@ -60,9 +60,36 @@
     "education": "Education",
     "certificates": "Certificates",
     "badges": "Badges",
+    "badge": "Badge",
     "completion_status": "Completion Status",
     "verify_account": "Account not verified",
     "select_file": "Select File",
-    "upload": "Upload"
+    "steps": "Steps",
+    "edit_skills": "Edit Skills",
+    "upload": "Upload",
+    "edit_experience": "Edit Experience",
+    "add_experience": "Add Experience",
+    "job_title": "Job Title",
+    "company_name": "Company Name",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "description": "Description",
+    "edit_education": "Edit Education",
+    "add_education": "Add Education",
+    "degree": "Degree",
+    "institution": "Institution",
+    "link": "Link",
+    "field_of_study": "Field of Study",
+    "edit_certificate": "Edit Certificate",
+    "add_certificate": "Add Certificate",
+    "certificate_title": "Certificate Title",
+    "organization": "Organization",
+    "date": "Date"
+  },
+  "btns": {
+    "add": "Add",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete"
   }
 }

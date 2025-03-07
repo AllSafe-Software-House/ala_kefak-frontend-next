@@ -1,7 +1,9 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
 import { motion } from "framer-motion";
+import { useTranslation } from "@/app/providers/Transslations";
 const GeneralModal = ({ content, onClose }) => {
+    const { language } = useTranslation();
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -20,7 +22,9 @@ const GeneralModal = ({ content, onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <IoClose
-          className="size-10 text-xl text-gray-800 cursor-pointer float-right flex justify-center items-center rounded-full border bg-gray-100 dark:bg-darkinput dark:text-gray-300 dark:border-gray-900 "
+          className={`size-10 text-xl text-gray-800 cursor-pointer flex justify-center items-center rounded-full border bg-gray-100 dark:bg-darkinput dark:text-gray-300 dark:border-gray-900
+            ${language == "ar" ? "mr-auto" : "ml-auto"}
+            `}
           onClick={onClose}
         />
 

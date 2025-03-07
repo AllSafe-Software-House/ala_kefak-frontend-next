@@ -1,9 +1,13 @@
+import { useTranslation } from '@/app/providers/Transslations';
 import Heading from '../UIItems/Heading';
 
 const Badges = ({ user }) => {
+  const { translate } = useTranslation();
+  
+
   return (
     <div className="w-full rounded-2xl bg-white p-3 md:p-6 border flex flex-col gap-6 dark:bg-darknav dark:border-darkinput dark:text-gray-300">
-      <Heading text={"Badges"} actions={[`${user.badges.length} Badges`]} />
+      <Heading text={translate("profile.badges")} actions={[`${user.badges.length} ${translate("profile.badge")}`]} />
       <div className="w-full grid grid-cols-1 gap-4">
         {user.badges.map((badge) => (
           <div

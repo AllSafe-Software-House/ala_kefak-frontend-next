@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import React from 'react'
 import Heading from '../UIItems/Heading';
+import { useTranslation } from '@/app/providers/Transslations';
 
 const VerifyAccount = () => {
+  const { translate } = useTranslation();
+
   return (
     <Link
       href={"/verify-account"}
@@ -11,7 +14,7 @@ const VerifyAccount = () => {
       "
     >
       <div className="size-8 rounded-full border group-hover:bg-primary animation " />
-      <Heading text={"Verify your Account"} actions={[]} />
+      <Heading text={translate("profile.verify_account")} actions={[]} />
     </Link>
   );
 };

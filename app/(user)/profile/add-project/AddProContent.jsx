@@ -1,8 +1,9 @@
 "use client";
 import { MainBtn } from "@/app/components/generalComps/Btns";
+import { useTranslation } from "@/app/providers/Transslations";
 import Link from "next/link";
 import React, { useState } from "react";
-import { FaArrowLeft, FaImage } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaImage } from "react-icons/fa";
 
 const FileInput = ({ label, onFileChange, fileNames }) => {
   const handleFileChange = (e) => {
@@ -37,7 +38,7 @@ const AddProContent = () => {
   const [projectLink, setProjectLink] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [files, setFiles] = useState([]);
-
+const { translate,language } = useTranslation();
   const handleFileChange = (newFiles) => {
     setFiles(newFiles);
   };
@@ -62,13 +63,13 @@ const AddProContent = () => {
 
   return (
     <div className="h-screen w-[90%] mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100 dark:bg-transparent ">
-      <div className="head text-3xl">
+      <div className="head text-3xl mt-3">
         <Link
           className="flex justify-start items-center gap-4 font-medium"
           href={"/profile"}
         >
-          <FaArrowLeft />
-          <span>Add Project</span>
+          {language === "en" ? <FaArrowLeft /> : <FaArrowRight />}
+          <span>{language === "en" ? "Add Project" : "إضافة مشروع"}</span>
         </Link>
       </div>
 
@@ -80,7 +81,7 @@ const AddProContent = () => {
           {/* Project Title */}
           <div className="flex flex-col">
             <label htmlFor="title" className="font-medium mb-2">
-              Project Title
+              {language === "en" ? "Project Title" : "عنوان المشروع"}
             </label>
             <input
               id="title"
@@ -95,7 +96,7 @@ const AddProContent = () => {
           {/* Date of Project */}
           <div className="flex flex-col">
             <label htmlFor="date" className="font-medium mb-2">
-              Date of Project
+              {language === "en" ? "Date of Project" : "تاريخ المشروع"}
             </label>
             <input
               id="date"
@@ -110,7 +111,7 @@ const AddProContent = () => {
           {/* Description */}
           <div className="flex flex-col">
             <label htmlFor="description" className="font-medium mb-2">
-              Description
+              {language === "en" ? "Description" : "وصف المشروع"}
             </label>
             <textarea
               id="description"
@@ -125,7 +126,7 @@ const AddProContent = () => {
           {/* Add Files */}
           <div className="flex flex-col">
             <label htmlFor="files" className="font-medium mb-2">
-              Add Files
+              {language === "en" ? "Project Files" : "ملفات المشروع"}
             </label>
             <FileInput
               label="Upload Project Files"
@@ -137,7 +138,7 @@ const AddProContent = () => {
           {/* Skills */}
           <div className="flex flex-col">
             <label htmlFor="skills" className="font-medium mb-2">
-              Skills
+              {language === "en" ? "Skills" : "مهارات المشروع"}
             </label>
             <input
               id="skills"
@@ -154,10 +155,10 @@ const AddProContent = () => {
           {/* Cover Photo */}
           <div className="flex flex-col">
             <label htmlFor="coverImage" className="font-medium mb-2">
-              Cover Photo
+              {language === "en" ? "Cover Photo" : "صورة الغلاف"}
             </label>
             <FileInput
-              label="Upload Cover Photo"
+              label={language === "en" ? "Upload Cover Photo" : "تحميل صورة الغلاف"}
               fileNames={coverImage ? [coverImage.name] : []}
               onFileChange={handleCoverImageChange}
             />
@@ -166,7 +167,7 @@ const AddProContent = () => {
           {/* Project Link */}
           <div className="flex flex-col">
             <label htmlFor="projectLink" className="font-medium mb-2">
-              Project Link
+              {language === "en" ? "Project Link" : "رابط المشروع"}
             </label>
             <input
               id="projectLink"
@@ -181,7 +182,7 @@ const AddProContent = () => {
 
         {/* Submit Button */}
         <div className="mt-6 flex justify-end w-full">
-          <MainBtn text="Save" />
+          <MainBtn text={translate("btns.add")}/>
         </div>
       </form>
     </div>

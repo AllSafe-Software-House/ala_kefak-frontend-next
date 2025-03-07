@@ -5,11 +5,13 @@ import EditBtn from "../UIItems/EditBtn";
 import EducationItem from "../UIItems/EducationItem";
 import Heading from "../UIItems/Heading";
 import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { MainBtn, SecondaryBtn } from "@/app/components/generalComps/Btns";
+import { useTranslation } from "@/app/providers/Transslations";
 
 const Education = ({ user, openModal, closeModal }) => {
-  const [education, setEducation] = useState(user.education);
+  const [education, setEducation] = useState(user.educations);
+  const { translate } = useTranslation();
 
   const handleSave = (updatedEducation) => {
     console.log("Updated Education:", updatedEducation);
@@ -42,10 +44,14 @@ const Education = ({ user, openModal, closeModal }) => {
   return (
     <div className="w-full rounded-2xl bg-white p-3 md:p-6 border flex flex-col gap-6 dark:bg-darknav dark:border-darkinput dark:text-gray-300">
       <Heading
-        text={"Education"}
+        text={translate("profile.education")}
         actions={[
-          <AddBtn key="add" onClick={handleAdd} />,
-          <EditBtn key="edit" onClick={handleEdit} />,
+          <SecondaryBtn text={translate("btns.add")} onClick={handleAdd} />,
+          <SecondaryBtn
+            text={<MdOutlineEdit />}
+            onClick={handleEdit}
+            classNames="!rounded-full border text-lg md:text-2xl !p-3"
+          />,
         ]}
       />
       <div className="w-full grid grid-cols-1 gap-4">
@@ -63,12 +69,14 @@ const ModalContent = ({ initialEducation, onSave, closeModal, isEditing }) => {
   const [education, setEducation] = useState(initialEducation);
   const [formData, setFormData] = useState({
     id: Date.now(),
-    degree: "",
-    institution: "",
-    startDate: "",
-    endDate: "",
-    fieldOfStudy: "",
+    departement: "",
+    university: "",
+    from_date: "",
+    to_date: "",
+    description: "",
   });
+
+  const { translate } = useTranslation(); // استخدام useTranslation هنا أيضًا
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -93,7 +101,9 @@ const ModalContent = ({ initialEducation, onSave, closeModal, isEditing }) => {
   return (
     <div className="flex flex-col gap-4 p-4">
       <h1 className="text-3xl">
-        {isEditing ? "Edit Education" : "Add Education"}
+        {isEditing
+          ? translate("profile.edit_education")
+          : translate("profile.add_education")}
       </h1>
 
       {isEditing && (
@@ -103,7 +113,7 @@ const ModalContent = ({ initialEducation, onSave, closeModal, isEditing }) => {
               key={edu.id}
               className="flex items-center justify-between p-2 border rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300"
             >
-              <p>{`${edu.degree} | ${edu.institution}`}</p>
+              <p>{`${edu.departement} | ${edu.university}`}</p>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setFormData(edu)}
@@ -127,54 +137,62 @@ const ModalContent = ({ initialEducation, onSave, closeModal, isEditing }) => {
         <input
           type="text"
           name="degree"
-          value={formData.degree}
+          value={formData.departement}
           onChange={handleInputChange}
-          placeholder="Degree"
+          placeholder={translate("profile.degree")}
           className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
         />
         <input
           type="text"
           name="institution"
-          value={formData.institution}
+          value={formData.university}
           onChange={handleInputChange}
-          placeholder="Institution"
+          placeholder={translate("profile.institution")}
           className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
         />
         <input
           type="text"
-          name="startDate"
-          value={formData.startDate}
+          name="from_date"
+          value={formData.from_date}
           onChange={handleInputChange}
-          placeholder="From (Start Date) - dd/mm/yyyy"
+          placeholder={translate("profile.start_date")}
           className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
         />
         <input
           type="text"
-          name="endDate"
-          value={formData.endDate}
+          name="to_date"
+          value={formData.to_date}
           onChange={handleInputChange}
-          placeholder="To (End Date) - dd/mm/yyyy"
+          placeholder={translate("profile.end_date")}
           className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
         />
         <input
           type="text"
-          name="fieldOfStudy"
-          value={formData.fieldOfStudy}
+          name="description"
+          value={formData.description}
           onChange={handleInputChange}
-          placeholder="Field of Study"
+          placeholder={translate("profile.field_of_study")}
+          className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
+        />
+        <input
+          type="text"
+          name="link"
+          value={formData.link}
+          onChange={handleInputChange}
+          placeholder={translate("profile.link")}
           className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
         />
       </div>
 
       <div className="w-full flex justify-end items-center gap-4 mt-4">
         <SecondaryBtn
-          text="Discard"
+          text={translate("btns.cancel")}
           onClick={closeModal}
           classNames="text-lg"
         />
 
         <MainBtn
-          text={"Save"}
+          text={translate("btns.save")}
           onClick={handleSaveEducation}
           classNames="text-lg"
         />

@@ -1,15 +1,15 @@
 "use client";
 import { useState } from "react";
-import AddBtn from "../UIItems/AddBtn";
-import EditBtn from "../UIItems/EditBtn";
 import Experince from "../UIItems/Experince";
 import Heading from "../UIItems/Heading";
 import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineEdit } from "react-icons/md";
 import { MainBtn, SecondaryBtn } from "@/app/components/generalComps/Btns";
+import { useTranslation } from "@/app/providers/Transslations";
 
 const WorkExperince = ({ user, openModal, closeModal }) => {
   const [workExperiences, setWorkExperiences] = useState(user.experiences);
+  const { translate } = useTranslation();
 
   const handleSave = (updatedExperiences) => {
     console.log("Updated Work Experiences:", updatedExperiences);
@@ -42,10 +42,14 @@ const WorkExperince = ({ user, openModal, closeModal }) => {
   return (
     <div className="w-full rounded-2xl bg-white p-3 md:p-6 border flex flex-col gap-6 dark:bg-darknav dark:border-darkinput dark:text-gray-300">
       <Heading
-        text={"Work Experience"}
+        text={translate("profile.work_experience")}
         actions={[
-          <AddBtn key="add" onClick={handleAdd} />,
-          <EditBtn key="edit" onClick={handleEdit} />,
+          <SecondaryBtn text={translate("btns.add")} onClick={handleAdd} />,
+          <SecondaryBtn
+            text={<MdOutlineEdit />}
+            onClick={handleEdit}
+            classNames="!rounded-full border text-lg md:text-2xl !p-3"
+          />,
         ]}
       />
       <div className="w-full grid grid-cols-1 gap-4">
@@ -68,12 +72,14 @@ const ModalContent = ({
   const [experiences, setExperiences] = useState(initialExperiences);
   const [formData, setFormData] = useState({
     id: Date.now(),
-    jobTitle: "",
-    companyName: "",
-    startDate: "",
-    endDate: "",
+    name: "",
+    company: "",
+    from_date: "",
+    to_date: "",
     description: "",
   });
+
+  const { translate } = useTranslation(); // استخدام useTranslation هنا أيضًا
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -100,10 +106,10 @@ const ModalContent = ({
   const handleEditExperience = (experience) => {
     setFormData({
       id: experience.id,
-      jobTitle: experience.jobTitle,
-      companyName: experience.companyName,
-      startDate: experience.startDate || "",
-      endDate: experience.endDate || "",
+      name: experience.name,
+      company: experience.company,
+      from_date: experience.from_date || "",
+      to_date: experience.to_date || "",
       description: experience.description,
     });
   };
@@ -111,7 +117,9 @@ const ModalContent = ({
   return (
     <div className="flex flex-col gap-4 p-4">
       <h1 className="text-3xl">
-        {isEditing ? "Edit Experience" : "Add Experience"}
+        {isEditing
+          ? translate("profile.edit_experience")
+          : translate("profile.add_experience")}
       </h1>
 
       {isEditing && (
@@ -121,7 +129,7 @@ const ModalContent = ({
               key={experience.id}
               className="flex items-center justify-between p-2 border rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300"
             >
-              <p>{`${experience.jobTitle} | ${experience.companyName}`}</p>
+              <p>{`${experience.name} | ${experience.company}`}</p>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleEditExperience(experience)}
@@ -144,54 +152,54 @@ const ModalContent = ({
       <div className="flex flex-col gap-2">
         <input
           type="text"
-          name="jobTitle"
-          value={formData.jobTitle}
+          name="name"
+          value={formData.name}
           onChange={handleInputChange}
-          placeholder="Job Title"
+          placeholder={translate("profile.job_title")}
           className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
         />
         <input
           type="text"
-          name="companyName"
-          value={formData.companyName}
+          name="company"
+          value={formData.company}
           onChange={handleInputChange}
-          placeholder="Company Name"
+          placeholder={translate("profile.company_name")}
           className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
         />
         <input
           type="date"
-          name="startDate"
-          value={formData.startDate || ""}
+          name="from_date"
+          value={formData.from_date || ""}
           onChange={handleInputChange}
-          placeholder="From (Start Date)"
+          placeholder={translate("profile.start_date")}
           className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
         />
         <input
           type="date"
-          name="endDate"
-          value={formData.endDate || ""}
+          name="to_date"
+          value={formData.to_date || ""}
           onChange={handleInputChange}
-          placeholder="To (End Date)"
+          placeholder={translate("profile.end_date")}
           className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
         />
         <textarea
           name="description"
           value={formData.description}
           onChange={handleInputChange}
-          placeholder="Description"
+          placeholder={translate("profile.description")}
           className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300  resize-none h-48"
         />
       </div>
 
       <div className="w-full flex justify-end items-center gap-4 mt-4">
         <SecondaryBtn
-          text="Discard"
+          text={translate("btns.cancel")}
           onClick={closeModal}
           classNames="text-lg"
         />
 
         <MainBtn
-          text={"Save"}
+          text={translate("btns.save")}
           onClick={handleSaveExperience}
           classNames="text-lg"
         />
