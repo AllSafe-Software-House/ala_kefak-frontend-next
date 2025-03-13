@@ -84,12 +84,20 @@
     "add_certificate": "إضافة شهادة",
     "certificate_title": "عنوان الشهادة",
     "organization": "المؤسسة",
-    "date": "التاريخ"
+    "date": "التاريخ",
+    "skills_updated": "تم تحديث المهارات بنجاح",
+    "failed_to_update_skills": "فشل تحديث المهارات. يرجى المحاولة مرة أخرى."
   },
   "btns": {
     "add": "اضافة",
     "cancel": "الغاء",
     "save": "حفظ",
     "delete": "حذف"
+  },
+  "status": {
+    "open": "مفتوحة",
+    "in_progress": "قيد التنفيذ",
+    "loading": "قيد التحميل",
+    "done": "تم"
   }
 }

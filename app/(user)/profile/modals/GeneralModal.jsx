@@ -2,7 +2,7 @@ import React from "react";
 import { IoClose } from "react-icons/io5";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/app/providers/Transslations";
-const GeneralModal = ({ content, onClose }) => {
+const GeneralModal = ({ content, onClose, classNames="" }) => {
     const { language } = useTranslation();
   return (
     <motion.div
@@ -18,7 +18,7 @@ const GeneralModal = ({ content, onClose }) => {
         whileInView={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative bg-white dark:bg-darkbg w-full max-w-3xl max-h-[90vh]  p-6 rounded-lg shadow-lg overflow-auto"
+        className={`relative bg-white dark:bg-darkbg w-full max-w-3xl max-h-[90vh]  p-6 rounded-lg shadow-lg overflow-auto ${classNames}`}
         onClick={(e) => e.stopPropagation()}
       >
         <IoClose

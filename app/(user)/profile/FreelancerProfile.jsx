@@ -11,7 +11,7 @@ import {
 import GeneralModal from "./modals/GeneralModal";
 import { useAuth } from "@/app/providers/AuthContext";
 import { getData } from "@/app/providers/TheQueryProvider";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import Title from "./ContentItems/Title";
 import Skills from "./ContentItems/Skills";
 import Projects from "./ContentItems/Projects";
@@ -25,6 +25,11 @@ import VerifyAccount from "./ContentItems/VerifyAccount";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { MainBtn, SecondaryBtn } from "@/app/components/generalComps/Btns";
 import { useTranslation } from "@/app/providers/Transslations";
+import axiosInstance from "@/app/providers/axiosConfig";
+import  Cropper  from 'react-easy-crop';
+import { getCroppedImg } from "@/app/providers/cropImage";
+import Spinner from "@/app/components/generalComps/Spinner";
+
 
 const FreelancerProfile = ({user}) => {
   // const { user } = useAuth();
@@ -79,13 +84,14 @@ const FreelancerProfile = ({user}) => {
       />
       <Content user={user} openModal={openModal} closeModal={closeModal} />
       {isModalOpen && (
-        <GeneralModal content={modalContent} onClose={closeModal} />
+        <GeneralModal content={modalContent} onClose={closeModal} classNames="w-[80%] h-[80%]" />
       )}
     </div>
   );
 };
 
 export default FreelancerProfile;
+
 
 const Hero = ({ user, openModal, handleImageChange }) => {
   const { translate } = useTranslation();
@@ -123,7 +129,8 @@ const Hero = ({ user, openModal, handleImageChange }) => {
       </div>
       <div className="relative w-56 h-56">
         <img
-          src={user?.personal_image}
+        onError={(e) => {e.target.src = "https://cdn-icons-png.flaticon.com/512/219/219983.png"}}
+          src={user?.personal_image? user?.personal_image : "https://cdn-icons-png.flaticon.com/512/219/219983.png"}
           alt="Freelancer"
           className="w-full h-full object-cover rounded-full border-gray-700 border-2"
         />
@@ -148,32 +155,127 @@ const Hero = ({ user, openModal, handleImageChange }) => {
   );
 };
 
+
+
+
+
 const ImageChangeModal = ({ currentImage, onImageChange }) => {
   const { translate } = useTranslation();
+  const [selectedImage, setSelectedImage] = useState(null); // لحفظ الصورة المختارة مؤقتًا
+  const [previewImage, setPreviewImage] = useState(currentImage); // لعرض الصورة المختارة
+  const [crop, setCrop] = useState({ x: 0, y: 0 }); // تحديد موقع القص
+  const [zoom, setZoom] = useState(1); // تكبير/تصغير الصورة
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null); // منطقة القص بالبكسل
+
+  // استخدام useMutation لإرسال طلب POST لتحديث الصورة
+  const mutation = useMutation(
+    (formData) =>
+      axiosInstance.post('/auth/update-profile-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // تحديد نوع المحتوى كـ form-data
+        },
+      }),
+    {
+      onSuccess: (response) => {
+        // بعد نجاح الطلب، قم بتحديث الصورة في الواجهة
+        onImageChange(response.data.imageUrl); // افترض أن الخادم يعيد رابط الصورة الجديدة
+        setPreviewImage(response.data.imageUrl); // تحديث الصورة المعروضة
+        setSelectedImage(null); // مسح الصورة المختارة بعد التحديث
+      },
+      onError: (error) => {
+        console.error('Failed to update profile image:', error);
+        // يمكنك إضافة إشعار أو معالجة الخطأ هنا
+      },
+    }
+  );
+
+  // عند اختيار ملف
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result); // عرض الصورة المختارة
+      };
+      reader.readAsDataURL(file); // قراءة الملف كـ Data URL
+      setSelectedImage(file); // حفظ الملف لتحديثه لاحقًا
+    }
+  };
+
+  // عند النقر على زر "حفظ التغييرات"
+  const handleSave = async () => {
+    if (selectedImage && croppedAreaPixels) {
+      try {
+        // قص الصورة
+        const croppedImage = await getCroppedImg(previewImage, croppedAreaPixels);
+
+        // تحويل الصورة المقطوعة إلى ملف
+        const file = new File([croppedImage], 'cropped-image.png', {
+          type: 'image/png',
+        });
+
+        // إرسال الصورة المقطوعة إلى الخادم
+        const formData = new FormData();
+        formData.append('personal_image', file); // إضافة ملف الصورة إلى FormData
+        mutation.mutate(formData); // إرسال الطلب
+      } catch (error) {
+        console.error('Error cropping image:', error);
+      }
+    }
+  };
+
   return (
-    <div className="p-4">
+    <div className=" w-full h-[90%]  flex flex-col justify-between items-center ">
       <h2 className="text-2xl">{translate("profile.edit_photo")}</h2>
-      <div className="my-10 w-full flex justify-center items-center ">
-        <img
-          src={currentImage}
-          alt="Current profile"
-          className="w-56 h-56 object-cover rounded-full border-gray-700 border-2"
-        />
+      <div className="my-2  flex-grow w-full flex justify-center items-center " data-lenis-prevent="true">
+        {selectedImage ? (
+          <div className="relative w-full h-full">
+            <Cropper
+              image={previewImage}
+              crop={crop}
+              zoom={zoom}
+              aspect={1} // نسبة العرض إلى الارتفاع 1:1 (دائري)
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onCropComplete={(croppedArea, croppedAreaPixels) => {
+                setCroppedAreaPixels(croppedAreaPixels); // حفظ منطقة القص
+              }}
+            />
+          </div>
+        ) : (
+          <img
+            src={previewImage} // عرض الصورة المختارة أو الحالية
+            alt="Current profile"
+            className="w-56 h-56 object-cover rounded-full border-gray-700 border-2"
+          />
+        )}
       </div>
 
-      <div className="flex justify-between items-center">
+      <div className="w-[80%] mx-auto flex justify-between items-center">
         <label
           className="cursor-pointer bg-white hover:bg-primary text-primary hover:text-white border-primary animation border-[1px] 
         rounded-lg px-4 py-2 font-medium  dark:text-primary dark:bg-darknav dark:hover:bg-primary/20 "
         >
-        {translate("profile.change_photo")}
-          <input type="file" className="hidden" onChange={onImageChange} />
+          {translate("profile.change_photo")}
+          <input
+            type="file"
+            className="hidden"
+            onChange={handleFileChange}
+            accept="image/*" // قبول ملفات الصور فقط
+          />
         </label>
-        <MainBtn text={translate("profile.save_changes")} />
+        <MainBtn
+          text={mutation.isLoading ? <Spinner /> : translate("profile.save_changes")}
+          onClick={handleSave} // تحديث الصورة عند النقر
+          disabled={!selectedImage || mutation.isLoading} // تعطيل الزر إذا لم يتم اختيار صورة أو أثناء التحميل
+        />
+
       </div>
     </div>
   );
 };
+
+
 
 const Content = ({ user, openModal, closeModal }) => {
   return (

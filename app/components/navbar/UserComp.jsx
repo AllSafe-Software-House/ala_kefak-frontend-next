@@ -45,6 +45,7 @@ const UserComp = ({ UserData, isLoading }) => {
       >
         {UserData?.data?.personal_image ? (
           <img
+          onError={(e) => {e.target.src = "https://cdn-icons-png.flaticon.com/512/219/219983.png"}}
             src={UserData?.data?.personal_image}
             alt="user"
             className="w-full h-full object-cover"

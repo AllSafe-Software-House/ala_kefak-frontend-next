@@ -84,12 +84,20 @@
     "add_certificate": "Add Certificate",
     "certificate_title": "Certificate Title",
     "organization": "Organization",
-    "date": "Date"
+    "date": "Date",
+    "skills_updated": "Skills updated successfully",
+    "failed_to_update_skills": "Failed to update skills. Please try again."
   },
   "btns": {
     "add": "Add",
     "cancel": "Cancel",
     "save": "Save",
     "delete": "Delete"
+  },
+  "status": {
+    "open": "Open",
+    "in_progress": "In Progress",
+    "loading": "Loading",
+    "done": "Done"
   }
 }
