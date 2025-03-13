@@ -46,8 +46,9 @@ const Education = ({ user, openModal, closeModal }) => {
       <Heading
         text={translate("profile.education")}
         actions={[
-          <SecondaryBtn text={translate("btns.add")} onClick={handleAdd} />,
-          <SecondaryBtn
+          <SecondaryBtn key={1} text={translate("btns.add")} onClick={handleAdd} />,
+          <SecondaryBtn 
+            key={2}
             text={<MdOutlineEdit />}
             onClick={handleEdit}
             classNames="!rounded-full border text-lg md:text-2xl !p-3"

@@ -103,7 +103,7 @@ const Hero = ({ user, openModal, handleImageChange }) => {
 
   return (
     <div className="w-full flex flex-col items-center text-center">
-      <div className="w-full flex justify-end items-center gap-6 mt-4">
+      <div className="w-full flex justify-between md:justify-end items-center gap-6 mt-4">
         <SecondaryBtn
           text={
             <div className="flex justify-center items-center gap-2">

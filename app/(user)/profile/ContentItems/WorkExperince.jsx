@@ -44,8 +44,9 @@ const WorkExperince = ({ user, openModal, closeModal }) => {
       <Heading
         text={translate("profile.work_experience")}
         actions={[
-          <SecondaryBtn text={translate("btns.add")} onClick={handleAdd} />,
-          <SecondaryBtn
+          <SecondaryBtn key="add" text={translate("btns.add")} onClick={handleAdd} />,
+          <SecondaryBtn 
+            key="edit"
             text={<MdOutlineEdit />}
             onClick={handleEdit}
             classNames="!rounded-full border text-lg md:text-2xl !p-3"
