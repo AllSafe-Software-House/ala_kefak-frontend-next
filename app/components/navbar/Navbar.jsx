@@ -67,7 +67,7 @@
 //     isLoading,
 //     error,
 //   } = useQuery("userData", async () => {
-//     const token = localStorage.getItem("token");
+//     const token = localStorage.getItem("alakefaktoken");
 //     const response = await axiosInstance.get(`${baseUrl}/auth/profile`, {
 //       headers: {
 //         "Content-Type": "application/json",

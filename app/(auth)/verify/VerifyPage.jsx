@@ -8,6 +8,23 @@ import { useToast } from "@/app/components/toast/Toast";
 import axios from "axios";
 import { baseUrl } from "@/app/providers/axiosConfig";
 import { toast } from "sonner";
+import CryptoJS from "crypto-js";
+
+
+
+
+const SECRET_KEY = "your-secret-key"; // يمكنك استخدام متغيرات البيئة (environment variables) لتخزينه
+
+// وظيفة لتشفير البيانات
+const encryptData = (data) => {
+  return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY).toString();
+};
+
+// وظيفة لفك تشفير البيانات
+const decryptData = (ciphertext) => {
+  const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
+  return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+};
 
 const VerifyPage = () => {
   const { user } = useAuth();
@@ -39,8 +56,11 @@ const VerifyPage = () => {
 
   const mutation = useMutation(verifyUser, {
     onSuccess: (data) => {
-      localStorage.setItem("token", data.data.token)
-      toast.success("Account verified successfully! Welcome!");
+      const encryptedToken = encryptData(data.data.token);
+      console.log(encryptedToken) // تشفير الـ token
+      // localStorage.setItem("alakefaktoken", encryptedToken ||data.data.token);
+      localStorage.setItem("alakefaktoken", data.data.token)
+      toast.success("Verification successful! Welcome!");
       router.push("/profile");
     },
     onError: (error) => {

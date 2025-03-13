@@ -21,7 +21,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const lang = localStorage.getItem("alakefaklang") ; 
-    const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("alakefaktoken"); 
 
     config.headers["Accept-Language"] = lang;
 
@@ -43,7 +43,7 @@ axiosInstance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       console.error("Unauthorized: Please log in again."); 
       // يمكن هنا إعادة توجيه المستخدم لصفحة تسجيل الدخول
-      localStorage.removeItem("token"); // حذف التوكن من التخزين
+      localStorage.removeItem("alakefaktoken"); // حذف التوكن من التخزين
       window.location.href = "/login"; // توجيه المستخدم لتسجيل الدخول
     }
     return Promise.reject(error);

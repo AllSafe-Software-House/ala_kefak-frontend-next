@@ -7,11 +7,18 @@ import { RiCustomerService2Fill } from "react-icons/ri";
 import { CiSettings } from "react-icons/ci";
 import Link from "next/link";
 import { useAuth } from "@/app/providers/AuthContext";
+import axiosInstance from "@/app/providers/axiosConfig";
 
 const UserComp = ({ UserData, isLoading }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const { logout } = useAuth();
+
+const handleLogout = () => {
+  logout();
+  axiosInstance.post("/auth/logout");
+};
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target))
@@ -89,7 +96,7 @@ const UserComp = ({ UserData, isLoading }) => {
                 className="w-full flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-white animation hover:bg-gray-100 dark:hover:bg-darkbg"
                 onClick={() => {
                   setMenuOpen(false);
-                  logout();
+                  handleLogout();
                 }}
               >
                 <Icon className="text-2xl" />

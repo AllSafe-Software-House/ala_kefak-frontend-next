@@ -27,7 +27,9 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
-    router.push("/");
+    localStorage.removeItem("alakefaktoken");
+
+    router.push("/login");
 
   };
 

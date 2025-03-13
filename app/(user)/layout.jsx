@@ -9,7 +9,7 @@ const UserLayout = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("alakefaktoken");
     if (!token) {
       router.push("/login");
     }

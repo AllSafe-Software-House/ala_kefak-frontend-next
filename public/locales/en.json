@@ -9,7 +9,7 @@
     "login_with_google": "Login with Google",
     "login_with_apple": "Login with Apple",
     "login_success": "Login successful! Welcome back.",
-    "verify_account": "You didn't verify your account yet, please check your email for OTP."
+    "verify_account": "Verify its you, please check your email for OTP."
   },
   "signup": {
     "title": "Create Account",
@@ -35,6 +35,27 @@
     "role_selected_success": "Role selected successfully",
     "role_selection_failed": "Role selection failed. Please try again.",
     "select_role_alert": "Please select a role."
+  },
+  "forget_password": {
+    "title": "Forget Password",
+    "email": "Email",
+    "send_otp": "Send OTP",
+    "verify_otp": "Verify OTP",
+    "new_password": "New Password",
+    "confirm_password": "Confirm Password",
+    "reset_password": "Reset Password",
+    "reset_password_success": "Password reset successfully",
+    "reset_password_failed": "Password reset failed. Please try again.",
+    "otp_sent_success": "OTP sent successfully",
+    "otp_sent_failed": "OTP sent failed. Please try again.",
+    "otp_verify_success": "OTP verified successfully",
+    "otp_verify_failed": "OTP verification failed. Please try again.",
+    "password_updated_success": "Password updated successfully",
+    "password_updated_failed": "Password update failed. Please try again.",
+    "password_not_match": "Passwords do not match. Please try again.",
+    "enter_email": "Please enter your email address.",
+    "next": "Next",
+    "back": "Back"
   },
   "navbar": {
     "find_work": "Find Work",
@@ -104,5 +125,35 @@
     "in_review": "In Review",
     "accepted": "Accepted",
     "error": "Something went wrong, please try again!"
-  }
+  },
+  "error": {
+    "required": "This field is required",
+    "email": "Invalid email address",
+    "password": "Password must be at least 8 characters long",
+    "min_length": "Password must be at least 8 characters long",
+    "max_length": "Password must be at most 20 characters long",
+    "min": "Password must be at least 8 characters long",
+    "max": "Password must be at most 20 characters long",
+    "min_number": "Password must contain at least one number",
+    "min_uppercase": "Password must contain at least one uppercase letter",
+    "min_lowercase": "Password must contain at least one lowercase letter",
+    "min_special": "Password must contain at least one special character",
+    "confirm_password": "Passwords do not match",
+    "invalid_email": "Invalid email address",
+    "invalid_phone": "Invalid phone number",
+    "invalid_url": "Invalid URL",
+    "invalid_date": "Invalid date format",
+    "invalid_file": "Invalid file format",
+    "invalid_image": "Invalid image format",
+    "invalid_video": "Invalid video format",
+    "invalid_audio": "Invalid audio format",
+    "invalid_password": "Invalid password format",
+    "invalid_name": "Invalid name format",
+    "invalid_username": "Invalid username format",
+    "invalid_address": "Invalid address format",
+    "invalid_cvv": "Invalid CVV format",
+    "invalid_zip": "Invalid ZIP format",
+    "invalid_cpf": "Invalid CPF format",
+    "invalid_cnpj": "Invalid CNPJ format"
+}
 }

@@ -95,7 +95,7 @@ export default function LoginPage() {
           error={errors.password?.message}
         />
         <LinkComp
-          href="/forget-password"
+          href="/reset-password"
           text={translate("login.forget_password")}
           classNames="text-end"
         />
