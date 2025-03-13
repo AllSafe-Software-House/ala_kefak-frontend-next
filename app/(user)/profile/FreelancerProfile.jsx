@@ -281,7 +281,7 @@ const Content = ({ user, openModal, closeModal }) => {
   return (
     <div className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8">
       <div className="w-full flex flex-col gap-10">
-        {/* <Title user={user} openModal={openModal} closeModal={closeModal} /> */}
+        <Title user={user} openModal={openModal} closeModal={closeModal} />
         <Skills user={user} openModal={openModal} closeModal={closeModal} />
         <Projects user={user} openModal={openModal} closeModal={closeModal} />
         <Templates user={user} openModal={openModal} closeModal={closeModal} />

@@ -86,7 +86,8 @@
     "organization": "Organization",
     "date": "Date",
     "skills_updated": "Skills updated successfully",
-    "failed_to_update_skills": "Failed to update skills. Please try again."
+    "failed_to_update_skills": "Failed to update skills. Please try again.",
+    "title":"Job Title"
   },
   "btns": {
     "add": "Add",
@@ -98,6 +99,10 @@
     "open": "Open",
     "in_progress": "In Progress",
     "loading": "Loading",
-    "done": "Done"
+    "done": "successfully done",
+    "rejected": "Rejected",
+    "in_review": "In Review",
+    "accepted": "Accepted",
+    "error": "Something went wrong, please try again!"
   }
 }
