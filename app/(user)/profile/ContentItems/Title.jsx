@@ -64,7 +64,7 @@ const TitleModal = ({ about, closeModal }) => {
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-3xl">{translate("profile.about_me")}</h1>
+      <h1 className="text-xl md:text-3xl">{translate("profile.about_me")}</h1>
       <label className="flex flex-col gap-2">
         <span className="text-gray-700 dark:text-gray-200">
           {translate("profile.title")}

@@ -108,7 +108,8 @@
     "date": "Date",
     "skills_updated": "Skills updated successfully",
     "failed_to_update_skills": "Failed to update skills. Please try again.",
-    "title":"Job Title"
+    "title":"Job Title",
+    "about_me":"About Me"
   },
   "btns": {
     "add": "Add",

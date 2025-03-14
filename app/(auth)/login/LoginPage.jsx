@@ -73,7 +73,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-[95%] lg:w-[50%] min-w-[400px] h-full bg-white dark:bg-darknav p-2 md:p-6 pt-2 rounded-lg shadow-md">
+    <div className="w-[95%] lg:w-[50%] min-w-[300px] md:min-w-[400px] h-full bg-white dark:bg-darknav p-2 md:p-6 pt-2 rounded-lg shadow-md">
       <h2 className="text-xl md:text-3xl font-bold text-center mb-4">
         {translate("login.title")}
       </h2>

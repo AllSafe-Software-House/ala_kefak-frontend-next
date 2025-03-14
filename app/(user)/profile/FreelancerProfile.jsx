@@ -84,7 +84,7 @@ const FreelancerProfile = ({user}) => {
       />
       <Content user={user} openModal={openModal} closeModal={closeModal} />
       {isModalOpen && (
-        <GeneralModal content={modalContent} onClose={closeModal} classNames="w-[80%] h-[80%]" />
+        <GeneralModal content={modalContent} onClose={closeModal} classNames="w-[80%] min-h-fit max-h-[80%] " />
       )}
     </div>
   );
@@ -226,10 +226,10 @@ const ImageChangeModal = ({ currentImage, onImageChange }) => {
 
   return (
     <div className=" w-full h-[90%]  flex flex-col justify-between items-center ">
-      <h2 className="text-2xl">{translate("profile.edit_photo")}</h2>
+      <h2 className="text-xl md:text-2xl">{translate("profile.edit_photo")}</h2>
       <div className="my-2  flex-grow w-full flex justify-center items-center " data-lenis-prevent="true">
         {selectedImage ? (
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-full min-h-[400px] max-h-[600px] ">
             <Cropper
               image={previewImage}
               crop={crop}
@@ -253,8 +253,8 @@ const ImageChangeModal = ({ currentImage, onImageChange }) => {
 
       <div className="w-[80%] mx-auto flex justify-between items-center">
         <label
-          className="cursor-pointer bg-white hover:bg-primary text-primary hover:text-white border-primary animation border-[1px] 
-        rounded-lg px-4 py-2 font-medium  dark:text-primary dark:bg-darknav dark:hover:bg-primary/20 "
+          className="curser-pointer bg-white hover:bg-primary text-primary hover:text-white border-primary animation border
+        rounded-lg px-2 md:px-4 py-2 font-medium  dark:text-primary dark:bg-darknav dark:hover:bg-primary/20  text-xs md:text-sm lg:text-base "
         >
           {translate("profile.change_photo")}
           <input

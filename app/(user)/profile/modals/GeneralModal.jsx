@@ -10,7 +10,7 @@ const GeneralModal = ({ content, onClose, classNames="" }) => {
       whileInView={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm  "
+      className="fixed inset-0 z-50 flex w-full h-[100vh] items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm  "
       onClick={onClose}
     >
       <motion.div
@@ -18,7 +18,7 @@ const GeneralModal = ({ content, onClose, classNames="" }) => {
         whileInView={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
-        className={`relative bg-white dark:bg-darkbg w-full max-w-3xl max-h-[90vh]  p-6 rounded-lg shadow-lg overflow-auto ${classNames}`}
+        className={`relative bg-white dark:bg-darkbg w-full max-w-3xl max-h-[80vh]  p-6 rounded-lg shadow-lg overflow-auto ${classNames}`}
         onClick={(e) => e.stopPropagation()}
       >
         <IoClose

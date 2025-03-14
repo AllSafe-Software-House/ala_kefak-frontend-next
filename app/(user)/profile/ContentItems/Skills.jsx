@@ -136,7 +136,7 @@ useEffect(() => {
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-3xl">
+      <h1 className="text-xl md:text-3xl">
         {translate("profile.edit_skills")}
       </h1>
 
@@ -147,10 +147,10 @@ useEffect(() => {
             key={skill.id}
             className="flex items-center gap-2 text-gray-500 rounded-full text-sm md:text-base p-2 px-3 md:px-4 border-gray-800 bg-gray-100 dark:bg-darkinput dark:border-darkinput dark:text-gray-400"
           >
-            <span>{skill.name}</span>
+            <span className="text-xs md:text-base">{skill.name}</span>
             <button
               onClick={() => handleDelete(skill)}
-              className="text-red-500 hover:text-red-700 animation"
+              className="text-red-500 hover:text-red-700 animation text-lg md:text-xl"
             >
               <IoClose />
             </button>

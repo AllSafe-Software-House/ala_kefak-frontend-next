@@ -49,11 +49,12 @@ const ChooseRolePage = ({ onRoleSelect }) => {
   };
 
   return (
-    <div className="w-full min-w-[400px] h-full flex flex-col justify-center items-center gap-8 p-8">
+    <div className="w-full min-w-[300px] md:min-w-[400px] h-full flex flex-col justify-center items-center gap-8 p-2 md:p-8 ">
+      
       <h2 className="text-2xl text-gray-900 dark:text-gray-300 md:text-3xl font-bold text-center mb-4">
         {translate("signup.role_selection")}
       </h2>
-      <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="w-full flex flex-col md:flex-row justify-around items-center gap-4">
         <RoleCard
           title={translate("signup.stakeholder")}
           description={translate("signup.stakeholder_description")}
