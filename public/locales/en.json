@@ -109,7 +109,8 @@
     "skills_updated": "Skills updated successfully",
     "failed_to_update_skills": "Failed to update skills. Please try again.",
     "title":"Job Title",
-    "about_me":"About Me"
+    "about_me":"About Me",
+    "companies":"Companies"
   },
   "btns": {
     "add": "Add",

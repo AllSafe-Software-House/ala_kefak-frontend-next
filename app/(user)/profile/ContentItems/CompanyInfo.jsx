@@ -4,9 +4,11 @@ import React, { useState } from "react";
 import Heading from "../UIItems/Heading";
 import EditBtn from "../UIItems/EditBtn";
 import AddBtn from "../UIItems/AddBtn";
+import { useTranslation } from "@/app/providers/Transslations";
 
 const CompanyInfo = ({ user, openModal, closeModal }) => {
   const [companies, setCompanies] = useState(user?.companies);
+  const { language, setLanguage, translate } = useTranslation();
 
   const handleSave = (updatedCompanies) => {
     console.log("Updated Companies:", updatedCompanies);
@@ -38,7 +40,7 @@ const CompanyInfo = ({ user, openModal, closeModal }) => {
   return (
     <div className="w-full rounded-2xl bg-white p-3 md:p-6 border flex flex-col gap-6 dark:bg-transparent">
       <Heading
-        text={"Companies"}
+        text={translate("profile.companies")}
         actions={[
           <AddBtn key="add" onClick={handleAdd} />,
           <EditBtn key="edit" onClick={handleEdit} />,

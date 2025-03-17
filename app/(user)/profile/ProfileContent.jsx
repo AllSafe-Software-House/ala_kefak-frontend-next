@@ -23,19 +23,19 @@ const ProfileContent = () => {
     return response.data;
   });
 
-  useEffect(() => {
-    if (data) {
-      console.log(data)
-      // console.log("data", data.data);
-      setUserType(data.data.type);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     console.log(data)
+  //     // console.log("data", data.data);
+  //     setUserType(data.data.type);
+  //   }
+  // }, [data]);
 
   if (isLoading) return <UserSkeleton />;
   if (error) return <ErrorPage />;
 
-  return <FreelancerProfile user={data.data} /> 
-  // return userType == 2 ? <FreelancerProfile user={data.data} /> : <StackholderProfile />;
+  // return <FreelancerProfile user={data.data} /> 
+  return userType == 2 ? <FreelancerProfile user={data.data} /> : <StackholderProfile user={data.data} />;
 };
 
 export default ProfileContent;
