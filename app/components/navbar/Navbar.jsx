@@ -671,6 +671,7 @@ const MobileMenu = ({ isOpen, toggleMenu, searchText, setSearchText }) => {
 };
 
 const NotificationsDropdown = () => {
+  const {language} = useTranslation();
   const { data, isLoading, error, refetch } = useQuery("notifications", () =>
     getData("notifications")
   );
@@ -678,8 +679,8 @@ const NotificationsDropdown = () => {
 
   return (
     <div
-      className="absolute top-full right-0 w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput "
-      data-lenis-prevent="true"
+    className={`absolute top-full mt-4 ${language === "ar" ? "left-0" : "right-0"} w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput`}
+    data-lenis-prevent="true"
     >
       {isLoading ? (
         <MessageNotifySkeleton />
@@ -718,6 +719,8 @@ const NotificationsDropdown = () => {
 };
 
 const MessagesDropdown = () => {
+  const {language} = useTranslation();
+
   const { data, isLoading, error, refetch } = useQuery("conversations", () =>
     getData("conversations")
   );
@@ -725,7 +728,7 @@ const MessagesDropdown = () => {
 
   return (
     <div
-      className="absolute top-full right-0 w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput "
+      className={`absolute top-full mt-4 ${language === "ar" ? "left-0" : "right-0"} w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput`}
       data-lenis-prevent="true"
     >
       {isLoading ? (

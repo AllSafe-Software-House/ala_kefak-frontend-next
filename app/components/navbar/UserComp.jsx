@@ -8,11 +8,13 @@ import { CiSettings } from "react-icons/ci";
 import Link from "next/link";
 import { useAuth } from "@/app/providers/AuthContext";
 import axiosInstance from "@/app/providers/axiosConfig";
+import { useTranslation } from "@/app/providers/Transslations";
 
 const UserComp = ({ UserData, isLoading }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const { logout } = useAuth();
+  const { language, setLanguage, translate } = useTranslation();
 
 const handleLogout = () => {
   logout();
@@ -38,10 +40,10 @@ const handleLogout = () => {
     );
 
   const menuItems = [
-    { icon: CiDollar, text: "Balance", link: "/my-balance" },
-    { icon: RiCustomerService2Fill, text: "Support", link: "/support" },
-    { icon: CiSettings, text: "Settings", link: "/settings" },
-    { icon: TbLogout, text: "Logout" },
+    { icon: CiDollar, text: translate("navbar.Balance"), link: "/my-balance" },
+    { icon: RiCustomerService2Fill, text: translate("navbar.Support"), link: "/support" },
+    { icon: CiSettings, text: translate("navbar.Settings"), link: "/settings" },
+    { icon: TbLogout, text: translate("navbar.Logout") },
   ];
 
   return (
@@ -65,7 +67,7 @@ const handleLogout = () => {
       </div>
 
       {menuOpen && (
-        <div className="absolute top-full right-0 mt-2 w-64 min-w-fit bg-white dark:bg-darknav rounded-md shadow-lg border border-gray-200 dark:border-darkinput text-base z-50">
+        <div className={`absolute top-full ${language === "ar" ? "left-0" : "right-0"}  mt-2 w-64 min-w-fit bg-white dark:bg-darknav rounded-md shadow-lg border border-gray-200 dark:border-darkinput text-base z-50`}>
           <Link
             href="/profile"
             className="w-full flex flex-col items-center px-4 py-2 text-gray-700 dark:text-white animation hover:bg-gray-100 dark:hover:bg-darkbg border-b-2"

@@ -1,3 +1,4 @@
+"use client";
 import { mainInfo } from "@/app/constants/info";
 import Link from "next/link";
 import {
@@ -9,38 +10,50 @@ import {
   FaApple,
 } from "react-icons/fa";
 import { Logo } from "../navbar/Logo";
+import { useTranslation } from "@/app/providers/Transslations";
+import { lang } from "moment";
 
-const socialIcons = [
-  { id: "whatsapp", icon: FaWhatsapp, link: "https://wa.me/" },
-  { id: "youtube", icon: FaYoutube, link: "https://www.youtube.com/" },
-  {
-    id: "instagram",
-    icon: FaInstagram,
-    link: "https://www.instagram.com/allsafe_software_house?igsh=MW5wejh5NjNydzJubA==",
-  },
-  {
-    id: "facebook",
-    icon: FaFacebookF,
-    link: "https://www.facebook.com/allsafesoftwarehouse",
-  },
-];
 
-const quickLinksData = [
-  { title: "Platform", links: ["Footer", "Footer", "Footer", "Footer"] },
-  { title: "Company", links: ["Footer", "Footer", "Footer", "Footer"] },
-  { title: "Links", links: ["Footer", "Footer", "Footer", "Footer"] },
-];
-
-const appLinks = [
-  { name: "Windows", icon: FaWindows, link: "#" },
-  { name: "Apple", icon: FaApple, link: "#" },
-];
 
 const Footer = () => {
+
+  const { translate ,language} = useTranslation();
+
+
+
+
+  const socialIcons = [
+    { id: "whatsapp", icon: FaWhatsapp, link: "https://wa.me/" },
+    { id: "youtube", icon: FaYoutube, link: "https://www.youtube.com/" },
+    {
+      id: "instagram",
+      icon: FaInstagram,
+      link: "https://www.instagram.com/allsafe_software_house?igsh=MW5wejh5NjNydzJubA==",
+    },
+    {
+      id: "facebook",
+      icon: FaFacebookF,
+      link: "https://www.facebook.com/allsafesoftwarehouse",
+    },
+  ];
+  
+  const quickLinksData = [
+    { title: translate("footer.Platform"), links: ["Footer", "Footer", "Footer", "Footer"] },
+    { title: translate("footer.Company"), links: ["Footer", "Footer", "Footer", "Footer"] },
+    { title: translate("footer.Links"), links: ["Footer", "Footer", "Footer", "Footer"] },
+  ];
+  
+  const appLinks = [
+    { name: translate("footer.windows"), icon: FaWindows, link: "#" },
+    { name: translate("footer.apple"), icon: FaApple, link: "#" },
+    { name: translate("footer.android"), icon: FaApple, link: "#" },
+  ];
+
+
   return (
     <div>
       <footer className="w-full grid grid-cols-1 lg:grid-cols-[1fr_3fr_1fr] gap-8 py-12 px-4 lg:px-16 bg-white dark:bg-darknav border-b border-gray-200 dark:border-gray-800">
-        <Section title={Logo()} subtitle={mainInfo.name}>
+        <Section title={Logo()} subtitle={language =="ar"?mainInfo.nameAr:mainInfo.name}>
           <div className="flex gap-4">
             {socialIcons.map(({ id, icon: Icon, link }) => (
               <Link
@@ -66,14 +79,14 @@ const Footer = () => {
                   href="#"
                   className="text-sm md:text-base hover:text-primary animation"
                 >
-                  {text}
+                  {translate(`footer.link`)}
                 </Link>
               ))}
             </Section>
           ))}
         </div>
 
-        <Section title="Get the app">
+        <Section title={translate("footer.getApp")}>
           <div className="flex flex-row lg:flex-col gap-2">
             {appLinks.map(({ name, icon: Icon, link }) => (
               <Link
@@ -103,17 +116,21 @@ const Section = ({ title, subtitle, children }) => (
   </div>
 );
 
-
 function CopyRight() {
+  const { translate } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   return (
     <div className="w-full flex justify-center items-center gap-1 bg-primary text-white p-4">
-      <p>All Rights Reserved {currentYear}</p>
-      <Link target="_blank" href="https://www.allsafeeg.com/en" className="text-lg font-semibold animation hover:text-yellow-300">
+      <p>{translate("footer.all_rights_reserved")} {currentYear}</p>
+      <Link
+        target="_blank"
+        href="https://www.allsafeeg.com/en"
+        className="text-lg font-semibold animation hover:text-yellow-300"
+      >
         “All safe“
       </Link>
-      <p>company</p>
+      <p>{translate("footer.company")}</p>
     </div>
   );
 }

@@ -1,4 +1,36 @@
 {
+  "navbar": {
+    "find_work": "ابحث عن عمل",
+    "my_projects": "مشاريعي",
+    "my_proposals": "مقترحاتي",
+    "find_employee": "ابحث عن موظف",
+    "manage_projects": "ادارة المشاريع",
+    "search_placeholder": "بحث...",
+    "show_all_notifications": "اظهار كل الاشعارات",
+    "show_all_messages": "اظهار كل الرسائل",
+    "Balance": "الرصيد",
+    "Support": "الدعم",
+    "Settings": "الاعدادات",
+    "Logout": "تسجيل الخروج"
+  },
+  "footer": {
+    "about_us": "معلومات عنا",
+    "contact_us": "اتصل بنا",
+    "privacy_policy": "سياسة الخصوصية",
+    "terms_and_conditions": "الشروط والاحكام",
+    "follow_us": "تابعنا",
+    "Platform": "المنصة",
+    "Company": "الشركة",
+    "Links": "روابط",
+    "link": "رابــــط",
+    "all_rights_reserved": "جميع الحقوق محفوظة",
+    "getApp": "حمل  تطبيقنا الآن",
+    "windows": "ويندوز",
+    "android": "اندرويد",
+    "apple": "أبــــل",
+    "company": "شركة AllSafe"
+
+  },
   "login": {
     "title": "تسجيل الدخول",
     "email_or_username": "البريد الإلكتروني أو اسم المستخدم",
@@ -57,16 +89,7 @@
     "next": "التالي",
     "back": "السابق"
   },
-  "navbar": {
-    "find_work": "ابحث عن عمل",
-    "my_projects": "مشاريعي",
-    "my_proposals": "عروضي",
-    "find_employee": "ابحث عن موظف",
-    "manage_projects": "إدارة المشاريع",
-    "search_placeholder": "بحث...",
-    "show_all_notifications": "عرض جميع الإشعارات",
-    "show_all_messages": "عرض جميع الرسائل"
-  },
+
   "profile": {
     "share": "مشاركة",
     "preview": "معاينة",
@@ -108,9 +131,9 @@
     "date": "التاريخ",
     "skills_updated": "تم تحديث المهارات بنجاح",
     "failed_to_update_skills": "فشل تحديث المهارات. يرجى المحاولة مرة أخرى.",
-    "title":"المسمى الوظيفى",
-    "about_me":"معلومات عنى",
-    "companies":"الشركات"
+    "title": "المسمى الوظيفى",
+    "about_me": "معلومات عنى",
+    "companies": "الشركات"
   },
   "btns": {
     "add": "اضافة",
@@ -153,4 +176,5 @@
     "invalid_name": "اسم غير صحيح",
     "invalid_username": "اسم المستخدم غير صحيح",
     "invalid_address": "عنوان غير صحيح"
-}}
+  }
+}

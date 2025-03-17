@@ -1,4 +1,34 @@
 {
+  "navbar": {
+    "find_work": "Find Work",
+    "my_projects": "My Projects",
+    "my_proposals": "My Proposals",
+    "find_employee": "Find Employee",
+    "manage_projects": "Manage Projects",
+    "search_placeholder": "Search...",
+    "show_all_notifications": "Show All Notifications",
+    "show_all_messages": "Show All Messages",
+    "Balance": "Balance",
+    "Support": "Support",
+    "Settings": "Settings",
+    "Logout": "Logout"
+  },
+  "footer": {
+    "about_us": "About Us",
+    "contact_us": "Contact Us",
+    "privacy_policy": "Privacy Policy",
+    "terms_and_conditions": "Terms and Conditions",
+    "follow_us": "Follow Us",
+    "Platform": "Platform",
+    "Company": "Company",
+    "Links": "Links",
+    "link": "Link",
+    "getApp": "Get App",
+    "windows": "Windows",
+    "android": "Android",
+    "apple": "Apple",
+    "company": "AllSafe.CO"
+  },
   "login": {
     "title": "Login",
     "email_or_username": "Email or Username",
@@ -57,16 +87,7 @@
     "next": "Next",
     "back": "Back"
   },
-  "navbar": {
-    "find_work": "Find Work",
-    "my_projects": "My Projects",
-    "my_proposals": "My Proposals",
-    "find_employee": "Find Employee",
-    "manage_projects": "Manage Projects",
-    "search_placeholder": "Search...",
-    "show_all_notifications": "Show All Notifications",
-    "show_all_messages": "Show All Messages"
-  },
+
   "profile": {
     "share": "Share",
     "preview": "Preview",
@@ -108,9 +129,9 @@
     "date": "Date",
     "skills_updated": "Skills updated successfully",
     "failed_to_update_skills": "Failed to update skills. Please try again.",
-    "title":"Job Title",
-    "about_me":"About Me",
-    "companies":"Companies"
+    "title": "Job Title",
+    "about_me": "About Me",
+    "companies": "Companies"
   },
   "btns": {
     "add": "Add",
@@ -157,5 +178,5 @@
     "invalid_zip": "Invalid ZIP format",
     "invalid_cpf": "Invalid CPF format",
     "invalid_cnpj": "Invalid CNPJ format"
-}
+  }
 }

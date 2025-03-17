@@ -59,6 +59,7 @@ export const Navlinks = [
 
 export const mainInfo = {
   name: "Ala Kefak",
+  nameAr: "على كيـفـــك",
   description: "Ala Kefak is a cutting-edge freelancing platform connecting talented professionals with businesses worldwide.",
   about: [
     "Ala Kefak is a cutting-edge freelancing platform connecting talented professionals with businesses worldwide.",

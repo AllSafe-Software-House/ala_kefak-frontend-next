@@ -23,13 +23,12 @@ const ProfileContent = () => {
     return response.data;
   });
 
-  // useEffect(() => {
-  //   if (data) {
-  //     console.log(data)
-  //     // console.log("data", data.data);
-  //     setUserType(data.data.type);
-  //   }
-  // }, [data]);
+  useEffect(() => {
+    if (data) {
+      console.log(data)
+      setUserType(data.data.type);
+    }
+  }, [data]);
 
   if (isLoading) return <UserSkeleton />;
   if (error) return <ErrorPage />;
