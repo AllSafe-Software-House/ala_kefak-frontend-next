@@ -135,13 +135,13 @@ useEffect(() => {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="flex flex-col gap-4 p-4 " data-lenis-prevent="true"  >
       <h1 className="text-xl md:text-3xl">
         {translate("profile.edit_skills")}
       </h1>
 
       {/* عرض المهارات المحددة */}
-      <div className="w-full flex justify-start items-center flex-wrap gap-2 md:gap-3 ">
+      <div className="w-full flex justify-start items-center flex-wrap gap-2 md:gap-3 max-h-[600px] overflow-y-scroll " >
         {skills.map((skill) => (
           <div
             key={skill.id}
@@ -172,6 +172,7 @@ useEffect(() => {
           <div className="absolute top-full left-0 right-0 bg-white dark:bg-darknav border border-gray-200 dark:border-darkinput rounded mt-1 max-h-40 overflow-y-auto z-10">
             {suggestions.map((skill) => (
               <div
+              data-lenis-prevent="true"
                 key={skill.id}
                 onClick={() => handleSelectSkill(skill)}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-darkinput cursor-pointer"

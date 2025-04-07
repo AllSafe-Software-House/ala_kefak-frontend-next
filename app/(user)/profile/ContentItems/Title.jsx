@@ -1,4 +1,5 @@
-import { useState } from "react";
+"use client";
+import { useState, useEffect } from "react";
 import { useMutation } from "react-query";
 import EditBtn from "../UIItems/EditBtn";
 import Heading from "../UIItems/Heading";
@@ -9,22 +10,25 @@ import Spinner from "@/app/components/generalComps/Spinner";
 import { toast } from "sonner";
 
 const Title = ({ user, openModal, closeModal }) => {
+  const [userData, setUserData] = useState(null)
   const { translate } = useTranslation();
   const handleEdit = () => {
-    openModal(<TitleModal about={user.about} closeModal={closeModal} />);
+    openModal(<TitleModal about={user} closeModal={closeModal} setUserData={setUserData} />);
   };
+
+  useEffect(() => {
+    setUserData(user);
+  }, []);
 
   return (
     <div className="w-full rounded-2xl bg-white p-3 md:p-6 border flex flex-col gap-6 dark:bg-darknav dark:border-darkinput dark:text-gray-300">
       <Heading
-        text={
-          user?.about?.title ? user?.about?.title : translate("profile.title")
-        }
+        text={userData?.title ? userData?.title : translate("profile.title")}
         actions={[<EditBtn key="edit" onClick={handleEdit} />]}
       />
       <p className="text-sm md:text-base lg:text-base ">
-        {user?.about?.description
-          ? user?.about?.description
+        {userData?.description
+          ? userData?.description
           : translate("profile.description")}
       </p>
     </div>
@@ -33,7 +37,7 @@ const Title = ({ user, openModal, closeModal }) => {
 
 export default Title;
 
-const TitleModal = ({ about, closeModal }) => {
+const TitleModal = ({ about, closeModal,setUserData }) => {
   const [title, setTitle] = useState(about?.title || "");
   const [description, setDescription] = useState(about?.description || "");
   const { translate } = useTranslation();
@@ -49,6 +53,11 @@ const TitleModal = ({ about, closeModal }) => {
       onSuccess: () => {
         closeModal();
         toast.success(translate("status.done"));
+        setUserData((prev) => ({
+          ...prev,
+          title: title,
+          description: description,
+        }));
       },
       onError: (error) => {
         toast.error(translate("status.error"));

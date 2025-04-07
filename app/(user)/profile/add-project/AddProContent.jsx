@@ -1,9 +1,11 @@
 "use client";
 import { MainBtn } from "@/app/components/generalComps/Btns";
+import axiosInstance from "@/app/providers/axiosConfig";
 import { useTranslation } from "@/app/providers/Transslations";
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaArrowLeft, FaArrowRight, FaImage } from "react-icons/fa";
+import { useMutation } from "react-query";
 
 const FileInput = ({ label, onFileChange, fileNames }) => {
   const handleFileChange = (e) => {
@@ -38,27 +40,45 @@ const AddProContent = () => {
   const [projectLink, setProjectLink] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [files, setFiles] = useState([]);
-const { translate,language } = useTranslation();
+  const { translate, language } = useTranslation();
   const handleFileChange = (newFiles) => {
     setFiles(newFiles);
   };
 
   const handleCoverImageChange = (file) => {
+    console.log(file[0])
     setCoverImage(file);
   };
+
+  const mutation = useMutation(
+    (data) => axiosInstance.post("/auth/freelancer/projects", data),
+    {
+      onSuccess: () => {
+        closeModal();
+        toast.success(translate("status.done"));
+  
+      },
+      onError: (error) => {
+        toast.error(translate("status.error"));
+        console.error("Failed to update about:", error);
+      },
+    }
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("date", date);
+    formData.append("name", title);
     formData.append("description", description);
+    formData.append("category_id", "1");
+    formData.append("link", projectLink);
+    formData.append("date", date);
     formData.append("skills", skills);
-    formData.append("projectLink", projectLink);
-    formData.append("coverImage", coverImage);
+    formData.append("cover_image", coverImage);
     files.forEach((file) => formData.append("files", file));
 
     console.log("Form Submitted", formData);
+    mutation.mutate(formData);
   };
 
   return (
@@ -69,7 +89,9 @@ const { translate,language } = useTranslation();
           href={"/profile"}
         >
           {language === "en" ? <FaArrowLeft /> : <FaArrowRight />}
-          <span>{language === "en" ? "Add Project" : "إضافة مشروع"}</span>
+          <span>
+            {translate("projects.add_project")}
+            </span>
         </Link>
       </div>
 
@@ -81,7 +103,7 @@ const { translate,language } = useTranslation();
           {/* Project Title */}
           <div className="flex flex-col">
             <label htmlFor="title" className="font-medium mb-2">
-              {language === "en" ? "Project Title" : "عنوان المشروع"}
+              {translate("projects.project_name")}
             </label>
             <input
               id="title"
@@ -96,7 +118,7 @@ const { translate,language } = useTranslation();
           {/* Date of Project */}
           <div className="flex flex-col">
             <label htmlFor="date" className="font-medium mb-2">
-              {language === "en" ? "Date of Project" : "تاريخ المشروع"}
+            {translate("projects.project_date")}
             </label>
             <input
               id="date"
@@ -111,7 +133,7 @@ const { translate,language } = useTranslation();
           {/* Description */}
           <div className="flex flex-col">
             <label htmlFor="description" className="font-medium mb-2">
-              {language === "en" ? "Description" : "وصف المشروع"}
+            {translate("projects.project_description")}
             </label>
             <textarea
               id="description"
@@ -126,10 +148,10 @@ const { translate,language } = useTranslation();
           {/* Add Files */}
           <div className="flex flex-col">
             <label htmlFor="files" className="font-medium mb-2">
-              {language === "en" ? "Project Files" : "ملفات المشروع"}
+            {translate("projects.project_files")}
             </label>
             <FileInput
-              label="Upload Project Files"
+              label={translate("files.upload_files")}
               fileNames={files.map((file) => file.name)}
               onFileChange={handleFileChange}
             />
@@ -138,7 +160,7 @@ const { translate,language } = useTranslation();
           {/* Skills */}
           <div className="flex flex-col">
             <label htmlFor="skills" className="font-medium mb-2">
-              {language === "en" ? "Skills" : "مهارات المشروع"}
+              {translate("projects.project_skills")}
             </label>
             <input
               id="skills"
@@ -155,10 +177,12 @@ const { translate,language } = useTranslation();
           {/* Cover Photo */}
           <div className="flex flex-col">
             <label htmlFor="coverImage" className="font-medium mb-2">
-              {language === "en" ? "Cover Photo" : "صورة الغلاف"}
+            {translate("projects.project_cover")}
             </label>
             <FileInput
-              label={language === "en" ? "Upload Cover Photo" : "تحميل صورة الغلاف"}
+              label={
+                translate("files.upload_cover") 
+              }
               fileNames={coverImage ? [coverImage.name] : []}
               onFileChange={handleCoverImageChange}
             />
@@ -167,7 +191,7 @@ const { translate,language } = useTranslation();
           {/* Project Link */}
           <div className="flex flex-col">
             <label htmlFor="projectLink" className="font-medium mb-2">
-              {language === "en" ? "Project Link" : "رابط المشروع"}
+            {translate("projects.project_url")}
             </label>
             <input
               id="projectLink"
@@ -182,7 +206,7 @@ const { translate,language } = useTranslation();
 
         {/* Submit Button */}
         <div className="mt-6 flex justify-end w-full">
-          <MainBtn text={translate("btns.add")}/>
+          <MainBtn text={translate("btns.add")} />
         </div>
       </form>
     </div>

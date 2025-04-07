@@ -74,6 +74,7 @@ const handleLogout = () => {
             onClick={() => setMenuOpen(false)}
           >
             <img
+            onError={(e) => {e.target.src = "https://cdn-icons-png.flaticon.com/512/219/219983.png"}}
               src={UserData?.data?.personal_image}
               alt="user"
               className="w-16 h-16 lg:w-28 lg:h-28 rounded-full object-cover border-2 border-slate-900"

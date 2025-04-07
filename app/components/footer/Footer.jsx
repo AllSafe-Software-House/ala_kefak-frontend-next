@@ -12,6 +12,7 @@ import {
 import { Logo } from "../navbar/Logo";
 import { useTranslation } from "@/app/providers/Transslations";
 import { lang } from "moment";
+import { DiAndroid } from "react-icons/di";
 
 
 
@@ -46,7 +47,7 @@ const Footer = () => {
   const appLinks = [
     { name: translate("footer.windows"), icon: FaWindows, link: "#" },
     { name: translate("footer.apple"), icon: FaApple, link: "#" },
-    { name: translate("footer.android"), icon: FaApple, link: "#" },
+    { name: translate("footer.android"), icon: DiAndroid, link: "#" },
   ];
 
 

@@ -178,5 +178,26 @@
     "invalid_zip": "Invalid ZIP format",
     "invalid_cpf": "Invalid CPF format",
     "invalid_cnpj": "Invalid CNPJ format"
+  },
+  "projects": {
+    "add_project": "Add Project",
+    "project_name": "Project Name",
+    "project_description": "Project Description",
+    "project_image": "Project Image",
+"project_date": "Project Date",
+    "project_files": "Project Files",
+    "project_cover": "Project Cover",
+    "project_url": "Project Link",
+    "project_status": "Project Status",
+    "project_budget": "Project Budget",
+    "project_deadline": "Project Deadline",
+    "project_skills": "Project Skills",
+    "project_category": "Project Category",
+    "project_subcategory": "Project Subcategory"
+  },
+  "files": {
+    "upload_files": "Select Files",
+    "upload_video": "Select Video",
+    "upload_cover": "Select Cover Image"
   }
 }

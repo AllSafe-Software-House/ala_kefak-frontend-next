@@ -2,7 +2,7 @@
   "navbar": {
     "find_work": "ابحث عن عمل",
     "my_projects": "مشاريعي",
-    "my_proposals": "مقترحاتي",
+    "my_proposals": "عروضى المقدمة",
     "find_employee": "ابحث عن موظف",
     "manage_projects": "ادارة المشاريع",
     "search_placeholder": "بحث...",
@@ -29,7 +29,6 @@
     "android": "اندرويد",
     "apple": "أبــــل",
     "company": "شركة AllSafe"
-
   },
   "login": {
     "title": "تسجيل الدخول",
@@ -176,5 +175,25 @@
     "invalid_name": "اسم غير صحيح",
     "invalid_username": "اسم المستخدم غير صحيح",
     "invalid_address": "عنوان غير صحيح"
+  },
+  "projects": {
+    "add_project": "اضافة مشروع",
+    "project_name": "اسم المشروع",
+    "project_description": "وصف المشروع",
+    "project_image": "صورة المشروع",
+"project_date": "تاريخ المشروع",
+    "project_files": "ملفات المشروع",
+    "project_cover": "صورة الغلاف",
+    "project_url": "رابط المشروع",
+    "project_status": "حالة المشروع",
+    "project_budget": "ميزانية المشروع",
+    "project_deadline": "مهلة المشروع",
+    "project_skills": "مهارات المشروع",
+    "project_category": "قسم المشروع",
+    "project_subcategory": "قسم فرعي المشروع"
+  },
+  "files": {
+    "upload_files": "إختيار الملفات",
+    "upload_cover": "إختيار صورة الغلاف"
   }
 }

@@ -26,33 +26,15 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { MainBtn, SecondaryBtn } from "@/app/components/generalComps/Btns";
 import { useTranslation } from "@/app/providers/Transslations";
 import axiosInstance from "@/app/providers/axiosConfig";
-import  Cropper  from 'react-easy-crop';
+import Cropper from "react-easy-crop";
 import { getCroppedImg } from "@/app/providers/cropImage";
 import Spinner from "@/app/components/generalComps/Spinner";
 
-
-const FreelancerProfile = ({user}) => {
-  // const { user } = useAuth();
+const FreelancerProfile = ({ user }) => {
   const { language, setLanguage, translate } = useTranslation();
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-
-  // const { data, isLoading, error } = useQuery(
-  //   ["userData", user?.user?.id],
-  //   () => getData(`user?id=${user?.user?.id}`),
-  //   {
-  //     enabled: !!user?.user?.id,
-  //   }
-  // );
-
-  // if (isLoading) {
-  //   return <p>Loading user data...</p>;
-  // }
-
-  // if (error) {
-  //   return <p className="pt-[500px]">Error fetching user data: {error.message}</p>;
-  // }
 
   const openModal = (content) => {
     setModalContent(content);
@@ -64,16 +46,7 @@ const FreelancerProfile = ({user}) => {
     setModalContent(null);
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const handleImageChange = (e) => {};
 
   return (
     <div className="min-h-screen mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100 dark:bg-transparent ">
@@ -84,14 +57,17 @@ const FreelancerProfile = ({user}) => {
       />
       <Content user={user} openModal={openModal} closeModal={closeModal} />
       {isModalOpen && (
-        <GeneralModal content={modalContent} onClose={closeModal} classNames="w-[80%] min-h-fit max-h-[80%] " />
+        <GeneralModal
+          content={modalContent}
+          onClose={closeModal}
+          classNames="w-[80%] min-h-fit max-h-[80%] "
+        />
       )}
     </div>
   );
 };
 
 export default FreelancerProfile;
-
 
 const Hero = ({ user, openModal, handleImageChange }) => {
   const { translate } = useTranslation();
@@ -129,8 +105,15 @@ const Hero = ({ user, openModal, handleImageChange }) => {
       </div>
       <div className="relative w-56 h-56">
         <img
-        onError={(e) => {e.target.src = "https://cdn-icons-png.flaticon.com/512/219/219983.png"}}
-          src={user?.personal_image? user?.personal_image : "https://cdn-icons-png.flaticon.com/512/219/219983.png"}
+          onError={(e) => {
+            e.target.src =
+              "https://cdn-icons-png.flaticon.com/512/219/219983.png";
+          }}
+          src={
+            user?.personal_image
+              ? user?.personal_image
+              : "https://cdn-icons-png.flaticon.com/512/219/219983.png"
+          }
           alt="Freelancer"
           className="w-full h-full object-cover rounded-full border-gray-700 border-2"
         />
@@ -155,71 +138,63 @@ const Hero = ({ user, openModal, handleImageChange }) => {
   );
 };
 
-
-
-
-
 const ImageChangeModal = ({ currentImage, onImageChange }) => {
   const { translate } = useTranslation();
-  const [selectedImage, setSelectedImage] = useState(null); // لحفظ الصورة المختارة مؤقتًا
-  const [previewImage, setPreviewImage] = useState(currentImage); // لعرض الصورة المختارة
-  const [crop, setCrop] = useState({ x: 0, y: 0 }); // تحديد موقع القص
-  const [zoom, setZoom] = useState(1); // تكبير/تصغير الصورة
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null); // منطقة القص بالبكسل
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(currentImage);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
-  // استخدام useMutation لإرسال طلب POST لتحديث الصورة
   const mutation = useMutation(
     (formData) =>
-      axiosInstance.post('/auth/update-profile-image', formData, {
+      axiosInstance.post("/auth/update-profile-image", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // تحديد نوع المحتوى كـ form-data
+          "Content-Type": "multipart/form-data",
         },
       }),
     {
       onSuccess: (response) => {
-        // بعد نجاح الطلب، قم بتحديث الصورة في الواجهة
-        onImageChange(response.data.imageUrl); // افترض أن الخادم يعيد رابط الصورة الجديدة
-        setPreviewImage(response.data.imageUrl); // تحديث الصورة المعروضة
-        setSelectedImage(null); // مسح الصورة المختارة بعد التحديث
+        onImageChange(response.data.imageUrl);
+        setPreviewImage(response.data.imageUrl);
+        setSelectedImage(null);
       },
       onError: (error) => {
-        console.error('Failed to update profile image:', error);
-        // يمكنك إضافة إشعار أو معالجة الخطأ هنا
+        console.error("Failed to update profile image:", error);
       },
     }
   );
 
-  // عند اختيار ملف
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    console.log(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewImage(reader.result); // عرض الصورة المختارة
+        setPreviewImage(reader.result);
       };
-      reader.readAsDataURL(file); // قراءة الملف كـ Data URL
-      setSelectedImage(file); // حفظ الملف لتحديثه لاحقًا
+      reader.readAsDataURL(file);
+      setSelectedImage(file);
     }
   };
 
-  // عند النقر على زر "حفظ التغييرات"
   const handleSave = async () => {
     if (selectedImage && croppedAreaPixels) {
       try {
-        // قص الصورة
-        const croppedImage = await getCroppedImg(previewImage, croppedAreaPixels);
+        const croppedImage = await getCroppedImg(
+          previewImage,
+          croppedAreaPixels
+        );
 
-        // تحويل الصورة المقطوعة إلى ملف
-        const file = new File([croppedImage], 'cropped-image.png', {
-          type: 'image/png',
+        const file = new File([croppedImage], "cropped-image.png", {
+          type: "image/png",
         });
 
-        // إرسال الصورة المقطوعة إلى الخادم
         const formData = new FormData();
-        formData.append('personal_image', file); // إضافة ملف الصورة إلى FormData
-        mutation.mutate(formData); // إرسال الطلب
+        formData.append("personal_image", file);
+        mutation.mutate(formData);
       } catch (error) {
-        console.error('Error cropping image:', error);
+        console.error("Error cropping image:", error);
       }
     }
   };
@@ -227,24 +202,27 @@ const ImageChangeModal = ({ currentImage, onImageChange }) => {
   return (
     <div className=" w-full h-[90%]  flex flex-col justify-between items-center ">
       <h2 className="text-xl md:text-2xl">{translate("profile.edit_photo")}</h2>
-      <div className="my-2  flex-grow w-full flex justify-center items-center " data-lenis-prevent="true">
+      <div
+        className="my-2  flex-grow w-full flex justify-center items-center "
+        data-lenis-prevent="true"
+      >
         {selectedImage ? (
           <div className="relative w-full h-full min-h-[400px] max-h-[600px] ">
             <Cropper
               image={previewImage}
               crop={crop}
               zoom={zoom}
-              aspect={1} // نسبة العرض إلى الارتفاع 1:1 (دائري)
+              aspect={1}
               onCropChange={setCrop}
               onZoomChange={setZoom}
               onCropComplete={(croppedArea, croppedAreaPixels) => {
-                setCroppedAreaPixels(croppedAreaPixels); // حفظ منطقة القص
+                setCroppedAreaPixels(croppedAreaPixels);
               }}
             />
           </div>
         ) : (
           <img
-            src={previewImage} // عرض الصورة المختارة أو الحالية
+            src={previewImage}
             alt="Current profile"
             className="w-56 h-56 object-cover rounded-full border-gray-700 border-2"
           />
@@ -261,21 +239,20 @@ const ImageChangeModal = ({ currentImage, onImageChange }) => {
             type="file"
             className="hidden"
             onChange={handleFileChange}
-            accept="image/*" // قبول ملفات الصور فقط
+            accept="image/*"
           />
         </label>
         <MainBtn
-          text={mutation.isLoading ? <Spinner /> : translate("profile.save_changes")}
-          onClick={handleSave} // تحديث الصورة عند النقر
-          disabled={!selectedImage || mutation.isLoading} // تعطيل الزر إذا لم يتم اختيار صورة أو أثناء التحميل
+          text={
+            mutation.isLoading ? <Spinner /> : translate("profile.save_changes")
+          }
+          onClick={handleSave}
+          disabled={!selectedImage || mutation.isLoading}
         />
-
       </div>
     </div>
   );
 };
-
-
 
 const Content = ({ user, openModal, closeModal }) => {
   return (
@@ -291,7 +268,7 @@ const Content = ({ user, openModal, closeModal }) => {
           closeModal={closeModal}
         />
         <Education user={user} openModal={openModal} closeModal={closeModal} />
-        
+
         <Certificates
           user={user}
           openModal={openModal}
@@ -301,18 +278,16 @@ const Content = ({ user, openModal, closeModal }) => {
 
       <div className="w-full flex flex-col justify-start items-start gap-10">
         <Badges user={user} openModal={openModal} closeModal={closeModal} />
-        {user?.complete_profile === 1 && <Complete
-          user={user}
-          openModal={openModal}
-          closeModal={closeModal}
-        /> } 
-        {user?.verify_account === false && <VerifyAccount
-          user={user}
-          openModal={openModal}
-          closeModal={closeModal}
-        /> } 
-  
-  
+        {user?.complete_profile === 1 && (
+          <Complete user={user} openModal={openModal} closeModal={closeModal} />
+        )}
+        {user?.verify_account === false && (
+          <VerifyAccount
+            user={user}
+            openModal={openModal}
+            closeModal={closeModal}
+          />
+        )}
       </div>
     </div>
   );
