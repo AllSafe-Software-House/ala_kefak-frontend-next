@@ -138,7 +138,15 @@
     "add": "اضافة",
     "cancel": "الغاء",
     "save": "حفظ",
-    "delete": "حذف"
+    "delete": "حذف",
+    "edit": "تعديل",
+    "update": "تحديث",
+    "send": "ارسال",
+    "accept": "قبول",
+    "reject": "رفض",
+    "confirm": "تأكيد",
+    "view": "عرض",
+    "view_all": "عرض الكل"
   },
   "status": {
     "open": "مفتوحة",
@@ -181,7 +189,7 @@
     "project_name": "اسم المشروع",
     "project_description": "وصف المشروع",
     "project_image": "صورة المشروع",
-"project_date": "تاريخ المشروع",
+    "project_date": "تاريخ المشروع",
     "project_files": "ملفات المشروع",
     "project_cover": "صورة الغلاف",
     "project_url": "رابط المشروع",
@@ -190,7 +198,12 @@
     "project_deadline": "مهلة المشروع",
     "project_skills": "مهارات المشروع",
     "project_category": "قسم المشروع",
-    "project_subcategory": "قسم فرعي المشروع"
+    "project_subcategory": "قسم فرعي المشروع",
+    "about_project": "عن المشروع",
+    "project_type": "نوع المشروع",  
+    "project_details": "تفاصيل المشروع",
+    "project_data": "بيانات المشروع",
+    "freelancer_name": "اسم المستقل"
   },
   "files": {
     "upload_files": "إختيار الملفات",

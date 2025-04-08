@@ -74,6 +74,7 @@ const AddProContent = () => {
     formData.append("link", projectLink);
     formData.append("date", date);
     formData.append("skills", skills);
+    formData.append("files", files);
     formData.append("cover_image", coverImage);
     files.forEach((file) => formData.append("files", file));
 

@@ -137,7 +137,15 @@
     "add": "Add",
     "cancel": "Cancel",
     "save": "Save",
-    "delete": "Delete"
+    "delete": "Delete",
+    "edit": "Edit",
+    "update": "Update",
+    "send": "Send",
+    "accept": "Accept",
+    "reject": "Reject",
+    "confirm": "Confirm",
+    "view": "View",
+    "view_all": "View All"
   },
   "status": {
     "open": "Open",
@@ -184,7 +192,7 @@
     "project_name": "Project Name",
     "project_description": "Project Description",
     "project_image": "Project Image",
-"project_date": "Project Date",
+    "project_date": "Project Date",
     "project_files": "Project Files",
     "project_cover": "Project Cover",
     "project_url": "Project Link",
@@ -193,7 +201,12 @@
     "project_deadline": "Project Deadline",
     "project_skills": "Project Skills",
     "project_category": "Project Category",
-    "project_subcategory": "Project Subcategory"
+    "project_subcategory": "Project Subcategory",
+    "about_project": "About Project",
+    "project_type": "Project Type",
+    "project_details": "Project Details",
+    "project_data": "Project Data",
+    "freelancer_name": "Freelancer Name"
   },
   "files": {
     "upload_files": "Select Files",
