@@ -5,6 +5,7 @@ import UserSkeleton from "@/app/components/sceletons/UserSkeleton";
 import axiosInstance from "@/app/providers/axiosConfig";
 import { useTranslation } from "@/app/providers/Transslations";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import {
   FaArrowLeft,
@@ -17,16 +18,20 @@ import { useQuery } from "react-query";
 
 const ViewContent = ({ projectId }) => {
   const { translate, language } = useTranslation();
-  const type = "project";
-
+  const searchParams = useSearchParams();
+  const type = searchParams.get("type");
+  const translationType = type === "template" ? "templates" : "projects";
   const {
     data: projectData,
     isLoading,
     error,
-  } = useQuery([projectId], async () => {
-    const response = await axiosInstance.get(
-      `/auth/freelancer/projects/${projectId}`
-    );
+  } = useQuery([projectId, type], async () => {
+    const endpoint =
+      type === "template"
+        ? `/auth/freelancer/templates/${projectId}`
+        : `/auth/freelancer/projects/${projectId}`;
+
+    const response = await axiosInstance.get(endpoint);
     return response.data;
   });
 
@@ -80,11 +85,11 @@ const ViewContent = ({ projectId }) => {
 
       <div className="w-full grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8">
         <div className="w-full flex flex-col justify-start items-start gap-4">
-          <ProjectDetails title={translate("projects.about_project")}>
+          <ProjectDetails title={translate(`${translationType}.${type}_about`)}>
             <p>{projectData?.data?.description}</p>
           </ProjectDetails>
 
-          <ProjectDetails title={translate("projects.project_details")}>
+          <ProjectDetails title={translate(`${translationType}.${type}_details`)}>
             {projectData?.data?.cover_image && (
               <img
                 src={projectData?.data?.cover_image}
@@ -94,35 +99,35 @@ const ViewContent = ({ projectId }) => {
             )}
           </ProjectDetails>
           {projectData?.data?.files?.length > 0 && (
-            <ProjectDetails title={translate("projects.project_files")}>
+            <ProjectDetails title={translate(`${translationType}.${type}_files`)}>
               <ProjectFiles files={projectData?.data?.files} />
             </ProjectDetails>
           )}
         </div>
 
         <div className="w-full flex flex-col justify-start items-start gap-4">
-          <ProjectDetails title={translate("projects.project_data")}>
+          <ProjectDetails title={translate(`${translationType}.${type}_data`)}>
             <ProjectInfo
-              label={translate("projects.project_category")}
+              label={translate(`${translationType}.${type}_category`)}
               value={projectData?.data?.category_name}
             />
             <ProjectInfo
-              label={translate("projects.freelancer_name")}
+              label={translate(`${translationType}.freelancer_name`)}
               value={projectData?.data?.user_name}
             />
-            <ProjectInfo
-              label={translate("projects.project_date")}
+            {projectData?.data?.date && <ProjectInfo
+              label={translate(`${translationType}.${type}_date`)}
               value={projectData?.data?.date}
-            />
+            />}
           </ProjectDetails>
 
           {projectData?.data?.skills?.length > 0 && (
-            <ProjectDetails title={translate("projects.project_skills")}>
+            <ProjectDetails title={translate(`${translationType}.${type}_skills`)}>
               <Skills skills={projectData?.data?.skills} />
             </ProjectDetails>
           )}
 
-          <ProjectDetails title={translate("projects.project_url")}>
+          <ProjectDetails title={translate(`${translationType}.${type}_url`)}>
             {projectData?.data?.link ? (
               <Link
                 dir="ltr"

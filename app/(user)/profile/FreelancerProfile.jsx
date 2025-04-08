@@ -6,12 +6,9 @@ import {
   FaRegStar,
   FaShareSquare,
   FaEye,
-  FaEdit,
 } from "react-icons/fa";
 import GeneralModal from "./modals/GeneralModal";
-import { useAuth } from "@/app/providers/AuthContext";
-import { getData } from "@/app/providers/TheQueryProvider";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import Title from "./ContentItems/Title";
 import Skills from "./ContentItems/Skills";
 import Projects from "./ContentItems/Projects";
