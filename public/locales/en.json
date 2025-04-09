@@ -206,7 +206,19 @@
     "project_type": "Project Type",
     "project_details": "Project Details",
     "project_data": "Project Data",
-    "freelancer_name": "Freelancer Name"
+    "freelancer_name": "Freelancer Name",
+    "project_name_required": "Project name is required",
+    "project_date_required": "Project date is required",
+    "date_not_in_future": "Date cannot be in the future",
+    "description_required": "Description is required",
+    "description_min_length": "Description must be at least 20 characters",
+    "skills_required": "Skills are required",
+    "valid_url_required": "Must be a valid URL",
+    "project_url_required": "Project URL is required",
+    "cover_image_required": "Cover image is required",
+    "at_least_one_file": "At least one file is required",
+    "select_category": "Select a category",
+    "category_required": "Category is required"
   },
   "templates": {
     "add_template": "Add Template",
@@ -231,11 +243,21 @@
     "template_compatibility": "Compatibility",
     "template_license": "License Type",
     "freelancer_name": "Freelancer Name"
-
   },
   "files": {
     "upload_files": "Select Files",
     "upload_video": "Select Video",
     "upload_cover": "Select Cover Image"
-  }
+  },
+  "validation": {
+  "title_required": "Project title is required.",
+  "date_required": "Project date is required.",
+  "description_required": "Project description is required.",
+  "files_required": "At least one file is required to upload in files .",
+  "skills_required": "Skills are required.",
+  "cover_required": "Cover image is required.",
+  "link_required": "Project URL is required.",
+  "link_invalid": "Please enter a valid URL.",
+  "date_invalid": "Please enter a valid date."
+}
 }

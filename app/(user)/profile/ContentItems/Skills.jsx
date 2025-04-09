@@ -65,7 +65,6 @@ const ModalContent = ({ initialSkills, onSave, closeModal }) => {
   const [allSkillsData, setAllSkillsData] = useState([]);
   const { translate, language } = useTranslation();
 
-  // جلب قائمة المهارات من الخادم
   const { data: allSkills, isLoading: isSkillsLoading } = useQuery('skills', () =>
     axiosInstance.get('/skills').then((res) => res.data)
   );
@@ -76,7 +75,6 @@ useEffect(() => {
 }, [allSkills])
 
 
-  // تحديث الاقتراحات أثناء الكتابة
   const handleInputChange = (e) => {
     const value = e.target.value;
     setNewSkill(value);
@@ -90,7 +88,6 @@ useEffect(() => {
     }
   };
 
-  // اختيار مهارة من القائمة
   const handleSelectSkill = (skill) => {
     if (!skills.some((s) => s.id === skill.id)) {
       setSkills([...skills, skill]);
@@ -99,12 +96,10 @@ useEffect(() => {
     setSuggestions([]);
   };
 
-  // حذف مهارة
   const handleDelete = (skillToDelete) => {
     setSkills(skills.filter((skill) => skill.id !== skillToDelete.id));
   };
 
-  // إرسال المهارات المحددة إلى الخادم
   const mutation = useMutation(
     (updatedSkills) => {
       const formData = new FormData();
@@ -140,7 +135,6 @@ useEffect(() => {
         {translate("profile.edit_skills")}
       </h1>
 
-      {/* عرض المهارات المحددة */}
       <div className="w-full flex justify-start items-center flex-wrap gap-2 md:gap-3 max-h-[600px] overflow-y-scroll " >
         {skills.map((skill) => (
           <div
@@ -158,7 +152,6 @@ useEffect(() => {
         ))}
       </div>
 
-      {/* إضافة مهارة جديدة */}
       <div className="flex items-center gap-2 mt-4 relative">
         <input
           type="text"
@@ -167,7 +160,6 @@ useEffect(() => {
           placeholder={language === "ar" ? "أضف مهارة جديدة" : "Add a new skill"}
           className="flex-1 border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300"
         />
-        {/* عرض الاقتراحات */}
         {newSkill && suggestions?.length > 0 && (
           <div className="absolute top-full left-0 right-0 bg-white dark:bg-darknav border border-gray-200 dark:border-darkinput rounded mt-1 max-h-40 overflow-y-auto z-10">
             {suggestions.map((skill) => (
@@ -184,7 +176,6 @@ useEffect(() => {
         )}
       </div>
 
-      {/* أزرار الإجراءات */}
       <div className="w-full flex justify-end items-center gap-4 mt-4">
         <SecondaryBtn text={translate("btns.cancel")} onClick={closeModal} />
         <MainBtn

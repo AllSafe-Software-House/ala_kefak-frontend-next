@@ -13,7 +13,7 @@ const ProfileContent = () => {
   const [userType, setUserType] = useState(null);
   const { language } = useTranslation();
 
-  const { data, isLoading, error } = useQuery(["userData", language], async () => {
+  const { data, isLoading, error,refetch } = useQuery(["userData", language], async () => {
     const response = await axiosInstance.get(`/auth/profile`, {
       headers: {
         "Accept-Language": "language",
@@ -33,7 +33,7 @@ const ProfileContent = () => {
   if (error) return <ErrorPage />;
 
   // return <FreelancerProfile user={data.data} /> 
-  return userType == 2 ? <FreelancerProfile user={data.data} /> : <StackholderProfile user={data.data} />;
+  return userType == 2 ? <FreelancerProfile user={data.data} refetch={refetch} /> : <StackholderProfile user={data.data} refetch={refetch} />;
 };
 
 export default ProfileContent;

@@ -27,8 +27,9 @@ import Cropper from "react-easy-crop";
 import { getCroppedImg } from "@/app/providers/cropImage";
 import Spinner from "@/app/components/generalComps/Spinner";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-const FreelancerProfile = ({ user }) => {
+const FreelancerProfile = ({ user,refetch }) => {
   const { language, setLanguage, translate } = useTranslation();
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
@@ -51,6 +52,7 @@ const FreelancerProfile = ({ user }) => {
       <Hero
         user={user}
         openModal={openModal}
+        closeModal={closeModal}
         handleImageChange={handleImageChange}
       />
       <Content user={user} openModal={openModal} closeModal={closeModal} />
@@ -67,7 +69,7 @@ const FreelancerProfile = ({ user }) => {
 
 export default FreelancerProfile;
 
-const Hero = ({ user, openModal, handleImageChange }) => {
+const Hero = ({ user, openModal, handleImageChange,closeModal }) => {
   const { translate } = useTranslation();
   const fullStars = Math.floor(user?.rate);
   const emptyStars = 5 - fullStars;
@@ -77,6 +79,7 @@ const Hero = ({ user, openModal, handleImageChange }) => {
       <ImageChangeModal
         currentImage={user?.personal_image}
         onImageChange={handleImageChange}
+        closeModal={closeModal}
       />
     );
   };
@@ -128,7 +131,8 @@ const handleShare = () => {
         </button>
       </div>
       <h2 className="mt-4 text-2xl font-medium">{`${user?.first_name} ${user?.last_name}`}</h2>
-      <p className=" ytext-lg font-medium text-gray-500">{user.user_name}</p>
+      <p dir="ltr" className=" ytext-lg font-medium text-gray-500">@{user?.user_name}</p>
+      <p className=" ytext-lg font-medium text-gray-500">{user?.title && user?.title }</p>
       <div className="flex items-center mt-2">
         {[...Array(fullStars)].map((_, index) => (
           <FaStar key={index} className="text-yellow-500" />
@@ -141,7 +145,7 @@ const handleShare = () => {
   );
 };
 
-const ImageChangeModal = ({ currentImage, onImageChange }) => {
+const ImageChangeModal = ({ currentImage, onImageChange, closeModal }) => {
   const { translate } = useTranslation();
   const [selectedImage, setSelectedImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(currentImage);
@@ -161,6 +165,8 @@ const ImageChangeModal = ({ currentImage, onImageChange }) => {
         onImageChange(response.data.imageUrl);
         setPreviewImage(response.data.imageUrl);
         setSelectedImage(null);
+        closeModal();
+        window.location.reload();
       },
       onError: (error) => {
         console.error("Failed to update profile image:", error);
@@ -170,7 +176,6 @@ const ImageChangeModal = ({ currentImage, onImageChange }) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    console.log(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {

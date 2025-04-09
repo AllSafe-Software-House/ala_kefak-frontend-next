@@ -11,10 +11,10 @@ export const baseUrl = `https://alaa-kaifak.allsafeeg-project.com/api/${version}
 
 const axiosInstance = axios.create({
   baseURL: `${baseUrl}`,
-  headers: {
-    "Content-Type": "application/json",
+  // headers: {
+  //   "Content-Type": "application/json",
 
-  },
+  // },
 });
 
 // Interceptor لإضافة التوكن

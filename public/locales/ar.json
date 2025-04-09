@@ -200,10 +200,22 @@
     "project_category": "قسم المشروع",
     "project_subcategory": "قسم فرعي المشروع",
     "project_about": "عن المشروع",
-    "project_type": "نوع المشروع",  
+    "project_type": "نوع المشروع",
     "project_details": "تفاصيل المشروع",
     "project_data": "بيانات المشروع",
-    "freelancer_name": "اسم المستقل"
+    "freelancer_name": "اسم المستقل",
+    "project_name_required": "اسم المشروع مطلوب",
+    "project_date_required": "تاريخ المشروع مطلوب",
+    "date_not_in_future": "التاريخ لا يمكن أن يكون في المستقبل",
+    "description_required": "الوصف مطلوب",
+    "description_min_length": "الوصف يجب أن يكون على الأقل 20 حرفاً",
+    "skills_required": "المهارات مطلوبة",
+    "valid_url_required": "يجب أن يكون رابط صحيح",
+    "project_url_required": "رابط المشروع مطلوب",
+    "cover_image_required": "صورة الغلاف مطلوبة",
+    "at_least_one_file": "مطلوب ملف واحد على الأقل",
+    "select_category": "اختر قسم",
+    "category_required": "القسم مطلوب"
   },
   "templates": {
     "add_template": "إضافة قالب",
@@ -228,10 +240,21 @@
     "template_compatibility": "التوافق",
     "template_license": "نوع الرخصة",
     "freelancer_name": "اسم المستقل"
-
   },
   "files": {
     "upload_files": "إختيار الملفات",
     "upload_cover": "إختيار صورة الغلاف"
-  }
+  },
+  "validation": {
+  "title_required": "عنوان المشروع مطلوب.",
+  "date_required": "تاريخ المشروع مطلوب.",
+  "description_required": "وصف المشروع مطلوب.",
+  "files_required": "يجب رفع ملف واحد على الأقل فى ملفات المشروع.",
+  "skills_required": "المهارات مطلوبة.",
+  "cover_required": "صورة الغلاف مطلوبة.",
+  "link_required": "رابط المشروع مطلوب.",
+  "link_invalid": "من فضلك أدخل رابط صحيح.",
+  "date_invalid": "من فضلك أدخل تاريخ صحيح."
+}
+
 }
