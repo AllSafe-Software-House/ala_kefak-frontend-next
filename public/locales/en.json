@@ -242,7 +242,21 @@
     "template_versions": "Available Versions",
     "template_compatibility": "Compatibility",
     "template_license": "License Type",
-    "freelancer_name": "Freelancer Name"
+    "freelancer_name": "Freelancer Name",
+    "template_name_required": "Template name is required",
+    "template_date_required": "Template date is required",
+    "date_not_in_future": "Date cannot be in the future",
+    "description_required": "Description is required",
+    "description_min_length": "Description must be at least 20 characters",
+    "skills_required": "Skills are required",
+    "valid_url_required": "Must be a valid URL",
+    "project_url_required": "Project URL is required",
+    "cover_image_required": "Cover image is required",
+    "at_least_one_file": "At least one file is required",
+    "select_category": "Select a category",
+    "category_required": "Category is required",
+    "start_price": "Starting Price",
+    "delivery_time": "Delivery Time"
   },
   "files": {
     "upload_files": "Select Files",
@@ -258,6 +272,21 @@
   "cover_required": "Cover image is required.",
   "link_required": "Project URL is required.",
   "link_invalid": "Please enter a valid URL.",
-  "date_invalid": "Please enter a valid date."
+  "date_invalid": "Please enter a valid date.",
+  "name_required": "Template name is required.",
+  "category_required": "Template category is required.",
+  "delivery_time_required": "Delivery time is required.",
+  "price_required": "Starting price is required."
+},
+"gen":{
+  "days": "Days",
+  "hours": "Hours",
+  "minutes": "Minutes",
+  "seconds": "Seconds",
+  "months": "Months",
+  "years": "Years",
+  "weeks": "Weeks",
+  "dollar": "Dollars"
 }
+
 }

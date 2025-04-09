@@ -239,7 +239,21 @@
     "template_versions": "الإصدارات المتاحة",
     "template_compatibility": "التوافق",
     "template_license": "نوع الرخصة",
-    "freelancer_name": "اسم المستقل"
+    "freelancer_name": "اسم المستقل",
+    "template_name_required": "اسم القالب مطلوب",
+    "template_date_required": "تاريخ القالب مطلوب",
+    "date_not_in_future": "التاريخ لا يمكن أن يكون في المستقبل",
+    "description_required": "الوصف مطلوب",
+    "description_min_length": "الوصف يجب أن يكون على الأقل 20 حرفاً",
+    "skills_required": "المهارات مطلوبة",
+    "valid_url_required": "يجب أن يكون رابط صحيح",
+    "project_url_required": "رابط المشروع مطلوب",
+    "cover_image_required": "صورة الغلاف مطلوبة",
+    "at_least_one_file": "مطلوب ملف واحد على الأقل",
+    "select_category": "اختر قسم",
+    "category_required": "القسم مطلوب",
+    "delivery_time": "مدة التسليم",
+    "start_price": "السعر الابتدائي"
   },
   "files": {
     "upload_files": "إختيار الملفات",
@@ -254,7 +268,21 @@
   "cover_required": "صورة الغلاف مطلوبة.",
   "link_required": "رابط المشروع مطلوب.",
   "link_invalid": "من فضلك أدخل رابط صحيح.",
-  "date_invalid": "من فضلك أدخل تاريخ صحيح."
+  "date_invalid": "من فضلك أدخل تاريخ صحيح.",
+  "name_required": "اسم القالب مطلوب.",
+  "category_required": "فئة القالب مطلوبة.",
+  "delivery_time_required": "مدة التسليم مطلوبة.",
+  "price_required": "السعر الابتدائي مطلوب."
+},
+"gen":{
+  "days": "يوم/أيام",
+  "hours": "ساعة",
+  "minutes": "دقيقة",
+  "seconds": "ثانية",
+  "months": "شهر",
+  "years": "سنة",
+  "weeks": "اسبوع",
+  "dollar": "دولار"
 }
 
 }
