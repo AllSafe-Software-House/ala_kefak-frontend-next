@@ -284,7 +284,7 @@
 
 //   return (
 //     <div
-//       className="absolute top-full right-0 w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput "
+//       className="absolute top-full right-0 w-[300px] md:w-[444px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput "
 //       data-lenis-prevent="true"
 //     >
 //       {isLoading ? (
@@ -330,7 +330,7 @@
 
 //   return (
 //     <div
-//       className="absolute top-full right-0 w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput "
+//       className="absolute top-full right-0 w-[300px] md:w-[444px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput "
 //       data-lenis-prevent="true"
 //     >
 //       {isLoading ? (
@@ -679,7 +679,7 @@ const NotificationsDropdown = () => {
 
   return (
     <div
-    className={`absolute top-full mt-4 ${language === "ar" ? "left-0" : "right-0"} w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput`}
+    className={`absolute top-full mt-4 ${language === "ar" ? "left-0" : "right-0"} w-[300px] md:w-[444px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput`}
     data-lenis-prevent="true"
     >
       {isLoading ? (
@@ -728,7 +728,7 @@ const MessagesDropdown = () => {
 
   return (
     <div
-      className={`absolute top-full mt-4 ${language === "ar" ? "left-0" : "right-0"} w-[300px] md:w-[600px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput`}
+      className={`absolute top-full mt-4 ${language === "ar" ? "left-0" : "right-0"} w-[300px] md:w-[444px] bg-white dark:bg-darknav shadow-lg rounded-md p-3 z-50 border dark:border-darkinput`}
       data-lenis-prevent="true"
     >
       {isLoading ? (

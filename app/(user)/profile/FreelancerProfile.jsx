@@ -26,6 +26,7 @@ import axiosInstance from "@/app/providers/axiosConfig";
 import Cropper from "react-easy-crop";
 import { getCroppedImg } from "@/app/providers/cropImage";
 import Spinner from "@/app/components/generalComps/Spinner";
+import Link from "next/link";
 
 const FreelancerProfile = ({ user }) => {
   const { language, setLanguage, translate } = useTranslation();
@@ -80,10 +81,15 @@ const Hero = ({ user, openModal, handleImageChange }) => {
     );
   };
 
+const handleShare = () => {
+  console.log(user.id)
+};
+
   return (
     <div className="w-full flex flex-col items-center text-center">
       <div className="w-full flex justify-between md:justify-end items-center gap-6 mt-4">
         <SecondaryBtn
+        onClick={handleShare}
           text={
             <div className="flex justify-center items-center gap-2">
               <span>{translate("profile.share")}</span>
@@ -93,10 +99,10 @@ const Hero = ({ user, openModal, handleImageChange }) => {
         />
         <MainBtn
           text={
-            <div className="flex justify-center items-center gap-2">
+            <Link href={`/viewProfile?freelancerId=${user?.id}`} className="flex justify-center items-center gap-2">
               <span>{translate("profile.preview")}</span>
               <FaEye />
-            </div>
+            </Link>
           }
         />
       </div>

@@ -67,36 +67,36 @@ const handleLogout = () => {
       </div>
 
       {menuOpen && (
-        <div className={`absolute top-full ${language === "ar" ? "left-0" : "right-0"}  mt-2 w-64 min-w-fit bg-white dark:bg-darknav rounded-md shadow-lg border border-gray-200 dark:border-darkinput text-base z-50`}>
+        <div className={`absolute top-full ${language === "ar" ? "left-0" : "right-0"}  mt-2 w-[240px] min-h-[400px] min-w-fit bg-white dark:bg-darknav rounded-md shadow-lg border overflow-hidden border-gray-200 dark:border-darkinput text-base z-50`}>
           <Link
             href="/profile"
-            className="w-full flex flex-col items-center px-4 py-2 text-gray-700 dark:text-white animation hover:bg-gray-100 dark:hover:bg-darkbg border-b-2"
+            className="w-full flex flex-col items-center px-4 py-4 text-gray-700 dark:text-white animation  border-b-[1px] "
             onClick={() => setMenuOpen(false)}
           >
             <img
             onError={(e) => {e.target.src = "https://cdn-icons-png.flaticon.com/512/219/219983.png"}}
               src={UserData?.data?.personal_image}
               alt="user"
-              className="w-16 h-16 lg:w-28 lg:h-28 rounded-full object-cover border-2 border-slate-900"
+              className="w-16 h-16 lg:w-32 lg:h-32 rounded-full object-cover border-2 border-slate-900"
             />
             <p className="text-base">{`${UserData?.data?.first_name} ${UserData?.data?.last_name}`}</p>
-            <p className="text-sm">{UserData?.data?.acountType}</p>
+            <p className="text-sm">{UserData?.data?.title}</p>
           </Link>
           {menuItems.map(({ icon: Icon, text, link }, index) =>
             link ? (
               <Link
                 key={index}
                 href={link}
-                className="w-full flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-white animation hover:bg-gray-100 dark:hover:bg-darkbg"
+                className="w-full flex items-center gap-2 px-4 py-3 text-gray-700 dark:text-white animation hover:bg-primary/20 group "
                 onClick={() => setMenuOpen(false)}
               >
-                <Icon className="text-2xl" />
-                <span>{text}</span>
+                <Icon className="text-2xl  " />
+                <span className="group-hover:text-primary animation ">{text}</span>
               </Link>
             ) : (
               <button
                 key={index}
-                className="w-full flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-white animation hover:bg-gray-100 dark:hover:bg-darkbg"
+                className="w-full flex items-center gap-2 px-4 py-3 text-gray-700 dark:text-white animation hover:bg-danger/20 hover:text-danger dark:hover:text-danger "
                 onClick={() => {
                   setMenuOpen(false);
                   handleLogout();

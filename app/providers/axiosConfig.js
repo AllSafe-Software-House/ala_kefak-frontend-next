@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 
-const baseUri = "/api";
+3
 // const baseUri = "https://alaa-kaifak.allsafeeg-project.com/api";
 const version = "v1";
 
