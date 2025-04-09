@@ -264,29 +264,31 @@
     "upload_cover": "Select Cover Image"
   },
   "validation": {
-  "title_required": "Project title is required.",
-  "date_required": "Project date is required.",
-  "description_required": "Project description is required.",
-  "files_required": "At least one file is required to upload in files .",
-  "skills_required": "Skills are required.",
-  "cover_required": "Cover image is required.",
-  "link_required": "Project URL is required.",
-  "link_invalid": "Please enter a valid URL.",
-  "date_invalid": "Please enter a valid date.",
-  "name_required": "Template name is required.",
-  "category_required": "Template category is required.",
-  "delivery_time_required": "Delivery time is required.",
-  "price_required": "Starting price is required."
-},
-"gen":{
-  "days": "Days",
-  "hours": "Hours",
-  "minutes": "Minutes",
-  "seconds": "Seconds",
-  "months": "Months",
-  "years": "Years",
-  "weeks": "Weeks",
-  "dollar": "Dollars"
-}
-
+    "title_required": "Project title is required.",
+    "date_required": "Project date is required.",
+    "description_required": "Project description is required.",
+    "files_required": "At least one file is required to upload in files .",
+    "skills_required": "Skills are required.",
+    "cover_required": "Cover image is required.",
+    "link_required": "Project URL is required.",
+    "link_invalid": "Please enter a valid URL.",
+    "date_invalid": "Please enter a valid date.",
+    "name_required": "Template name is required.",
+    "category_required": "Template category is required.",
+    "delivery_time_required": "Delivery time is required.",
+    "price_required": "Starting price is required."
+  },
+  "gen": {
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "months": "Months",
+    "years": "Years",
+    "weeks": "Weeks",
+    "dollar": "Dollars"
+  },
+  "notify": {
+    "confirm_delete": "Are you sure you want to delete this?"
+  }
 }
