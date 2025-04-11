@@ -36,7 +36,7 @@ const EditProjectContent = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [fileToDelete, setFileToDelete] = useState(null);
   const [modalMessage, setModalMessage] = useState("");
-const router = useRouter();
+  const router = useRouter();
   // Fetch project data
   const { data: projectData, isLoading: isProjectLoading } = useQuery(
     ["project", projectId],
@@ -135,7 +135,7 @@ const router = useRouter();
       date,
       skills,
       files: files,
-      cover_image: coverImage,
+      // cover_image: coverImage,
     };
 
     try {
@@ -283,7 +283,6 @@ const router = useRouter();
                 {translate("projects.project_files")}
               </label>
 
-              {/* Existing files */}
               {existingFiles.length > 0 && (
                 <FilesSection
                   files={existingFiles}
@@ -298,7 +297,6 @@ const router = useRouter();
                 errors={errors.files}
                 multiple={true}
               />
-
             </div>
 
             <div className="flex flex-col">
@@ -350,7 +348,13 @@ const router = useRouter();
           </div>
           <div className="mt-6 flex justify-end w-full">
             <MainBtn
-              text={updateProjectMutation.isLoading ? <Spinner /> : translate("btns.update")}
+              text={
+                updateProjectMutation.isLoading ? (
+                  <Spinner />
+                ) : (
+                  translate("btns.update")
+                )
+              }
               loading={updateProjectMutation.isLoading}
               disabled={updateProjectMutation.isLoading}
             />

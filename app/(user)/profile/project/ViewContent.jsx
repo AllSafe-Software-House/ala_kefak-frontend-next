@@ -69,16 +69,14 @@ const ViewContent = () => {
             />
           </Link>
           <MainBtn
-              classNames="flex justify-center items-center gap-2 "
-              text={
-                <>
-                  <span>Preview</span>
-                  <FaEye />
-                </>
-              }
-            />
-
-          
+            classNames="flex justify-center items-center gap-2 "
+            text={
+              <>
+                <span>Preview</span>
+                <FaEye />
+              </>
+            }
+          />
         </div>
       </div>
 

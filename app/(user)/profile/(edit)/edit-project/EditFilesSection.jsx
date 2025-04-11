@@ -1,7 +1,6 @@
 "use client";
 
 import { FaFileAlt, FaFileAudio, FaFilePdf, FaFileVideo } from "react-icons/fa";
-import { IoClose } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 
 const { useTranslation } = require("@/app/providers/Transslations");
@@ -33,14 +32,6 @@ const FilesSection = ({ files, onRemove }) => {
     return "other";
   };
 
-  const formatFileSize = (bytes) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
-  };
-
   if (!files || files.length === 0) return null;
 
   return (
@@ -48,16 +39,14 @@ const FilesSection = ({ files, onRemove }) => {
       {files.map((file) => {
         const fileType = getFileType(file);
         const fileName = file.url?.split("/").pop() || "file";
-        const fileSize = file.size ? formatFileSize(file.size) : "";
 
         return (
           <div
             key={file.id}
-            className="relative group bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow"
+            className="relative group  dark:bg-darkinput rounded-lg border  dark:border-darkinput overflow-hidden hover:shadow-md transition-shadow h-48" 
             onMouseEnter={() => setHoveredFile(file.id)}
             onMouseLeave={() => setHoveredFile(null)}
           >
-            {/* Delete button - shown on hover */}
             {onRemove && (
               <button
                 onClick={(e) => {
@@ -70,7 +59,7 @@ const FilesSection = ({ files, onRemove }) => {
                 }`}
                 title={translate("btns.delete_file")}
               >
-                <MdDelete className="text-3xl" />
+                <MdDelete className="text-lg" />
               </button>
             )}
 
@@ -80,26 +69,29 @@ const FilesSection = ({ files, onRemove }) => {
               rel="noopener noreferrer"
               className="flex flex-col h-full"
             >
-              {/* File preview/icon */}
-              <div className="flex-1 flex items-center justify-center  bg-gray-50 dark:bg-gray-700">
+              <div className="flex-1 flex items-center justify-center  dark:bg-darkinput  h-36">
                 {fileType === "image" ? (
                   <img
                     src={file.url}
                     alt={fileName}
-                    className="w-full h-32 object-cover"
+                    className="w-full h-full object-cover object-top"
                   />
                 ) : fileType === "pdf" ? (
-                  <FaFilePdf className="text-red-500 text-4xl" />
+                  <FaFilePdf className="text-red-500 text-5xl" />
                 ) : fileType === "video" ? (
-                  <FaFileVideo className="text-blue-500 text-4xl" />
+                  <FaFileVideo className="text-blue-500 text-5xl" />
                 ) : fileType === "audio" ? (
-                  <FaFileAudio className="text-purple-500 text-4xl" />
+                  <FaFileAudio className="text-purple-500 text-5xl" />
                 ) : (
-                  <FaFileAlt className="text-gray-500 text-4xl" />
+                  <FaFileAlt className="text-gray-500 text-5xl" />
                 )}
               </div>
 
-    
+              <div className=" h-fit py-1 flex items-center justify-center  ">
+                <p className="text-sm font-medium text-gray-900 dark:text-white truncate w-full text-center">
+                  {fileName}
+                </p>
+              </div>
             </a>
           </div>
         );
@@ -107,6 +99,5 @@ const FilesSection = ({ files, onRemove }) => {
     </div>
   );
 };
-
 
 export default FilesSection;

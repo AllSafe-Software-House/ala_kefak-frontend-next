@@ -220,7 +220,8 @@
     "current_files": "الملفات الحالية",
     "current_skills": "المهارات الحالية",
     "upload_new_files": "رفع ملفات جديدة",
-    "change_cover": "تغيير صورة الغلاف"
+    "change_cover": "تغيير صورة الغلاف",
+    "edit_project": "تعديل المشروع"
   },
   "templates": {
     "add_template": "إضافة قالب",

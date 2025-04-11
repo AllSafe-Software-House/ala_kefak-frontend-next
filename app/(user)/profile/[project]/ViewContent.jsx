@@ -121,8 +121,16 @@ const ViewContent = ({ projectId }) => {
         </Link>
 
         <div className="w-full flex justify-end items-center gap-4 text-xl">
+          <MainBtn
+            classNames="flex justify-center items-center gap-2"
+            text={
+              <>
+                <span>{translate("btns.view")}</span>
+                <FaEye />
+              </>
+            }
+          />
           <Link
-            // href={`/profile/edit-project?projectId=${projectData?.data?.id}&type=${type}`}
             href={
               type === "template"
                 ? `/profile/edit-template?templateId=${projectData?.data?.id}&type=${type}`
@@ -139,15 +147,7 @@ const ViewContent = ({ projectId }) => {
               }
             />
           </Link>
-          <MainBtn
-            classNames="flex justify-center items-center gap-2"
-            text={
-              <>
-                <span>{translate("btns.view")}</span>
-                <FaEye />
-              </>
-            }
-          />
+
           <DangerBtn
             classNames="flex justify-center items-center gap-2"
             onClick={handleDelete}

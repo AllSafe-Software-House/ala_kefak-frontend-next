@@ -223,7 +223,8 @@
     "current_files": "Current Files",
     "current_skills": "Current Skills",
     "upload_new_files": "Upload New Files",
-    "change_cover": "Change Cover Image"
+    "change_cover": "Change Cover Image",
+    "edit_project": "Edit Project"
   },
   "templates": {
     "add_template": "Add Template",
