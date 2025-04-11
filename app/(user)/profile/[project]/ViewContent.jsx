@@ -122,7 +122,12 @@ const ViewContent = ({ projectId }) => {
 
         <div className="w-full flex justify-end items-center gap-4 text-xl">
           <Link
-            href={`/profile/edit-project?projectId=${projectData?.data?.id}&type=${type}`}
+            // href={`/profile/edit-project?projectId=${projectData?.data?.id}&type=${type}`}
+            href={
+              type === "template"
+                ? `/profile/edit-template?templateId=${projectData?.data?.id}&type=${type}`
+                : `/profile/edit-project?projectId=${projectData?.data?.id}&type=${type}`
+            }
           >
             <SecondaryBtn
               classNames="flex justify-center items-center gap-2"
@@ -271,17 +276,14 @@ const Skills = ({ skills }) => {
 };
 
 const ProjectFiles = ({ files }) => {
-  const getFileType = (fileUrl) => {
-    const extension = fileUrl?.split(".").pop()?.toLowerCase();
-    if (["jpeg", "jpg", "gif", "png", "webp", "svg"].includes(extension)) {
-      return "image";
-    } else if (extension === "pdf") {
-      return "pdf";
-    } else if (["mp4", "webm", "ogg"].includes(extension)) {
-      return "video";
-    } else if (["mp3", "wav", "ogg"].includes(extension)) {
-      return "audio";
-    }
+  const { translate, language } = useTranslation();
+
+  const getFileType = (file) => {
+    // const extension = fileUrl?.split(".").pop()?.toLowerCase();
+    if (file.type.startsWith("image/")) return "image";
+    if (file.type === "application/pdf") return "pdf";
+    if (file.type.startsWith("video/")) return "video";
+    if (file.type.startsWith("audio/")) return "audio";
     return "other";
   };
 
@@ -291,16 +293,16 @@ const ProjectFiles = ({ files }) => {
     <div className="w-full grid grid-cols-1 gap-4">
       {files?.map((file, i) => {
         const fileType = getFileType(file);
-        const fileName = file.split("/").pop();
+        const fileName = file?.url.split("/").pop();
 
         switch (fileType) {
           case "image":
             return (
               <div key={i} className="relative group">
                 <img
-                  src={file}
+                  src={file?.url}
                   alt={`Project Image ${i + 1}`}
-                  className="w-full h-full max-h-[500px] rounded-xl object-cover"
+                  className="w-full h-full max-h-[500px] rounded-xl object-cover object-top "
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
                   {fileName}
@@ -331,7 +333,7 @@ const ProjectFiles = ({ files }) => {
                   controls
                   className="w-full max-h-[500px] rounded-xl bg-black"
                 >
-                  <source src={file} type={`video/${file.split(".").pop()}`} />
+                  <source src={file?.url} type={file.type} />
                   {translate("general.video_not_supported")}
                 </video>
                 <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
@@ -348,7 +350,10 @@ const ProjectFiles = ({ files }) => {
               >
                 <FaFileAudio className="text-blue-600 text-5xl" />
                 <audio controls className="flex-1">
-                  <source src={file} type={`audio/${file.split(".").pop()}`} />
+                  <source
+                    src={file?.url}
+                    type={`audio/${file?.url.split(".").pop()}`}
+                  />
                   {translate("general.audio_not_supported")}
                 </audio>
               </div>
@@ -376,7 +381,7 @@ const ProjectFiles = ({ files }) => {
                   </svg>
                 </div>
                 <a
-                  href={file}
+                  href={file?.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline break-all"

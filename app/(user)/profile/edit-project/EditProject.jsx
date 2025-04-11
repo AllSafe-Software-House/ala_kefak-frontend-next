@@ -1,471 +1,364 @@
-// "use client";
-// import React, { useState, useEffect } from "react";
-// import { FaArrowLeft, FaImage } from "react-icons/fa";
-// import { useRouter, useSearchParams } from "next/navigation";
-// import { useAuth } from "@/app/providers/AuthContext";
-// import { useQuery } from "react-query";
-// import { getData } from "@/app/providers/TheQueryProvider";
-// import Link from "next/link";
-
-// const EditProject = () => {
-//   const { user } = useAuth();
-//   const searchParams = useSearchParams();
-//   const projectId = searchParams.get("projectId");
-
-//   const [title, setTitle] = useState("");
-//   const [date, setDate] = useState("");
-//   const [description, setDescription] = useState("");
-//   const [skills, setSkills] = useState("");
-//   const [projectLink, setProjectLink] = useState("");
-//   const [coverImage, setCoverImage] = useState(null);
-//   const [files, setFiles] = useState([]);
-
-//   const { data, isLoading, error } = useQuery(
-//     ["userData", user?.user?.id],
-//     () => getData(`user?id=${user?.user?.id}`),
-//     {
-//       enabled: !!user?.user?.id,
-//     }
-//   );
-
-//   useEffect(() => {
-//     if (data) {
-//       const filteredProject = data.user.projects.find(
-//         (project) => project.id === projectId
-//       );
-
-//       if (filteredProject) {
-//         setTitle(filteredProject.title);
-//         setDate(filteredProject.date);
-//         setDescription(filteredProject.description);
-//         setSkills(filteredProject.skills.join(", "));
-//         setProjectLink(filteredProject.projectLink);
-//         setCoverImage(filteredProject.coverImage);
-//         setFiles(filteredProject.files);
-//       }
-//     }
-//   }, [data, projectId]);
-
-//   if (isLoading) return <div>Loading...</div>;
-//   if (error) return <div>Error loading project data!</div>;
-
-//   const handleFileChange = (newFiles) => {
-//     setFiles(newFiles);
-//   };
-
-//   const handleCoverImageChange = (file) => {
-//     setCoverImage(file);
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-
-//     const updatedData = {
-//       title,
-//       date,
-//       description,
-//       skills,
-//       projectLink,
-//       coverImage,
-//       files,
-//     };
-//   };
-
-//   return (
-//     <div className="h-screen w-[90%] mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100">
-//       <div className="w-full text-3xl flex justify-between items-center">
-//         <Link
-//           className="flex justify-start items-center gap-4 font-medium"
-//           href={`/profile/${projectId}`}
-//         >
-//           <FaArrowLeft />
-//           <span className="whitespace-nowrap">Edit Project</span>
-//         </Link>
-
-//         <div className="w-full flex justify-end items-center gap-4 text-xl">
-//           <Link
-//             href={`/profile/${projectId}`}
-//             className="flex justify-center items-center gap-2 border-primary border-2 bg-white text-primary py-2 px-4 rounded-xl hover:bg-primary hover:text-white animation"
-//           >
-//             <span>Discard</span>
-//           </Link>
-//           <button className="flex justify-center items-center gap-2 bg-primary text-white py-2 px-4 rounded-xl hover:bg-primaryhover animation">
-//             <span>Save</span>
-//           </button>
-//         </div>
-//       </div>
-
-//       <form
-//         onSubmit={handleSubmit}
-//         className="w-full grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8"
-//       >
-//         <div className="w-full flex flex-col justify-start items-start gap-6">
-//           {/* Project Title */}
-//           <div className="flex flex-col gap-2 w-full">
-//             <label htmlFor="title" className="text-2xl font-medium">
-//               Project Title
-//             </label>
-//             <input
-//               id="title"
-//               type="text"
-//               className="border p-3 rounded-lg"
-//               value={title}
-//               onChange={(e) => setTitle(e.target.value)}
-//               required
-//             />
-//           </div>
-
-//           {/* Date of Project */}
-//           <div className="flex flex-col gap-2 w-full">
-//             <label htmlFor="date" className="text-2xl font-medium">
-//               Date of Project
-//             </label>
-//             <input
-//               id="date"
-//               type="date"
-//               className="border p-3 rounded-lg"
-//               value={date}
-//               onChange={(e) => setDate(e.target.value)}
-//               required
-//             />
-//           </div>
-
-//           {/* Description */}
-//           <div className="flex flex-col gap-2 w-full">
-//             <label htmlFor="description" className="text-2xl font-medium">
-//               Description
-//             </label>
-//             <textarea
-//               id="description"
-//               className="border p-3 rounded-lg"
-//               value={description}
-//               onChange={(e) => setDescription(e.target.value)}
-//               rows={4}
-//               required
-//             />
-//           </div>
-
-//           {/* Add Files */}
-//           <div className="flex flex-col gap-2 w-full">
-//             <label htmlFor="files" className="text-2xl font-medium">
-//               Add Files
-//             </label>
-//             <FileInput
-//               label="Upload Project Files"
-//               fileNames={files.map((file) => file.name)}
-//               onFileChange={handleFileChange}
-//             />
-//           </div>
-
-//           {/* Skills */}
-//           <div className="flex flex-col gap-2 w-full">
-//             <label htmlFor="skills" className="text-2xl font-medium">
-//               Skills
-//             </label>
-//             <input
-//               id="skills"
-//               type="text"
-//               className="border p-3 rounded-lg"
-//               value={skills}
-//               onChange={(e) => setSkills(e.target.value)}
-//               required
-//             />
-//           </div>
-//         </div>
-
-//         <div className="w-full flex flex-col justify-start items-start gap-6">
-//           {/* Cover Photo */}
-//           <div className="flex flex-col gap-2 w-full">
-//             <label htmlFor="coverImage" className="text-2xl font-medium">
-//               Cover Photo
-//             </label>
-//             <FileInput
-//               label="Upload Cover Photo"
-//               fileNames={coverImage ? [coverImage.name] : []}
-//               onFileChange={handleCoverImageChange}
-//             />
-//           </div>
-
-//           {/* Project Link */}
-//           <div className="flex flex-col gap-2 w-full">
-//             <label htmlFor="projectLink" className="text-2xl font-medium">
-//               Project Link
-//             </label>
-//             <input
-//               id="projectLink"
-//               type="url"
-//               className="border p-3 rounded-lg"
-//               value={projectLink}
-//               onChange={(e) => setProjectLink(e.target.value)}
-//               required
-//             />
-//           </div>
-//         </div>
-
-//         {/* Submit Button */}
-//         <div className="mt-6 flex justify-end w-full">
-//           <button
-//             type="submit"
-//             className="bg-primary text-white py-3 px-6 rounded-lg"
-//           >
-//             Update
-//           </button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default EditProject;
-
-// const FileInput = ({ label, onFileChange, fileNames }) => {
-//   const handleFileChange = (e) => {
-//     const selectedFiles = Array.from(e.target.files);
-//     onFileChange(selectedFiles);
-//   };
-
-//   return (
-//     <label className="w-full cursor-pointer flex justify-center items-center flex-col py-9 bg-white rounded-2xl border-blue-300 gap-3 border-dashed border-2 hover:border-blue-700 group animation">
-//       <input
-//         type="file"
-//         className="hidden"
-//         multiple
-//         onChange={handleFileChange}
-//       />
-//       <FaImage className="text-4xl text-blue-400 group-hover:text-blue-700 animation" />
-//       <h2 className="text-center text-gray-400 text-xs group-hover:text-gray-900 animation">
-//         {fileNames.length > 0 ? fileNames.join(", ") : label}
-//       </h2>
-//     </label>
-//   );
-// };
-
 "use client";
-import React, { useState, useEffect } from "react";
-import { FaArrowLeft, FaImage } from "react-icons/fa";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "@/app/providers/AuthContext";
-import { useQuery } from "react-query";
-import { getData } from "@/app/providers/TheQueryProvider";
+import axiosInstance from "@/app/providers/axiosConfig";
+import { useTranslation } from "@/app/providers/Transslations";
 import Link from "next/link";
-import { MainBtn, SecondaryBtn } from "@/app/components/generalComps/Btns";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useMutation, useQuery } from "react-query";
+import { toast } from "sonner";
+import * as Yup from "yup";
+import { useState } from "react";
+import { MainBtn } from "@/app/components/generalComps/Btns";
+import { useRouter, useSearchParams } from "next/navigation";
+import FilesSection from "./EditFilesSection";
+import InputField from "./InputField";
+import SkillsField from "./SkillsField";
+import FileInput from "./FileInput";
+import TextAreaField from "./TextAreaField";
+import SelectInput from "./SelectInput";
+import ConfirmModal from "./ConfirmModal";
+import UserSkeleton from "@/app/components/sceletons/UserSkeleton";
+import Spinner from "@/app/components/generalComps/Spinner";
 
-const EditProject = () => {
-  const { user } = useAuth();
+const EditProjectContent = () => {
+  const [categoryId, setCategoryId] = useState("");
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [description, setDescription] = useState("");
+  const [skills, setSkills] = useState([]);
+  const [projectLink, setProjectLink] = useState("");
+  const [coverImage, setCoverImage] = useState(null);
+  const [files, setFiles] = useState([]);
+  const [existingFiles, setExistingFiles] = useState([]);
+  const [errors, setErrors] = useState({});
+  const { translate, language } = useTranslation();
   const searchParams = useSearchParams();
   const projectId = searchParams.get("projectId");
-  const type = searchParams.get("type");
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState(null);
+  const [modalMessage, setModalMessage] = useState("");
+const router = useRouter();
+  // Fetch project data
+  const { data: projectData, isLoading: isProjectLoading } = useQuery(
+    ["project", projectId],
+    () =>
+      axiosInstance
+        .get(`/auth/freelancer/projects/${projectId}`)
+        .then((res) => res.data),
+    {
+      onSuccess: (data) => {
+        const project = data.data;
+        setTitle(project.name);
+        setDescription(project.description);
+        setCategoryId(project.category_id);
+        setProjectLink(project.link);
+        setDate(project.date);
+        setSkills(project.skills || []);
+        setExistingFiles(project.files || []);
+      },
+    }
+  );
 
-  const [formData, setFormData] = useState({
-    title: "",
-    date: "",
-    description: "",
-    skills: "",
-    projectLink: "",
-    coverImage: null,
-    files: [],
+  const { data: categories, isLoading: isCategoriesLoading } = useQuery(
+    "categories",
+    () => axiosInstance.get("/categories").then((res) => res.data)
+  );
+
+  const handleFileChange = (newFiles) => {
+    setFiles(newFiles);
+    setErrors((prev) => ({ ...prev, files: "" }));
+  };
+
+  const handleCoverImageChange = (file) => {
+    setCoverImage(file[0]);
+    setErrors((prev) => ({ ...prev, coverImage: "" }));
+  };
+
+  const projectSchema = Yup.object().shape({
+    name: Yup.string().required(translate("validation.title_required")),
+    description: Yup.string().required(
+      translate("validation.description_required")
+    ),
+    category_id: Yup.string().required(
+      translate("validation.category_required")
+    ),
+    link: Yup.string()
+      .url(translate("validation.link_invalid"))
+      .required(translate("validation.link_required")),
+    date: Yup.string().required(translate("validation.date_required")),
+    skills: Yup.array().min(1, translate("validation.skills_required")),
+    files: Yup.array(),
+    cover_image: Yup.mixed(),
   });
 
-  const { data, isLoading, error } = useQuery(
-    ["userData", user?.user?.id],
-    () => getData(`user?id=${user?.user?.id}`),
-    { enabled: !!user?.user?.id }
-  );
-
-  useEffect(() => {
-    if (data) {
-      let project;
-
-      if (type === "template") {
-        project = data.user.templates.find((p) => p.id === projectId);
-      } else {
-        project = data.user.projects.find((p) => p.id === projectId);
-      }
-
-      if (project) {
-        setFormData({
-          title: project.title,
-          date: project.date || "",
-          description: project.description || "",
-          skills: project.skills?.join(", ") || "",
-          projectLink: project.link || "",
-          coverImage: project.image || null,
-          files: project.files || [],
-        });
-      }
+  const updateProjectMutation = useMutation(
+    (data) =>
+      axiosInstance.post(`/auth/freelancer/projects/${projectId}`, data),
+    {
+      onSuccess: () => {
+        toast.success(translate("status.project_updated"));
+        setErrors({});
+        router.push(`/profile/${projectId}?type=project`);
+      },
+      onError: (error) => {
+        toast.error(translate("status.error"));
+        console.error("Failed to update project:", error);
+      },
     }
-  }, [data, projectId, type]);
+  );
 
-  const handleChange = (key, value) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
+  const deleteFileMutation = useMutation(
+    (fileId) => axiosInstance.delete(`/auth/image/delete/${fileId}`),
+    {
+      onSuccess: () => {
+        setExistingFiles((prevFiles) =>
+          prevFiles.filter((file) => file.id !== fileToDelete)
+        );
+        toast.success(translate("status.file_deleted"));
+        setFileToDelete(null);
+      },
+      onError: (error) => {
+        console.error("Failed to delete file:", error);
+        toast.error(translate("status.delete_error"));
+        setFileToDelete(null);
+      },
+    }
+  );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Updated Data:", formData);
+
+    const dataToValidate = {
+      name: title,
+      description,
+      category_id: categoryId,
+      link: projectLink,
+      date,
+      skills,
+      files: files,
+      cover_image: coverImage,
+    };
+
+    try {
+      await projectSchema.validate(dataToValidate, { abortEarly: false });
+      setErrors({});
+
+      const formData = new FormData();
+      formData.append("name", title);
+      formData.append("description", description);
+      formData.append("category_id", categoryId);
+      formData.append("link", projectLink);
+      formData.append("date", date);
+      if (coverImage) {
+        formData.append("cover_image", coverImage);
+      }
+      formData.append("_method", "put");
+
+      skills.forEach((skill, index) => {
+        formData.append(`skills[${index}]`, skill.id);
+      });
+
+      files.forEach((file, index) => {
+        formData.append(`files[${index}]`, file);
+      });
+
+      updateProjectMutation.mutate(formData);
+    } catch (validationError) {
+      const errorMap = {};
+      validationError.inner.forEach((err) => {
+        errorMap[err.path] = err.message;
+        toast.error(err.message);
+      });
+      setErrors(errorMap);
+    }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading project data!</div>;
+  const handleRemoveExistingFile = async (fileId) => {
+    try {
+      const formData = new FormData();
+      formData.append("image_id", fileId);
+
+      await axiosInstance.post("/auth/image/delete", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setExistingFiles((prevFiles) =>
+        prevFiles.filter((file) => file.id !== fileId)
+      );
+      toast.success(translate("status.file_deleted"));
+    } catch (error) {
+      console.error("Failed to delete file:", error);
+      toast.error(translate("status.delete_error"));
+    }
+  };
+
+  const confirmDelete = () => {
+    if (fileToDelete) {
+      deleteFileMutation.mutate(fileToDelete);
+    }
+    setShowConfirmModal(false);
+  };
+
+  const cancelDelete = () => {
+    setFileToDelete(null);
+    setShowConfirmModal(false);
+  };
 
   return (
-    <div className="h-screen w-[90%] mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100 dark:bg-transparent">
-      <Header projectId={projectId} type={type} />
+    <div className="min-h-screen w-[90%] mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100 dark:bg-transparent">
+      <div className="head text-3xl mt-3">
+        <Link
+          className="flex justify-start items-center gap-4 font-medium"
+          href={"/profile"}
+        >
+          {language === "en" ? <FaArrowLeft /> : <FaArrowRight />}
+          <span>{translate("projects.edit_project")}</span>
+        </Link>
+      </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="w-full grid grid-cols-1 lg:grid-cols-[70%_28%] gap-4 mb-8"
-      >
-        <div className="flex flex-col gap-6">
-          <InputField
-            id="title"
-            label="Project Title"
-            value={formData.title}
-            onChange={(e) => handleChange("title", e.target.value)}
-            required
-          />
-          <InputField
-            id="date"
-            label="Date of Project"
-            type="date"
-            value={formData.date}
-            onChange={(e) => handleChange("date", e.target.value)}
-            required
-          />
-          <TextAreaField
-            id="description"
-            label="Description"
-            value={formData.description}
-            onChange={(e) => handleChange("description", e.target.value)}
-            rows={4}
-            required
-          />
-          <FileInput
-            label="Upload Project Files"
-            fileNames={formData.files.map((file) => file.name)}
-            onFileChange={(files) => handleChange("files", files)}
-          />
-          <InputField
-            id="skills"
-            label="Skills"
-            value={formData.skills}
-            onChange={(e) => handleChange("skills", e.target.value)}
-            required
-          />
-        </div>
+      {showConfirmModal && (
+        <ConfirmModal
+          modalMessage={modalMessage}
+          confirmDelete={confirmDelete}
+          cancelDelete={cancelDelete}
+          translate={translate}
+          language={language}
+        />
+      )}
 
-        <div className="flex flex-col gap-6">
-          <FileInput
-            label="Upload Cover Photo"
-            fileNames={formData.coverImage ? [formData.coverImage.name] : []}
-            onFileChange={(file) => handleChange("coverImage", file[0])}
-          />
-          <InputField
-            id="projectLink"
-            label="Project Link"
-            type="url"
-            value={formData.projectLink}
-            onChange={(e) => handleChange("projectLink", e.target.value)}
-            required
-          />
-        </div>
+      {isProjectLoading ? (
+        <UserSkeleton />
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          className="w-full grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8"
+        >
+          <div>
+            <SelectInput
+              label={translate("projects.project_category")}
+              value={categoryId}
+              options={categories?.data || []}
+              onChange={(value) => {
+                setCategoryId(value);
+                setErrors((prev) => ({ ...prev, categoryId: "" }));
+              }}
+              error={errors.categoryId}
+              placeholder={translate("projects.select_category")}
+            />
 
-        <div className="mt-6 flex justify-end w-full">
-          <button
-            type="submit"
-            className="bg-primary text-white py-3 px-6 rounded-lg"
-          >
-            Update
-          </button>
-        </div>
-      </form>
+            <InputField
+              label={translate("projects.project_name")}
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                setErrors((prev) => ({ ...prev, title: "" }));
+              }}
+              error={errors.title}
+            />
+
+            <InputField
+              label={translate("projects.project_date")}
+              type="date"
+              value={date}
+              onChange={(e) => {
+                setDate(e.target.value);
+                setErrors((prev) => ({ ...prev, date: "" }));
+              }}
+              error={errors.date}
+            />
+
+            <TextAreaField
+              label={translate("projects.project_description")}
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+                setErrors((prev) => ({ ...prev, description: "" }));
+              }}
+              error={errors.description}
+            />
+
+            <div className="flex flex-col">
+              <label className="font-medium mb-2">
+                {translate("projects.project_files")}
+              </label>
+
+              {/* Existing files */}
+              {existingFiles.length > 0 && (
+                <FilesSection
+                  files={existingFiles}
+                  onRemove={handleRemoveExistingFile}
+                />
+              )}
+
+              <FileInput
+                label={translate("projects.upload_new_files")}
+                fileNames={files.map((file) => file.name)}
+                onFileChange={handleFileChange}
+                errors={errors.files}
+                multiple={true}
+              />
+
+            </div>
+
+            <div className="flex flex-col">
+              <SkillsField onSkillsChange={setSkills} initialSkills={skills} />
+            </div>
+          </div>
+
+          <div>
+            <div className="flex flex-col">
+              <label className="font-medium mb-2">
+                {translate("projects.project_cover")}
+              </label>
+              {projectData?.data?.cover_image && !coverImage && (
+                <div className="mb-4">
+                  <h4 className="text-sm mb-2">
+                    {translate("projects.current_cover")}
+                  </h4>
+                  <img
+                    src={projectData.data.cover_image}
+                    alt="Current cover"
+                    className="max-w-full h-auto rounded"
+                  />
+                </div>
+              )}
+              <FileInput
+                label={translate("projects.change_cover")}
+                fileNames={coverImage ? [coverImage.name] : []}
+                onFileChange={handleCoverImageChange}
+                errors={errors.coverImage}
+                multiple={false}
+              />
+              {errors.coverImage && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.coverImage}
+                </span>
+              )}
+            </div>
+
+            <InputField
+              label={translate("projects.project_url")}
+              type="url"
+              value={projectLink}
+              onChange={(e) => {
+                setProjectLink(e.target.value);
+                setErrors((prev) => ({ ...prev, projectLink: "" }));
+              }}
+              error={errors.projectLink}
+            />
+          </div>
+          <div className="mt-6 flex justify-end w-full">
+            <MainBtn
+              text={updateProjectMutation.isLoading ? <Spinner /> : translate("btns.update")}
+              loading={updateProjectMutation.isLoading}
+              disabled={updateProjectMutation.isLoading}
+            />
+          </div>
+        </form>
+      )}
     </div>
   );
 };
 
-const Header = ({ projectId, type }) => (
-  <div className="w-full text-3xl flex justify-between items-center">
-    <Link
-      className="flex justify-start items-center gap-4 font-medium"
-      href={`/profile/project?type=${type}&projectId=${projectId}`}
-    >
-      <FaArrowLeft />
-      <span className="whitespace-nowrap">Edit Project</span>
-    </Link>
-
-    <div className="w-full flex justify-end items-center gap-4 text-xl">
-      <Link
-        href={`/profile/project?type=${type}&projectId=${projectId}`}
-      >
-        <SecondaryBtn text={"Discard"} />
-      </Link>
-      <MainBtn text={"Save"} />
-    </div>
-  </div>
-);
-
-const InputField = ({
-  id,
-  label,
-  type = "text",
-  value,
-  onChange,
-  required,
-}) => (
-  <div className="flex flex-col gap-2 w-full">
-    <label htmlFor={id} className="text-2xl font-medium">
-      {label}
-    </label>
-    <input
-      id={id}
-      type={type}
-      className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
-      value={value}
-      onChange={onChange}
-      required={required}
-    />
-  </div>
-);
-
-const TextAreaField = ({ id, label, value, onChange, rows, required }) => (
-  <div className="flex flex-col gap-2 w-full">
-    <label htmlFor={id} className="text-2xl font-medium">
-      {label}
-    </label>
-    <textarea
-      id={id}
-      className="border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
-      value={value}
-      onChange={onChange}
-      rows={rows}
-      required={required}
-    />
-  </div>
-);
-
-const FileInput = ({ label, onFileChange, fileNames }) => {
-  const handleFileChange = (e) => {
-    const selectedFiles = Array.from(e.target.files);
-    onFileChange(selectedFiles);
-  };
-
-  return (
-    <label
-      className="w-full cursor-pointer flex justify-center items-center flex-col py-9 dark:text-white text-slate-900 dark:bg-darknav dark:border-darkinput 
-    rounded-2xl border-blue-300 gap-3 border-dashed border-2 hover:border-blue-700 group animation dark:hover:bg-blue-500/20"
-    >
-      <input
-        type="file"
-        className="hidden"
-        multiple
-        onChange={handleFileChange}
-      />
-      <FaImage className="text-4xl text-blue-400 group-hover:text-blue-700 animation" />
-      <h2 className="text-center text-gray-400 text-xs group-hover:text-gray-900 animation">
-        {fileNames.length > 0 ? fileNames.join(", ") : label}
-      </h2>
-    </label>
-  );
-};
-
-export default EditProject;
+export default EditProjectContent;

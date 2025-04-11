@@ -218,7 +218,12 @@
     "cover_image_required": "Cover image is required",
     "at_least_one_file": "At least one file is required",
     "select_category": "Select a category",
-    "category_required": "Category is required"
+    "category_required": "Category is required",
+    "current_cover": "Current Cover",
+    "current_files": "Current Files",
+    "current_skills": "Current Skills",
+    "upload_new_files": "Upload New Files",
+    "change_cover": "Change Cover Image"
   },
   "templates": {
     "add_template": "Add Template",

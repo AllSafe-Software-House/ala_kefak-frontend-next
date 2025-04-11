@@ -15,6 +15,9 @@ const axiosInstance = axios.create({
   //   "Content-Type": "application/json",
 
   // },
+  headers: {
+    "Content-Type": "multipart/form-data" 
+  }
 });
 
 // Interceptor لإضافة التوكن
