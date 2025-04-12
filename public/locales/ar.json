@@ -259,7 +259,13 @@
     "select_category": "اختر قسم",
     "category_required": "القسم مطلوب",
     "delivery_time": "مدة التسليم",
-    "start_price": "السعر الابتدائي"
+    "start_price": "السعر الابتدائي",
+    "current_cover": "صورة الغلاف الحالية",
+    "current_files": "الملفات الحالية",
+    "current_skills": "المهارات الحالية",
+    "upload_new_files": "رفع ملفات جديدة",
+    "change_cover": "تغيير صورة الغلاف",
+    "edit_template": "تعديل القالب"
   },
   "files": {
     "upload_files": "إختيار الملفات",

@@ -262,7 +262,13 @@
     "select_category": "Select a category",
     "category_required": "Category is required",
     "start_price": "Starting Price",
-    "delivery_time": "Delivery Time"
+    "delivery_time": "Delivery Time",
+    "current_cover": "Current Cover",
+    "current_files": "Current Files",
+    "current_skills": "Current Skills",
+    "upload_new_files": "Upload New Files",
+    "change_cover": "Change Cover Image",
+    "edit_template": "Edit Template"
   },
   "files": {
     "upload_files": "Select Files",
