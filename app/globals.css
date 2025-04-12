@@ -9,60 +9,48 @@
 }
 
 body.light {
-  @apply bg-gray-100 ;
+  @apply bg-gray-100;
 }
 
 body.dark {
-  @apply bg-darkbg; ;
+  @apply bg-darkbg;
+  ;
 
 }
 
 ::-webkit-scrollbar {
-  @apply w-[12px] h-3;
+  @apply w-[8px] h-3;
 }
-
 ::-webkit-scrollbar-track {
   @apply rounded-full bg-primary/20;
 }
-
 ::-webkit-scrollbar-thumb {
   @apply bg-primary rounded-full;
 }
-
 .animation {
   transition: all 0.4s ease-in-out;
 }
-
 progress {
   -webkit-appearance: none;
   appearance: none;
 }
-
 progress::-webkit-progress-bar {
   @apply bg-gray-100 dark:bg-darkbg rounded-full;
 }
-
 progress::-webkit-progress-value {
   @apply bg-primary rounded-full;
 }
-
 progress::-moz-progress-bar {
   @apply bg-primary rounded-full;
 }
-
 input,
 textarea,
 select {
   @apply text-gray-900 dark:text-slate-800;
 }
-
 .cs-message--outgoing .cs-message__content {
-  @apply !bg-primary !text-white relative !rounded-xl my-2 ;
+  @apply !bg-primary !text-white relative !rounded-xl my-2;
 }
-
-
-
 .cs-message--incoming .cs-message__content {
-  @apply !bg-white relative !rounded-xl my-2 ;
+  @apply !bg-white relative !rounded-xl my-2;
 }
-

@@ -7,6 +7,7 @@ import TheQueryProvider from "./TheQueryProvider";
 import { AuthProvider } from "./AuthContext";
 import { ThemeProvider } from "./Theme-context";
 import { ToastProvider } from "../components/toast/Toast";
+import { ConfirmationProvider } from "./SecondaryProvider";
 
 const AppProviders = ({ children }) => {
   return (
@@ -15,8 +16,10 @@ const AppProviders = ({ children }) => {
         <TheQueryProvider>
           <AuthProvider>
             <ThemeProvider>
-              {children}
-              <ToastContainer />
+              <ConfirmationProvider>
+                {children}
+                <ToastContainer />
+              </ConfirmationProvider>
             </ThemeProvider>
           </AuthProvider>
         </TheQueryProvider>

@@ -18,17 +18,19 @@ const GeneralModal = ({ content, onClose, classNames="" }) => {
         whileInView={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
-        className={`relative bg-white dark:bg-darkbg w-full max-w-3xl max-h-[80vh]  p-6 rounded-lg shadow-lg overflow-auto ${classNames}`}
+        className={`relative bg-white dark:bg-darkbg w-full max-w-3xl max-h-[70vh] p-4 rounded-lg shadow-lg overflow-auto ${classNames}`}
         onClick={(e) => e.stopPropagation()}
       >
         <IoClose
           className={`size-10 text-xl text-gray-800 cursor-pointer flex justify-center items-center rounded-full border bg-gray-100 dark:bg-darkinput dark:text-gray-300 dark:border-gray-900
-            ${language == "ar" ? "mr-auto" : "ml-auto"}
+            ${language == "ar" ? "mr-auto" : "ml-auto"} hover:!text-danger/80 hover:!bg-danger/10 animation
             `}
           onClick={onClose}
         />
 
+        <div className="p-4 mt-4 max-h-[65vh] overflow-y-auto ">
         {content}
+        </div>
       </motion.div>
     </motion.div>
   );

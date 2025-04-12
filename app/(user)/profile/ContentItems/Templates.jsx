@@ -4,10 +4,12 @@ import AddBtn from "../UIItems/AddBtn";
 import Heading from "../UIItems/Heading";
 import TemplateCard from "../UIItems/TemplateCard";
 import { useTranslation } from "@/app/providers/Transslations";
+import { useState } from "react";
 
 const Templates = ({ user }) => {
   const router = useRouter();
   const { translate } = useTranslation();
+  const [userTemplates, setuserTemplates] = useState(user?.templates)
 
   const handleNavigate = () => {
     router.push("/profile/add-template");
@@ -19,8 +21,8 @@ const Templates = ({ user }) => {
         actions={[<AddBtn key="add" onClick={handleNavigate} />]}
       />
       <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-4">
-        {user?.templates.map((template) => (
-          <TemplateCard key={template.id} project={template} />
+        {userTemplates?.map((template) => (
+          <TemplateCard key={template.id} project={template} setuserTemplates={setuserTemplates} />
         ))}
       </div>
     </div>

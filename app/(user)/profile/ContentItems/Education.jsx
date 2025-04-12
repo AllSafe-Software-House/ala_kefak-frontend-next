@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import AddBtn from "../UIItems/AddBtn";
-import EditBtn from "../UIItems/EditBtn";
 import EducationItem from "../UIItems/EducationItem";
 import Heading from "../UIItems/Heading";
 import { FaEdit } from "react-icons/fa";

@@ -8,12 +8,19 @@ import { useTranslation } from "@/app/providers/Transslations";
 import axiosInstance from "@/app/providers/axiosConfig";
 import Spinner from "@/app/components/generalComps/Spinner";
 import { toast } from "sonner";
+import { IoLocationOutline } from "react-icons/io5";
 
 const Title = ({ user, openModal, closeModal }) => {
-  const [userData, setUserData] = useState(null)
+  const [userData, setUserData] = useState(null);
   const { translate } = useTranslation();
   const handleEdit = () => {
-    openModal(<TitleModal about={user} closeModal={closeModal} setUserData={setUserData} />);
+    openModal(
+      <TitleModal
+        about={user}
+        closeModal={closeModal}
+        setUserData={setUserData}
+      />
+    );
   };
 
   useEffect(() => {
@@ -21,12 +28,21 @@ const Title = ({ user, openModal, closeModal }) => {
   }, []);
 
   return (
-    <div className="w-full rounded-2xl bg-white p-3 md:p-6 border flex flex-col gap-6 dark:bg-darknav dark:border-darkinput dark:text-gray-300">
+    <div className="w-full rounded-2xl bg-white p-3 md:p-6 border flex flex-col gap-3 dark:bg-darknav dark:border-darkinput dark:text-gray-300">
       <Heading
-        text={userData?.title ? userData?.title : translate("profile.title")}
+        text={translate("profile.about_me")}
         actions={[<EditBtn key="edit" onClick={handleEdit} />]}
       />
-      <p className="text-sm md:text-base lg:text-base ">
+      <p className="text-sm md:text-base lg:text-base ">{userData?.title}</p>
+      <p className="text-sm flex justify-start items-center gap-2">
+        <span>
+          <IoLocationOutline />
+          </span>
+          <span>
+          {userData?.country?.name}
+          </span>
+      </p>
+      <p className="text-sm ">
         {userData?.description
           ? userData?.description
           : translate("profile.description")}
@@ -37,7 +53,7 @@ const Title = ({ user, openModal, closeModal }) => {
 
 export default Title;
 
-const TitleModal = ({ about, closeModal,setUserData }) => {
+const TitleModal = ({ about, closeModal, setUserData }) => {
   const [title, setTitle] = useState(about?.title || "");
   const [description, setDescription] = useState(about?.description || "");
   const { translate } = useTranslation();
