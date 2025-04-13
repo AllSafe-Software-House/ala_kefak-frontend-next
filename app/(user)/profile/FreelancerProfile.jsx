@@ -267,12 +267,28 @@ const ImageChangeModal = ({ currentImage, onImageChange, closeModal }) => {
 
 const Content = ({ user, openModal, closeModal }) => {
   const [ViewedContent, setViewedContent] = useState("about");
-  const {translate} = useTranslation();
+  const { translate } = useTranslation();
   return (
     <div>
-      <div className="w-full flex justify-start items-center gap-4 mb-8">
-        <button onClick={()=>setViewedContent("about") } className={``}>{translate("profile.about")}</button>
-        <button onClick={()=>setViewedContent("reviews") } >{translate("profile.reviews")}</button>
+      <div className="w-full flex justify-start items-center gap-4 mb-4">
+        <button
+          onClick={() => setViewedContent("about")}
+          className={`${
+            ViewedContent === "about" &&
+            "text-primary border-b-2 border-primary "
+          } text-gray-500 animation pb-1 text-base md:text-2xl font-[600] `}
+        >
+          {translate("profile.about")}
+        </button>
+        <button
+          onClick={() => setViewedContent("reviews")}
+          className={`${
+            ViewedContent === "reviews" &&
+            "text-primary border-b-2 border-primary "
+          } text-gray-500 animation pb-1 text-base md:text-2xl font-[600] `}
+        >
+          {translate("profile.reviews")}
+        </button>
       </div>
       {ViewedContent === "about" ? (
         <AboutContent
@@ -289,60 +305,42 @@ const Content = ({ user, openModal, closeModal }) => {
   );
 };
 
-
-
-const AboutContent =({user,openModal,closeModal})=>{
-  return(
+const AboutContent = ({ user, openModal, closeModal }) => {
+  return (
     <div className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8">
-        <div className="w-full flex flex-col gap-10">
-          <Title user={user} openModal={openModal} closeModal={closeModal} />
-          <Skills user={user} openModal={openModal} closeModal={closeModal} />
-          <Projects user={user} openModal={openModal} closeModal={closeModal} />
-          <Templates
-            user={user}
-            openModal={openModal}
-            closeModal={closeModal}
-          />
-          <WorkExperince
-            user={user}
-            openModal={openModal}
-            closeModal={closeModal}
-          />
-          <Education
-            user={user}
-            openModal={openModal}
-            closeModal={closeModal}
-          />
+      <div className="w-full flex flex-col gap-10">
+        <Title user={user} openModal={openModal} closeModal={closeModal} />
+        <Skills user={user} openModal={openModal} closeModal={closeModal} />
+        <Projects user={user} openModal={openModal} closeModal={closeModal} />
+        <Templates user={user} openModal={openModal} closeModal={closeModal} />
+        <WorkExperince
+          user={user}
+          openModal={openModal}
+          closeModal={closeModal}
+        />
+        <Education user={user} openModal={openModal} closeModal={closeModal} />
 
-          <Certificates
-            user={user}
-            openModal={openModal}
-            closeModal={closeModal}
-          />
-          <Languages
-            user={user}
-            openModal={openModal}
-            closeModal={closeModal}
-          />
-        </div>
-
-        <div className="w-full flex flex-col justify-start items-start gap-10">
-          <Badges user={user} openModal={openModal} closeModal={closeModal} />
-          {user?.complete_profile === 1 && (
-            <Complete
-              user={user}
-              openModal={openModal}
-              closeModal={closeModal}
-            />
-          )}
-          {user?.verify_account === false && (
-            <VerifyAccount
-              user={user}
-              openModal={openModal}
-              closeModal={closeModal}
-            />
-          )}
-        </div>
+        <Certificates
+          user={user}
+          openModal={openModal}
+          closeModal={closeModal}
+        />
+        <Languages user={user} openModal={openModal} closeModal={closeModal} />
       </div>
-  )
-}
+
+      <div className="w-full flex flex-col justify-start items-start gap-10">
+        <Badges user={user} openModal={openModal} closeModal={closeModal} />
+        {user?.complete_profile === 1 && (
+          <Complete user={user} openModal={openModal} closeModal={closeModal} />
+        )}
+        {user?.verify_account === false && (
+          <VerifyAccount
+            user={user}
+            openModal={openModal}
+            closeModal={closeModal}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
