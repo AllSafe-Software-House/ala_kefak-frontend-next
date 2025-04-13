@@ -131,7 +131,12 @@
     "failed_to_update_skills": "Failed to update skills. Please try again.",
     "title": "Job Title",
     "about_me": "About Me",
-    "companies": "Companies"
+    "companies": "Companies",
+    "languages": "Languages",
+    "about": "About",
+    "location": "Location",
+    "reviews": "Reviews",
+    "review": "Review"
   },
   "btns": {
     "add": "Add",

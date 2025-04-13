@@ -132,7 +132,12 @@
     "failed_to_update_skills": "فشل تحديث المهارات. يرجى المحاولة مرة أخرى.",
     "title": "المسمى الوظيفى",
     "about_me": "معلومات عنى",
-    "companies": "الشركات"
+    "companies": "الشركات",
+    "languages": "اللغات",
+    "language": "اللغة",
+    "about": "عن",
+    "reviews": "التقييمات",
+    "review": "تقييم"
   },
   "btns": {
     "add": "اضافة",

@@ -1,12 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  FaStar,
-  FaRegStar,
-  FaShareSquare,
-  FaEye,
-} from "react-icons/fa";
+import { FaStar, FaRegStar, FaShareSquare, FaEye } from "react-icons/fa";
 import GeneralModal from "./modals/GeneralModal";
 import { useMutation } from "react-query";
 import Title from "./ContentItems/Title";
@@ -28,8 +23,9 @@ import { getCroppedImg } from "@/app/providers/cropImage";
 import Spinner from "@/app/components/generalComps/Spinner";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Languages from "./ContentItems/Languages";
 
-const FreelancerProfile = ({ user,refetch }) => {
+const FreelancerProfile = ({ user, refetch }) => {
   const { language, setLanguage, translate } = useTranslation();
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState(null);
@@ -69,7 +65,7 @@ const FreelancerProfile = ({ user,refetch }) => {
 
 export default FreelancerProfile;
 
-const Hero = ({ user, openModal, handleImageChange,closeModal }) => {
+const Hero = ({ user, openModal, handleImageChange, closeModal }) => {
   const { translate } = useTranslation();
   const fullStars = Math.floor(user?.rate);
   const emptyStars = 5 - fullStars;
@@ -84,15 +80,15 @@ const Hero = ({ user, openModal, handleImageChange,closeModal }) => {
     );
   };
 
-const handleShare = () => {
-  console.log(user.id)
-};
+  const handleShare = () => {
+    console.log(user.id);
+  };
 
   return (
     <div className="w-full flex flex-col items-center text-center">
       <div className="w-full flex justify-between md:justify-end items-center gap-6 mt-4">
         <SecondaryBtn
-        onClick={handleShare}
+          onClick={handleShare}
           text={
             <div className="flex justify-center items-center gap-2">
               <span>{translate("profile.share")}</span>
@@ -102,7 +98,10 @@ const handleShare = () => {
         />
         <MainBtn
           text={
-            <Link href={`/viewProfile?freelancerId=${user?.id}`} className="flex justify-center items-center gap-2">
+            <Link
+              href={`/viewProfile?freelancerId=${user?.id}`}
+              className="flex justify-center items-center gap-2"
+            >
               <span>{translate("profile.preview")}</span>
               <FaEye />
             </Link>
@@ -131,8 +130,12 @@ const handleShare = () => {
         </button>
       </div>
       <h2 className="mt-4 text-2xl font-medium">{`${user?.first_name} ${user?.last_name}`}</h2>
-      <p dir="ltr" className=" ytext-lg font-medium text-gray-500">@{user?.user_name}</p>
-      <p className=" ytext-lg font-medium text-gray-500">{user?.title && user?.title }</p>
+      <p dir="ltr" className=" ytext-lg font-medium text-gray-500">
+        @{user?.user_name}
+      </p>
+      <p className=" ytext-lg font-medium text-gray-500">
+        {user?.title && user?.title}
+      </p>
       <div className="flex items-center mt-2">
         {[...Array(fullStars)].map((_, index) => (
           <FaStar key={index} className="text-yellow-500" />
@@ -263,40 +266,83 @@ const ImageChangeModal = ({ currentImage, onImageChange, closeModal }) => {
 };
 
 const Content = ({ user, openModal, closeModal }) => {
+  const [ViewedContent, setViewedContent] = useState("about");
+  const {translate} = useTranslation();
   return (
-    <div className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8">
-      <div className="w-full flex flex-col gap-10">
-        <Title user={user} openModal={openModal} closeModal={closeModal} />
-        <Skills user={user} openModal={openModal} closeModal={closeModal} />
-        <Projects user={user} openModal={openModal} closeModal={closeModal} />
-        <Templates user={user} openModal={openModal} closeModal={closeModal} />
-        <WorkExperince
-          user={user}
-          openModal={openModal}
-          closeModal={closeModal}
-        />
-        <Education user={user} openModal={openModal} closeModal={closeModal} />
-
-        <Certificates
-          user={user}
-          openModal={openModal}
-          closeModal={closeModal}
-        />
+    <div>
+      <div className="w-full flex justify-start items-center gap-4 mb-8">
+        <button onClick={()=>setViewedContent("about") } className={``}>{translate("profile.about")}</button>
+        <button onClick={()=>setViewedContent("reviews") } >{translate("profile.reviews")}</button>
       </div>
+      {ViewedContent === "about" ? (
+        <AboutContent
+          user={user}
+          openModal={openModal}
+          closeModal={closeModal}
+        />
+      ) : (
+        <div className="w-full h-full flex justify-center items-center">
+          <h2>{translate("profile.reviews")}</h2>
+        </div>
+      )}
+    </div>
+  );
+};
 
-      <div className="w-full flex flex-col justify-start items-start gap-10">
-        <Badges user={user} openModal={openModal} closeModal={closeModal} />
-        {user?.complete_profile === 1 && (
-          <Complete user={user} openModal={openModal} closeModal={closeModal} />
-        )}
-        {user?.verify_account === false && (
-          <VerifyAccount
+
+
+const AboutContent =({user,openModal,closeModal})=>{
+  return(
+    <div className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8">
+        <div className="w-full flex flex-col gap-10">
+          <Title user={user} openModal={openModal} closeModal={closeModal} />
+          <Skills user={user} openModal={openModal} closeModal={closeModal} />
+          <Projects user={user} openModal={openModal} closeModal={closeModal} />
+          <Templates
             user={user}
             openModal={openModal}
             closeModal={closeModal}
           />
-        )}
+          <WorkExperince
+            user={user}
+            openModal={openModal}
+            closeModal={closeModal}
+          />
+          <Education
+            user={user}
+            openModal={openModal}
+            closeModal={closeModal}
+          />
+
+          <Certificates
+            user={user}
+            openModal={openModal}
+            closeModal={closeModal}
+          />
+          <Languages
+            user={user}
+            openModal={openModal}
+            closeModal={closeModal}
+          />
+        </div>
+
+        <div className="w-full flex flex-col justify-start items-start gap-10">
+          <Badges user={user} openModal={openModal} closeModal={closeModal} />
+          {user?.complete_profile === 1 && (
+            <Complete
+              user={user}
+              openModal={openModal}
+              closeModal={closeModal}
+            />
+          )}
+          {user?.verify_account === false && (
+            <VerifyAccount
+              user={user}
+              openModal={openModal}
+              closeModal={closeModal}
+            />
+          )}
+        </div>
       </div>
-    </div>
-  );
-};
+  )
+}
