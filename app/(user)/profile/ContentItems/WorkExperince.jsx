@@ -10,7 +10,11 @@ import { toast } from "sonner";
 import Spinner from "@/app/components/generalComps/Spinner";
 import * as Yup from "yup";
 import { useConfirmation } from "@/app/providers/SecondaryProvider";
-import { DateInput, TextAreaInput, TextInput } from "@/app/components/generalComps/inputs/GenInputs";
+import {
+  DateInput,
+  TextAreaInput,
+  TextInput,
+} from "@/app/components/generalComps/inputs/GenInputs";
 
 const WorkExperince = ({ user, openModal, closeModal }) => {
   const [workExperiences, setWorkExperiences] = useState(
@@ -80,11 +84,10 @@ const WorkExperince = ({ user, openModal, closeModal }) => {
   const handleAdd = () => {
     openModal(
       <ExperienceForm
-        workExperiences={workExperiences}
-        setWorkExperiences={setWorkExperiences}
+        experiences={workExperiences}
         onSave={handleSave}
         closeModal={closeModal}
-        isEditing={false}
+        mode="add"
         isLoading={isLoading}
         translate={translate}
       />
@@ -94,11 +97,10 @@ const WorkExperince = ({ user, openModal, closeModal }) => {
   const handleEdit = () => {
     openModal(
       <ExperienceForm
-        workExperiences={workExperiences}
-        setWorkExperiences={setWorkExperiences}
+        experiences={workExperiences}
         onSave={handleSave}
         closeModal={closeModal}
-        isEditing={true}
+        mode="edit"
         isLoading={isLoading}
         translate={translate}
       />
@@ -168,11 +170,10 @@ const ExperienceItem = ({ experience }) => {
 };
 
 const ExperienceForm = ({
-  workExperiences,
-  setWorkExperiences,
+  experiences,
   onSave,
   closeModal,
-  isEditing,
+  mode,
   isLoading,
   translate,
 }) => {
@@ -183,9 +184,8 @@ const ExperienceForm = ({
     to_date: "",
     description: "",
   });
-  const [experiences, setExperiences] = useState(workExperiences);
+  const [selectedId, setSelectedId] = useState(null);
   const [errors, setErrors] = useState({});
-  const [selected, setSelected] = useState(null);
   const { showConfirmation } = useConfirmation();
 
   const experienceSchema = Yup.object().shape({
@@ -198,9 +198,16 @@ const ExperienceForm = ({
     ),
   });
 
+  const isEditing = mode === "edit";
+  const isAdding = mode === "add";
+  const showForm = isAdding || selectedId;
+
+  const selectedExperience =
+    experiences.find((exp) => exp.id === selectedId) || null;
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -213,9 +220,9 @@ const ExperienceForm = ({
 
       const updatedExperiences = isEditing
         ? experiences.map((exp) =>
-            exp.id === formData.id ? { ...formData } : exp
+            exp.id === selectedId ? { ...formData, id: selectedId } : exp
           )
-        : [...experiences, formData];
+        : [...experiences, { ...formData }];
 
       onSave(updatedExperiences);
     } catch (validationError) {
@@ -234,8 +241,8 @@ const ExperienceForm = ({
         message: translate("notify.confirm_delete"),
         onConfirm: async () => {
           await axiosInstance.delete(`/auth/freelancer/experiences/${id}`);
-          setWorkExperiences(experiences.filter((exp) => exp.id !== id));
-          setExperiences(experiences.filter((exp) => exp.id !== id));
+          const updatedExperiences = experiences.filter((exp) => exp.id !== id);
+          onSave(updatedExperiences);
           toast.success(translate("profile.experience_deleted"));
         },
       });
@@ -248,9 +255,8 @@ const ExperienceForm = ({
   };
 
   const handleEditExperience = (experience) => {
-    setSelected(experience.id);
+    setSelectedId(experience.id);
     setFormData({
-      id: experience.id,
       name: experience.name,
       company: experience.company,
       from_date: experience.from_date || "",
@@ -258,6 +264,17 @@ const ExperienceForm = ({
       description: experience.description || "",
     });
     setErrors({});
+  };
+
+  const handleAddNew = () => {
+    setSelectedId(null);
+    setFormData({
+      name: "",
+      company: "",
+      from_date: "",
+      to_date: "",
+      description: "",
+    });
   };
 
   return (
@@ -269,14 +286,13 @@ const ExperienceForm = ({
       </h1>
 
       {isEditing && (
-        <div
-          className="flex flex-col gap-2 px-2 max-h-[200px] overflow-y-scroll"
-          data-lenis-prevent="true"
-        >
+        <div className="flex flex-col gap-2 px-2 max-h-[200px] overflow-y-scroll">
           {experiences.map((experience) => (
             <div
               key={experience.id}
-              className="flex items-center justify-between p-2 border rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300"
+              className={`flex items-center justify-between p-2 border rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 ${
+                selectedId === experience.id ? "border-primary" : ""
+              }`}
             >
               <p className="line-clamp-1">{`${experience.name} | ${experience.company}`}</p>
               <div className="flex items-center gap-2">
@@ -298,7 +314,7 @@ const ExperienceForm = ({
         </div>
       )}
 
-      {selected || !isEditing && (
+      {showForm && (
         <>
           <div className="flex flex-col gap-4">
             <TextInput
@@ -316,7 +332,7 @@ const ExperienceForm = ({
               value={formData.company}
               onChange={handleInputChange}
               error={errors.company}
-              // required
+              required
             />
 
             <div className="w-full flex justify-center items-center gap-4">
@@ -370,73 +386,5 @@ const ExperienceForm = ({
     </div>
   );
 };
-
-// const TextInput = ({ label, name, value, onChange, error, ...props }) => (
-//   <div className="flex flex-col gap-1">
-//     <label className="font-medium" htmlFor={name}>
-//       {label}
-//     </label>
-//     <input
-//       type="text"
-//       id={name}
-//       name={name}
-//       value={value}
-//       onChange={onChange}
-//       className={`border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none ${
-//         error ? "!border-red-500" : ""
-//       }`}
-//       {...props}
-//     />
-//     {error && <span className="text-red-500 text-sm">{error}</span>}
-//   </div>
-// );
-
-// const DateInput = ({ label, name, value, onChange, error, ...props }) => (
-//   <div className="w-full flex flex-col gap-1">
-//     <label className="font-medium" htmlFor={name}>
-//       {label}
-//     </label>
-//     <input
-//       type="date"
-//       id={name}
-//       name={name}
-//       value={value}
-//       onChange={onChange}
-//       className={`border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none ${
-//         error ? "!border-red-500" : ""
-//       }`}
-//       {...props}
-//     />
-//     {error && <span className="text-red-500 text-sm">{error}</span>}
-//   </div>
-// );
-
-// const TextAreaInput = ({
-//   label,
-//   name,
-//   value,
-//   onChange,
-//   error,
-//   rows = 4,
-//   ...props
-// }) => (
-//   <div className="flex flex-col gap-1">
-//     <label className="font-medium" htmlFor={name}>
-//       {label}
-//     </label>
-//     <textarea
-//       id={name}
-//       name={name}
-//       value={value}
-//       onChange={onChange}
-//       rows={rows}
-//       className={`border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 resize-none outline-none ${
-//         error ? "!border-red-500" : ""
-//       }`}
-//       {...props}
-//     />
-//     {error && <span className="text-red-500 text-sm">{error}</span>}
-//   </div>
-// );
 
 export default WorkExperince;

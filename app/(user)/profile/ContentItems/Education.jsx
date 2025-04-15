@@ -11,22 +11,24 @@ import { toast } from "sonner";
 import Spinner from "@/app/components/generalComps/Spinner";
 import * as Yup from "yup";
 import { useConfirmation } from "@/app/providers/SecondaryProvider";
+import {
+  DateInput,
+  FileInput,
+  TextAreaInput,
+  TextInput,
+} from "@/app/components/generalComps/inputs/GenInputs";
 
 const Education = ({ user, openModal, closeModal }) => {
   const [education, setEducation] = useState(user.educations || []);
   const { translate } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
-  const { showConfirmation } = useConfirmation();
 
   const handleSave = async (updatedEducation) => {
     setIsLoading(true);
     try {
-      // Get the difference between initial and updated education
       const newEducation = updatedEducation.filter(
         (edu) => !education.some((oldEdu) => oldEdu.id === edu.id)
       );
-
-      // Update existing education
       const updatePromises = education
         .filter((oldEdu) =>
           updatedEducation.some((edu) => edu.id === oldEdu.id)
@@ -40,36 +42,50 @@ const Education = ({ user, openModal, closeModal }) => {
             formData.append("_method", "put");
             Object.entries(updatedEdu).forEach(([key, value]) => {
               if (value !== null && value !== undefined) {
-                formData.append(key, value);
+                if (key === "file" && typeof value === "object") {
+                  formData.append(key, value);
+                } else {
+                  formData.append(key, value);
+                }
               }
             });
 
             await axiosInstance.post(
               `/auth/freelancer/educations/${oldEdu.id}`,
-              formData
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
             );
           }
         });
 
-      // Add new education
       const addPromises = newEducation.map(async (edu) => {
         const formData = new FormData();
         Object.entries(edu).forEach(([key, value]) => {
           if (value !== null && value !== undefined) {
-            formData.append(key, value);
+            if (key === "file" && typeof value === "object") {
+              formData.append(key, value);
+            } else {
+              formData.append(key, value);
+            }
           }
         });
-
         const response = await axiosInstance.post(
           "/auth/freelancer/educations",
-          formData
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
         return response.data.data;
       });
 
       await Promise.all([...updatePromises, ...addPromises]);
-
-      // Fetch updated education
       const response = await axiosInstance.get("/auth/freelancer/educations");
       setEducation(response.data.data);
       toast.success(translate("status.education_updated"));
@@ -85,10 +101,10 @@ const Education = ({ user, openModal, closeModal }) => {
   const handleAdd = () => {
     openModal(
       <EducationForm
-        initialEducation={education}
+        education={education}
         onSave={handleSave}
         closeModal={closeModal}
-        isEditing={false}
+        mode="add"
         isLoading={isLoading}
         translate={translate}
       />
@@ -98,10 +114,10 @@ const Education = ({ user, openModal, closeModal }) => {
   const handleEdit = () => {
     openModal(
       <EducationForm
-        initialEducation={education}
+        education={education}
         onSave={handleSave}
         closeModal={closeModal}
-        isEditing={true}
+        mode="edit"
         isLoading={isLoading}
         translate={translate}
       />
@@ -130,9 +146,7 @@ const Education = ({ user, openModal, closeModal }) => {
       />
       <div className="w-full grid grid-cols-1 gap-4">
         {education.length > 0 ? (
-          education.map((item) => (
-            <EducationItem key={item.id} item={item} />
-          ))
+          education.map((item) => <EducationItem key={item.id} item={item} />)
         ) : (
           <p className="text-gray-500">{translate("profile.no_education")}</p>
         )}
@@ -141,43 +155,71 @@ const Education = ({ user, openModal, closeModal }) => {
   );
 };
 
-export default Education;
-
 const EducationForm = ({
-  initialEducation,
+  education,
   onSave,
   closeModal,
-  isEditing,
+  mode,
   isLoading,
   translate,
 }) => {
-  const [education, setEducation] = useState(initialEducation);
   const [formData, setFormData] = useState({
     departement: "",
     university: "",
     from_date: "",
     to_date: "",
     description: "",
-    link: "",
+    file: null,
   });
+  const [selectedId, setSelectedId] = useState(null);
   const [errors, setErrors] = useState({});
   const { showConfirmation } = useConfirmation();
 
-  // Validation schema
   const educationSchema = Yup.object().shape({
-    departement: Yup.string().required(translate("validation.departement_required")),
-    university: Yup.string().required(translate("validation.university_required")),
+    departement: Yup.string().required(
+      translate("validation.departement_required")
+    ),
+    university: Yup.string().required(
+      translate("validation.university_required")
+    ),
     from_date: Yup.string().required(translate("validation.date_required")),
     to_date: Yup.string().required(translate("validation.date_required")),
-    description: Yup.string().required(translate("validation.description_required")),
+    description: Yup.string().required(
+      translate("validation.description_required")
+    ),
+    file: Yup.mixed()
+      .required(translate("validation.file_required"))
+      .test("fileType", translate("validation.invalid_file_type"), (value) => {
+        if (!value) return true;
+        if (typeof value === "string") return true;
+        return ["image/jpeg", "image/png", "application/pdf"].includes(
+          value.type
+        );
+      }),
   });
+
+  const isEditing = mode === "edit";
+  const isAdding = mode === "add";
+  const showForm = isAdding || selectedId;
+
+  const selectedEducation =
+    education.find((edu) => edu.id === selectedId) || null;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    // Clear error when user types
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, file }));
+      if (errors.file) {
+        setErrors((prev) => ({ ...prev, file: "" }));
+      }
     }
   };
 
@@ -188,9 +230,9 @@ const EducationForm = ({
 
       const updatedEducation = isEditing
         ? education.map((edu) =>
-            edu.id === formData.id ? { ...formData } : edu
+            edu.id === selectedId ? { ...formData, id: selectedId } : edu
           )
-        : [...education, { ...formData, id: Date.now() }];
+        : [...education, { ...formData }];
 
       onSave(updatedEducation);
     } catch (validationError) {
@@ -209,12 +251,13 @@ const EducationForm = ({
         message: translate("status.confirm_delete"),
         onConfirm: async () => {
           await axiosInstance.delete(`/auth/freelancer/educations/${id}`);
-          setEducation((prev) => prev.filter((edu) => edu.id !== id));
+          const updatedEducation = education.filter((edu) => edu.id !== id);
+          onSave(updatedEducation);
           toast.success(translate("status.education_deleted"));
-        }
+        },
       });
     } catch (error) {
-      if (error !== 'cancelled') {
+      if (error !== "cancelled") {
         toast.error(translate("status.delete_error"));
         console.error("Delete error:", error);
       }
@@ -222,16 +265,28 @@ const EducationForm = ({
   };
 
   const handleEditEducation = (edu) => {
+    setSelectedId(edu.id);
     setFormData({
-      id: edu.id,
       departement: edu.departement || "",
       university: edu.university || "",
       from_date: edu.from_date || "",
       to_date: edu.to_date || "",
       description: edu.description || "",
-      link: edu.link || "",
+      file: edu.file_path || null,
     });
     setErrors({});
+  };
+
+  const handleAddNew = () => {
+    setSelectedId(null);
+    setFormData({
+      departement: "",
+      university: "",
+      from_date: "",
+      to_date: "",
+      description: "",
+      file: null,
+    });
   };
 
   return (
@@ -243,14 +298,13 @@ const EducationForm = ({
       </h1>
 
       {isEditing && (
-        <div
-          className="flex flex-col gap-2 px-2 max-h-[200px] overflow-y-scroll"
-          data-lenis-prevent="true"
-        >
+        <div className="flex flex-col gap-2 px-2 max-h-[200px] overflow-y-scroll">
           {education.map((edu) => (
             <div
               key={edu.id}
-              className="flex items-center justify-between p-2 border rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300"
+              className={`flex items-center justify-between p-2 border rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 ${
+                selectedId === edu.id ? "border-primary" : ""
+              }`}
             >
               <p className="line-clamp-1">{`${edu.departement} | ${edu.university}`}</p>
               <div className="flex items-center gap-2">
@@ -272,145 +326,87 @@ const EducationForm = ({
         </div>
       )}
 
-      <div className="flex flex-col gap-4">
-        <TextInput
-          label={`${translate("profile.degree")}`}
-          name="departement"
-          value={formData.departement}
-          onChange={handleInputChange}
-          error={errors.departement}
-        />
+      {showForm && (
+        <>
+          <div className="flex flex-col gap-4">
+            <TextInput
+              label={`${translate("profile.degree")}`}
+              name="departement"
+              value={formData.departement}
+              onChange={handleInputChange}
+              error={errors.departement}
+              required
+            />
 
-        <TextInput
-          label={`${translate("profile.institution")}`}
-          name="university"
-          value={formData.university}
-          onChange={handleInputChange}
-          error={errors.university}
-        />
+            <TextInput
+              label={`${translate("profile.institution")}`}
+              name="university"
+              value={formData.university}
+              onChange={handleInputChange}
+              error={errors.university}
+              required
+            />
 
-        <div className="w-full flex justify-center items-center gap-4">
-          <DateInput
-            label={`${translate("profile.start_date")}`}
-            name="from_date"
-            value={formData.from_date}
-            onChange={handleInputChange}
-            error={errors.from_date}
-          />
+            <div className="w-full flex justify-center items-center gap-4">
+              <DateInput
+                label={`${translate("profile.start_date")}`}
+                name="from_date"
+                value={formData.from_date}
+                onChange={handleInputChange}
+                error={errors.from_date}
+                required
+              />
 
-          <DateInput
-            label={translate("profile.end_date")}
-            name="to_date"
-            value={formData.to_date}
-            onChange={handleInputChange}
-            error={errors.to_date}
-          />
-        </div>
+              <DateInput
+                label={translate("profile.end_date")}
+                name="to_date"
+                value={formData.to_date}
+                onChange={handleInputChange}
+                error={errors.to_date}
+                required
+              />
+            </div>
 
-        <TextAreaInput
-          label={translate("profile.field_of_study")}
-          name="description"
-          value={formData.description}
-          onChange={handleInputChange}
-          rows={8}
-          error={errors.description}
-        />
+            <TextAreaInput
+              label={translate("profile.field_of_study")}
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              rows={8}
+              error={errors.description}
+              required
+            />
 
-        <TextInput
-          label={translate("profile.link")}
-          name="link"
-          value={formData.link}
-          onChange={handleInputChange}
-          placeholder="https://example.com"
-          error={errors.link}
-        />
-      </div>
+            <FileInput
+              label={translate("profile.certificate_file")}
+              name="file"
+              onChange={handleFileChange}
+              accept="image/*,application/pdf"
+              multiple={false}
+              error={errors.file}
+              required
+            />
+          </div>
 
-      <div className="w-full flex justify-end items-center gap-4 my-4">
-        <SecondaryBtn
-          text={translate("btns.cancel")}
-          onClick={closeModal}
-          classNames="text-lg"
-          disabled={isLoading}
-        />
+          <div className="w-full flex justify-end items-center gap-4 my-4">
+            <SecondaryBtn
+              text={translate("btns.cancel")}
+              onClick={closeModal}
+              classNames="text-lg"
+              disabled={isLoading}
+            />
 
-        <MainBtn
-          text={isLoading ? <Spinner /> : translate("btns.save")}
-          onClick={handleSaveEducation}
-          classNames="text-lg"
-          disabled={isLoading}
-        />
-      </div>
+            <MainBtn
+              text={isLoading ? <Spinner /> : translate("btns.save")}
+              onClick={handleSaveEducation}
+              classNames="text-lg"
+              disabled={isLoading}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
-
-
-const TextInput = ({ label, name, value, onChange, error, ...props }) => (
-  <div className="flex flex-col gap-1">
-    <label className="font-medium" htmlFor={name}>
-      {label}
-    </label>
-    <input
-      type="text"
-      id={name}
-      name={name}
-      value={value}
-      onChange={onChange}
-      className={`border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none ${
-        error ? "!border-red-500" : ""
-      }`}
-      {...props}
-    />
-    {error && <span className="text-red-500 text-sm">{error}</span>}
-  </div>
-);
-
-const DateInput = ({ label, name, value, onChange, error, ...props }) => (
-  <div className="w-full flex flex-col gap-1">
-    <label className="font-medium" htmlFor={name}>
-      {label}
-    </label>
-    <input
-      type="date"
-      id={name}
-      name={name}
-      value={value}
-      onChange={onChange}
-      className={`border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none ${
-        error ? "!border-red-500" : ""
-      }`}
-      {...props}
-    />
-    {error && <span className="text-red-500 text-sm">{error}</span>}
-  </div>
-);
-
-const TextAreaInput = ({
-  label,
-  name,
-  value,
-  onChange,
-  error,
-  rows = 4,
-  ...props
-}) => (
-  <div className="flex flex-col gap-1">
-    <label className="font-medium" htmlFor={name}>
-      {label}
-    </label>
-    <textarea
-      id={name}
-      name={name}
-      value={value}
-      onChange={onChange}
-      rows={rows}
-      className={`border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 resize-none outline-none ${
-        error ? "!border-red-500" : ""
-      }`}
-      {...props}
-    />
-    {error && <span className="text-red-500 text-sm">{error}</span>}
-  </div>
-);
+export default Education;

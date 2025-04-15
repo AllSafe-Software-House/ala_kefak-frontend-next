@@ -9,6 +9,7 @@ import axiosInstance from "@/app/providers/axiosConfig";
 import Spinner from "@/app/components/generalComps/Spinner";
 import { toast } from "sonner";
 import { IoLocationOutline } from "react-icons/io5";
+import { TextAreaInput, TextInput } from "@/app/components/generalComps/inputs/GenInputs";
 
 const Title = ({ user, openModal, closeModal }) => {
   const [userData, setUserData] = useState(null);
@@ -90,30 +91,21 @@ const TitleModal = ({ about, closeModal, setUserData }) => {
   return (
     <div className="flex flex-col gap-4 p-4">
       <h1 className="text-xl md:text-3xl">{translate("profile.about_me")}</h1>
-      <label className="flex flex-col gap-2">
-        <span className="text-gray-700 dark:text-gray-200">
-          {translate("profile.title")}
-        </span>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="flex-1 border p-2 rounded  dark:border-darkinput dark:bg-darknav dark:text-gray-300 "
-          placeholder={translate("profile.title")}
-        />
-      </label>
-      <label className="flex flex-col gap-2">
-        <span className="text-gray-700 dark:text-gray-200">
-          {translate("profile.description")}
-        </span>
-        <textarea
-          data-lenis-prevent="true"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="w-full flex-1 border p-2 rounded  dark:border-darkinput dark:bg-darknav dark:text-gray-300 min-h-60 resize-none"
-          placeholder={translate("profile.description")}
-        />
-      </label>
+      <TextInput
+        label="profile.title"
+        name="title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
+      <TextAreaInput
+        label="profile.description"
+        name="description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        rows={6}
+        required
+      />
       <div className="w-full flex justify-end items-center gap-4">
         <SecondaryBtn onClick={closeModal} text={translate("btns.cancel")} />
         <MainBtn

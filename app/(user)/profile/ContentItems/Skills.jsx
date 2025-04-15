@@ -53,11 +53,6 @@ const Skills = ({ user, openModal, closeModal }) => {
 export default Skills;
 
 
-
-
-
-
-
 const ModalContent = ({ initialSkills, onSave, closeModal }) => {
   const [skills, setSkills] = useState(initialSkills);
   const [newSkill, setNewSkill] = useState("");
