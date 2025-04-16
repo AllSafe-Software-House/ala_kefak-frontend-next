@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { MainBtn } from "@/app/components/generalComps/Btns";
 import { IoClose } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import { SelectInput } from "@/app/components/generalComps/inputs/GenInputs";
 
 const AddProContent = () => {
   const [categoryId, setCategoryId] = useState("");
@@ -126,31 +127,21 @@ const AddProContent = () => {
         className="w-full grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8"
       >
         <div>
-          <div className="flex flex-col">
-            <label className="font-medium mb-2">{translate("projects.project_category")}</label>
-            <select
-              value={categoryId}
-              onChange={(e) => {
-                setCategoryId(e.target.value);
-                setErrors((prev) => ({ ...prev, categoryId: "" }));
-              }}
-              className={`border p-2 rounded dark:bg-darknav dark:text-gray-300 outline-none ${
-                errors.categoryId
-                  ? "border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
-              }`}
-            >
-              <option value="">{translate("projects.select_category")}</option>
-              {categories?.data?.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            {errors.categoryId && (
-              <span className="text-red-500 text-sm mt-1">{errors.categoryId}</span>
-            )}
-          </div>
+        <SelectInput
+  label="projects.project_category"
+  name="categoryId"
+  value={categoryId}
+  onChange={(e) => {
+    setCategoryId(e.target.value);
+    setErrors((prev) => ({ ...prev, categoryId: "" }));
+  }}
+  options={[
+    ...(categories?.data?.map(category => ({ id: category.id, name: category.name })) || [])
+  ]}
+  error={errors.categoryId}
+  required
+  placeholder="projects.select_category"
+/>
 
           <InputField
             label={translate("projects.project_name")}

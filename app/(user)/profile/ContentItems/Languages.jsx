@@ -303,10 +303,11 @@ const LanguageForm = ({
               value={formData.language_id}
               onChange={handleInputChange}
               options={[
-                { id: "", name: translate("profile.choose_language") },
                 ...allLanguages.map(lang => ({ id: lang.id, name: lang.name }))
               ]}
               error={errors.language_id}
+              required
+              placeholder={translate("profile.choose_language")}
             />
 
             <SelectInput
@@ -315,10 +316,11 @@ const LanguageForm = ({
               value={formData.level_id}
               onChange={handleInputChange}
               options={[
-                { id: "", name: translate("profile.choose_level") },
                 ...allLevels.map(level => ({ id: level.id, name: level.name }))
               ]}
               error={errors.level_id}
+              placeholder={translate("profile.choose_level")}
+              required
             />
           </div>
 

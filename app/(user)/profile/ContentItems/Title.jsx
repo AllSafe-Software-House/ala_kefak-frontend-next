@@ -109,36 +109,47 @@ const TitleForm = ({
   const [formData, setFormData] = useState({
     title: userData?.title || "",
     description: userData?.description || "",
-    country_id: userData?.country?.id || "",
+    countryId: userData?.country?.id || ""
   });
   const [errors, setErrors] = useState({});
 
+  // تعريف الـvalidation schema
+  const validationSchema = Yup.object().shape({
+    title: Yup.string().required(translate("validation.title_required")),
+    description: Yup.string().required(translate("validation.description_required")),
+    countryId: Yup.string().required(translate("validation.country_required")),
+  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+      setErrors(prev => ({ ...prev, [name]: "" }));
     }
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
-
-    // Simple validation
-    const newErrors = {};
-    if (!formData.title)
-      newErrors.title = translate("validation.title_required");
-    if (!formData.description)
-      newErrors.description = translate("validation.description_required");
-    if (!formData.country_id)
-      newErrors.country_id = translate("validation.country_required");
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
+    
+    try {
+      // Validate form data against the schema
+      await validationSchema.validate(formData, { abortEarly: false });
+      
+      // If validation passes, save the data
+      await onSave(formData);
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        // Convert Yup validation errors to our errors state
+        const validationErrors = {};
+        error.inner.forEach((err) => {
+          validationErrors[err.path] = err.message;
+        });
+        setErrors(validationErrors);
+      } else {
+        console.error("Error saving data:", error);
+        toast.error(translate("status.error"));
+      }
     }
-
-    await onSave(formData);
   };
 
   return (
