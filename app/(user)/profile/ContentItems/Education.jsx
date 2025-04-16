@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import EducationItem from "../UIItems/EducationItem";
 import Heading from "../UIItems/Heading";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete, MdOutlineEdit } from "react-icons/md";
@@ -17,6 +16,7 @@ import {
   TextAreaInput,
   TextInput,
 } from "@/app/components/generalComps/inputs/GenInputs";
+import Link from "next/link";
 
 const Education = ({ user, openModal, closeModal }) => {
   const [education, setEducation] = useState(user.educations || []);
@@ -410,3 +410,36 @@ const EducationForm = ({
 };
 
 export default Education;
+
+
+
+const EducationItem = ({ item }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { translate } = useTranslation();
+return (
+  <div dir="ltr" className="mt-4 grid grid-cols-1 gap-2">
+    <h1 className="text-base md:text-xl font-medium">{`${item.university} | ${item.departement}`}</h1>
+    <p className="text-xs md:text-sm">{`${item.from_date} - ${item.to_date}`}</p>
+    <div>
+        <p
+          className={`text-sm md:text-base ${isExpanded ? "" : "line-clamp-1"}`}
+        >
+          {item.description}
+        </p>
+        {item.description.length > 100 && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-primary text-base mt-1 hover:underline animation"
+          >
+            {isExpanded
+              ? translate("profile.show_less")
+              : translate("profile.show_more")}
+          </button>
+        )}
+      </div>
+      <Link href={item.file} target="_blank" className="text-primary text-sm hover:underline animation">
+        {translate("btns.view")}
+      </Link>
+  </div>
+);
+};

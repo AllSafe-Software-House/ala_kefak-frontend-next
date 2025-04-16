@@ -144,6 +144,7 @@ const ExperienceItem = ({ experience }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { translate } = useTranslation();
 
+
   return (
     <div dir="ltr" className="mt-4 grid grid-cols-1 gap-2">
       <h1 className="text-base md:text-xl font-medium">{`${experience.name} | ${experience.company}`}</h1>

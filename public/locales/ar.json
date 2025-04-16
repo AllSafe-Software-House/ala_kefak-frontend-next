@@ -157,7 +157,8 @@
     "certificate_file": "ملف الشهادة",
     "level": "المستوى",
     "choose_language": "اختر اللغة",
-    "choose_level": "اختر المستوى"
+    "choose_level": "اختر المستوى",
+    "choose_country": "اختر الدولة"
   },
   "btns": {
     "add": "اضافة",
@@ -318,7 +319,8 @@
     "optinal_field": "هذا الحقل اختياري",
     "file_required": "الملف مطلوب",
     "level_required": "المستوى مطلوب",
-    "language_required": "اللغة مطلوبة"
+    "language_required": "اللغة مطلوبة",
+    "country_required": "الدولة مطلوبة"
   },
   "gen": {
     "days": "يوم/أيام",

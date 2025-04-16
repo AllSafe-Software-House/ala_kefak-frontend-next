@@ -198,7 +198,12 @@ export const SelectInput = ({
           htmlFor={name}
         >
           {translate(label)}
-          {required && <span className="text-red-500">*</span>}
+          <span>
+          <Note
+                required={required}
+                text="This Field is required 'Mandatory Field' "
+              />
+          </span>
         </label>
       )}
       <select
@@ -207,7 +212,7 @@ export const SelectInput = ({
         value={value || ""}
         onChange={onChange}
         disabled={disabled}
-        className={`border p-2 rounded dark:border-danger dark:bg-darknav dark:text-gray-300 outline-none w-full ${
+        className={`border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none w-full ${
           error ? "!border-red-500" : ""
         } ${disabled ? "opacity-70 cursor-not-allowed" : ""}`}
         {...props}

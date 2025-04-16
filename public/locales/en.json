@@ -156,7 +156,8 @@
     "certificate_file": "Certificate File",
     "level": "Level",
     "choose_language": "Choose Language",
-    "choose_level": "Choose Language"
+    "choose_level": "Choose Language",
+    "choose_country": "Choose Country"
   },
 
   "btns": {
@@ -324,7 +325,11 @@
     "file_required": "File is required",
     "level_required": "Level is required",
     "language_required": "Language is required",
-    "skill_required": "Skill is required"
+    "skill_required": "Skill is required",
+    "country_required": "Country is required",
+    "phone_required": "Phone number is required",
+    "email_required": "Email is required",
+    "password_required": "Password is required"
   },
   "gen": {
     "days": "Days",
