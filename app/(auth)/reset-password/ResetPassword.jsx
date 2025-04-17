@@ -117,13 +117,13 @@ const ResetPassword = () => {
               type="email"
               placeholder={translate("forget_password.enter_email")}
               className={`w-full px-3 py-2 border text-gray-900 dark:text-gray-300 border-gray-300 dark:border-gray-600 dark:bg-darkinput rounded-md focus:outline-none ${
-                errors.email ? "border-red-500 focus:border-red-500" : ""
+                errors.email ? "border-redwarn focus:border-redwarn" : ""
               }`}
             />
           )}
         />
         {errors.email && (
-          <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          <p className="text-redwarn text-sm mt-1">{errors.email.message}</p>
         )}
       </div>
       <PrimaryButton
@@ -169,7 +169,7 @@ const ResetPassword = () => {
         )}
       />
       {errors.otp && (
-        <p className="text-red-500 text-sm mt-1">{errors.otp.message}</p>
+        <p className="text-redwarn text-sm mt-1">{errors.otp.message}</p>
       )}
       <PrimaryButton
         label={translate("forget_password.next")}
@@ -199,13 +199,13 @@ const ResetPassword = () => {
             type="password"
             placeholder={translate("forget_password.new_password")}
             className={`w-full px-3 py-1 border text-gray-900 dark:text-gray-300 border-gray-300 dark:border-gray-600 dark:bg-darkinput rounded-md focus:outline-none ${
-              errors.newPassword ? "border-red-500 focus:border-red-500" : ""
+              errors.newPassword ? "border-redwarn focus:border-redwarn" : ""
             }`}
           />
         )}
       />
       {errors.newPassword && (
-        <p className="text-red-500 text-sm mt-1">
+        <p className="text-redwarn text-sm mt-1">
           {errors.newPassword.message}
         </p>
       )}
@@ -220,14 +220,14 @@ const ResetPassword = () => {
             placeholder={translate("forget_password.confirm_password")}
             className={`w-full px-3 py-1 border text-gray-900 dark:text-gray-300 border-gray-300 dark:border-gray-600 dark:bg-darkinput rounded-md focus:outline-none ${
               errors.confirmPassword
-                ? "border-red-500 focus:border-red-500"
+                ? "border-redwarn focus:border-redwarn"
                 : ""
             }`}
           />
         )}
       />
       {errors.confirmPassword && (
-        <p className="text-red-500 text-sm mt-1">
+        <p className="text-redwarn text-sm mt-1">
           {errors.confirmPassword.message}
         </p>
       )}

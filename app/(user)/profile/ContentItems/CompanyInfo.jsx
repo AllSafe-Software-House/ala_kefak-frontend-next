@@ -114,7 +114,7 @@ const ModalContent = ({ initialCompanies, onSave, closeModal, isEditing }) => {
                 </button>
                 <button
                   onClick={() => handleDeleteCompany(company.id)}
-                  className="text-red-500"
+                  className="text-redwarn"
                 >
                   Delete
                 </button>

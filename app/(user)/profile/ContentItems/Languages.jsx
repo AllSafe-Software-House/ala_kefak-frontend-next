@@ -284,7 +284,7 @@ const LanguageForm = ({
                 </button>
                 <button
                   onClick={() => handleDeleteLanguage(lang.id)}
-                  className="text-red-500"
+                  className="text-redwarn"
                 >
                   <MdDelete />
                 </button>

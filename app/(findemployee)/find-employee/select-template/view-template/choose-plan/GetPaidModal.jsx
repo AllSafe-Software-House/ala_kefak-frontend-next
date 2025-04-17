@@ -181,10 +181,10 @@ export default function GetPaidModal({ onClose ,headText="Subscribe now"}) {
               <div className='w-full flex flex-col justify-center items-center gap-4'>
               <img src="/images/errpay.png" className='size-[250px] object-cover' alt="" />
 
-                <p className="text-red-500 text-xl font-medium">Payment Failed! Please check your details and try again.</p>
+                <p className="text-redwarn text-xl font-medium">Payment Failed! Please check your details and try again.</p>
               </div>
               <button
-                className="mt-4 w-full bg-red-500 text-white py-2 rounded-lg font-medium"
+                className="mt-4 w-full bg-redwarn text-white py-2 rounded-lg font-medium"
                 onClick={resetPaymentStatus}
               >
                 Retry

@@ -31,7 +31,7 @@ const AddProContent = () => {
   const [errors, setErrors] = useState({});
   const { translate, language } = useTranslation();
   const router = useRouter();
-  const [isLoading, setisLoading] = useState(false);
+  // const [isLoading, setisLoading] = useState(false);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -72,7 +72,7 @@ const AddProContent = () => {
     coverImage: Yup.mixed().required(translate("validation.cover_required")),
   });
 
-  const mutation = useMutation(
+  const {mutation, isLoading} = useMutation(
     (data) => axiosInstance.post("/auth/freelancer/projects", data),
     {
       onSuccess: () => {
@@ -102,7 +102,6 @@ const AddProContent = () => {
     };
 
     try {
-      setisLoading(true);
       await projectSchema.validate(dataToValidate, { abortEarly: false });
       setErrors({});
 
@@ -131,11 +130,9 @@ const AddProContent = () => {
         console.log(validationError)
       });
       setErrors(errorMap);
-    } finally {
-      setisLoading(false);
-    }
-  };
-
+  
+  }
+  }
   return (
     <div className="min-h-screen w-[90%] mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100 dark:bg-transparent">
       <div className="head text-3xl mt-3">
@@ -309,7 +306,7 @@ const SkillsField = ({ onSkillsChange, error }) => {
           value={newSkill}
           onChange={handleInputChange}
           className={`flex-1 border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300  ${
-            error ? "!border-danger" : ""
+            error ? "!border-redwarn" : ""
           }`}
         />
 
@@ -330,7 +327,7 @@ const SkillsField = ({ onSkillsChange, error }) => {
           </div>
         )}
       </div>
-      {error && <span className="text-danger text-sm block">{error}</span>}
+      {error && <span className="text-redwarn text-sm block">{error}</span>}
       {skills.length > 0 && (
         <div className="w-full flex justify-start items-center flex-wrap gap-2 md:gap-3 ">
           {skills.map((skill) => (
@@ -341,7 +338,7 @@ const SkillsField = ({ onSkillsChange, error }) => {
               <span className="text-xs md:text-base">{skill.name}</span>
               <button
                 onClick={() => handleDelete(skill)}
-                className="text-red-500 hover:text-red-700 animation text-lg md:text-xl"
+                className="text-redwarn hover:text-red-700 animation text-lg md:text-xl"
               >
                 <IoClose />
               </button>

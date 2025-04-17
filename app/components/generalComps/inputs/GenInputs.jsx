@@ -42,12 +42,12 @@ export const TextInput = ({
         placeholder={placeholder ? translate(placeholder) : undefined}
         disabled={disabled}
         className={`border p-3 rounded-lg dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none w-full transition-all ${
-          error ? "!border-red-500" : ""
+          error ? "!border-redwarn" : ""
         } ${disabled ? "opacity-70 cursor-not-allowed" : ""}`}
         {...props}
       />
       {error && (
-        <span className="text-red-500 text-sm">{translate(error)}</span>
+        <span className="text-redwarn text-sm">{translate(error)}</span>
       )}
     </div>
   );
@@ -93,12 +93,12 @@ export const DateInput = ({
         max={max}
         disabled={disabled}
         className={`border p-3 rounded-lg dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none ${
-          error ? "!border-red-500" : ""
+          error ? "!border-redwarn" : ""
         } ${disabled ? "opacity-70 cursor-not-allowed" : ""}`}
         {...props}
       />
       {error && (
-        <span className="text-red-500 text-sm">{translate(error)}</span>
+        <span className="text-redwarn text-sm">{translate(error)}</span>
       )}
     </div>
   );
@@ -143,13 +143,13 @@ export const TextAreaInput = ({
         placeholder={placeholder ? translate(placeholder) : undefined}
         disabled={disabled}
         className={`border p-3 rounded-lg dark:border-darkinput dark:bg-darknav dark:text-gray-300 resize-none outline-none w-full ${
-          error ? "!border-red-500" : ""
+          error ? "!border-redwarn" : ""
         } ${disabled ? "opacity-70 cursor-not-allowed" : ""}`}
         {...props}
         data-lenis-prevent="true"
       />
       {error && (
-        <span className="text-red-500 text-sm">{translate(error)}</span>
+        <span className="text-redwarn text-sm">{translate(error)}</span>
       )}
     </div>
   );
@@ -192,7 +192,7 @@ export const SelectInput = ({
         onChange={onChange}
         disabled={disabled}
         className={`border p-3 rounded-lg dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none w-full ${
-          error ? "!border-red-500" : ""
+          error ? "!border-redwarn" : ""
         } ${disabled ? "opacity-70 cursor-not-allowed" : ""}`}
         {...props}
       >
@@ -208,7 +208,7 @@ export const SelectInput = ({
         ))}
       </select>
       {error && (
-        <span className="text-red-500 text-sm">{translate(error)}</span>
+        <span className="text-redwarn text-sm">{translate(error)}</span>
       )}
     </div>
   );
@@ -252,7 +252,7 @@ export const CheckboxInput = ({
         </label>
       )}
       {error && (
-        <span className="text-red-500 text-sm">{translate(error)}</span>
+        <span className="text-redwarn text-sm">{translate(error)}</span>
       )}
     </div>
   );
@@ -301,7 +301,7 @@ export const RadioInput = ({
         </label>
       )}
       {error && (
-        <span className="text-red-500 text-sm">{translate(error)}</span>
+        <span className="text-redwarn text-sm">{translate(error)}</span>
       )}
     </div>
   );
@@ -392,7 +392,7 @@ export const FileInput = ({
       <label
         className={`w-full cursor-pointer flex justify-center items-center flex-col py-9 dark:text-white text-slate-900 dark:bg-darknav dark:border-darkinput
     rounded-2xl border-blue-300 gap-3 border-dashed border-2 hover:border-blue-700 group animation dark:hover:bg-blue-500/20 ${
-      error ? "!border-red-500" : ""
+      error ? "!border-redwarn" : ""
     } ${disabled ? "opacity-70 cursor-not-allowed" : ""} ${
           isDragging
             ? "!border-blue-700 bg-blue-100/50 dark:bg-blue-500/30"
@@ -418,7 +418,7 @@ export const FileInput = ({
         <FaImage
           className={`text-4xl text-blue-400 group-hover:text-blue-700 ${
             disabled ? "opacity-70 cursor-not-allowed" : ""
-          } ${error ? "!text-red-500" : ""} animation`}
+          } ${error ? "!text-redwarn" : ""} animation`}
         />
         <p className="text-sm text-gray-500 dark:text-gray-400">
           {translate("Drag and drop files here or click to browse")}
@@ -439,7 +439,7 @@ export const FileInput = ({
           ))}
         </div>
       )}
-      {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
+      {error && <span className="text-redwarn text-sm mt-1">{error}</span>}
     </div>
   );
 };

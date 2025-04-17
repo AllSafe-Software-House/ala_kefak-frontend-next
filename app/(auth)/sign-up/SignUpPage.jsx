@@ -269,7 +269,7 @@ export default function SignUpPage() {
                 )}
               </div>
               {errors.country && (
-                <p className="text-red-500 text-sm">{errors.country.message}</p>
+                <p className="text-redwarn text-sm">{errors.country.message}</p>
               )}
               <InputField
                 id="tel"

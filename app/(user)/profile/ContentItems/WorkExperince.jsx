@@ -305,7 +305,7 @@ const ExperienceForm = ({
                 </button>
                 <button
                   onClick={() => handleDeleteExperience(experience.id)}
-                  className="text-red-500"
+                  className="text-redwarn"
                 >
                   <MdDelete />
                 </button>

@@ -13,13 +13,13 @@ const InputField = ({
     <input
       type={type}
       className={`border p-2 rounded dark:bg-darknav dark:text-gray-300 outline-none ${
-        error ? "!border-red-500" : "border-gray-300 dark:border-gray-600"
+        error ? "!border-redwarn" : "border-gray-300 dark:border-gray-600"
       }`}
       value={value}
       onChange={onChange}
       placeholder={placeholder}
     />
-    {error && <span className="text-red-500 text-sm mt-1 block">{error}</span>}
+    {error && <span className="text-redwarn text-sm mt-1 block">{error}</span>}
   </div>
 );
 

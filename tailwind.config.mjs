@@ -21,6 +21,7 @@ export default {
         darknav: "#292B26",
         darkbg: "#1E1F1D",
         darkinput: "#373934",
+        redwarn:"#ef4444 "
       },
     },
   },

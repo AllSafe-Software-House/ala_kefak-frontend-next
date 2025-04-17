@@ -316,7 +316,7 @@ const EducationForm = ({
                 </button>
                 <button
                   onClick={() => handleDeleteEducation(edu.id)}
-                  className="text-red-500"
+                  className="text-redwarn"
                 >
                   <MdDelete />
                 </button>

@@ -329,7 +329,7 @@ const EditProjectContent = () => {
                 multiple={false}
               />
               {errors.coverImage && (
-                <span className="text-red-500 text-sm mt-1">
+                <span className="text-redwarn text-sm mt-1">
                   {errors.coverImage}
                 </span>
               )}

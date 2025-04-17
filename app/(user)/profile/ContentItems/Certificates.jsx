@@ -342,7 +342,7 @@ const CertificateForm = ({
                 </button>
                 <button
                   onClick={() => handleDeleteCertificate(cert.id)}
-                  className="text-red-500"
+                  className="text-redwarn"
                 >
                   <MdDelete />
                 </button>

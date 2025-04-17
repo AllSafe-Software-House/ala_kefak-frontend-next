@@ -24,7 +24,7 @@ const FileInput = ({
       <label
         className={`w-full cursor-pointer flex justify-center items-center flex-col py-9 dark:text-white text-slate-900 dark:bg-darknav dark:border-darkinput
     rounded-2xl border-blue-300 gap-3 border-dashed border-2 hover:border-blue-700 group animation dark:hover:bg-blue-500/20 ${
-      errors ? "!border-red-500" : "border-gray-300 dark:border-gray-600"
+      errors ? "!border-redwarn" : "border-gray-300 dark:border-gray-600"
     }`}
       >
         <input
@@ -38,7 +38,7 @@ const FileInput = ({
           {fileNames.length > 0 ? fileNames.join(", ") : label}
         </h2>
       </label>
-      {errors && <span className="text-red-500 text-sm mt-1">{errors}</span>}
+      {errors && <span className="text-redwarn text-sm mt-1">{errors}</span>}
     </>
   );
 };

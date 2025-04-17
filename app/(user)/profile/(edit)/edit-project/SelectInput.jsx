@@ -6,7 +6,7 @@ export default function SelectInput({ label, value, options, onChange, error, pl
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={`border p-2 rounded dark:bg-darknav dark:text-gray-300 outline-none ${
-          error ? "border-red-500" : "border-gray-300 dark:border-gray-600"
+          error ? "border-redwarn" : "border-gray-300 dark:border-gray-600"
         }`}
       >
         <option value="">{placeholder}</option>
@@ -16,7 +16,7 @@ export default function SelectInput({ label, value, options, onChange, error, pl
           </option>
         ))}
       </select>
-      {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
+      {error && <span className="text-redwarn text-sm mt-1">{error}</span>}
     </div>
   );
 }

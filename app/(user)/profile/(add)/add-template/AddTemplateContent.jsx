@@ -10,6 +10,8 @@ import { useState, useEffect } from "react";
 import { MainBtn } from "@/app/components/generalComps/Btns";
 import { IoClose } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import { SelectInput, TextAreaInput, TextInput } from "@/app/components/generalComps/inputs/GenInputs";
+import Spinner from "@/app/components/generalComps/Spinner";
 
 const AddTemplateContent = () => {
   const [name, setName] = useState("");
@@ -47,7 +49,7 @@ const AddTemplateContent = () => {
     coverImage: Yup.mixed().required(translate("validation.cover_required")),
   });
 
-  const mutation = useMutation(
+  const {mutation, isLoading} = useMutation(
     (data) => axiosInstance.post("/auth/freelancer/templates", data),
     {
       onSuccess: () => {
@@ -118,33 +120,26 @@ const AddTemplateContent = () => {
         className="w-full grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8"
       >
         <div>
-          <div className="flex flex-col">
-            <label className="font-medium mb-2">{translate("templates.template_category")}</label>
-            <select
-              value={categoryId}
-              onChange={(e) => {
-                setCategoryId(e.target.value);
-                setErrors((prev) => ({ ...prev, categoryId: "" }));
-              }}
-              className={`border p-2 rounded dark:bg-darknav dark:text-gray-300 outline-none ${
-                errors.categoryId
-                  ? "border-red-500"
-                  : "border-gray-300 dark:border-gray-600"
-              }`}
-            >
-              <option value="">{translate("templates.select_category")}</option>
-              {categories?.data?.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            {errors.categoryId && (
-              <span className="text-red-500 text-sm mt-1">{errors.categoryId}</span>
-            )}
-          </div>
+          <SelectInput
+            label={translate("templates.template_category")}
+            options={[
+              ...(categories?.data?.map((category) => ({
+                id: category.id,
+                name: category.name,
+              })) || []),
+            ]}
+            value={categoryId}
+            onChange={(e) => {
+              setCategoryId(e.target.value);
+              setErrors((prev) => ({ ...prev, categoryId: "" }));
+            }}
+            required
+            error={errors.categoryId}
+            placeholder={translate("templates.select_category")}
+          />
 
-          <InputField
+          <TextInput
+          required
             label={translate("templates.template_name")}
             value={name}
             onChange={(e) => {
@@ -154,7 +149,8 @@ const AddTemplateContent = () => {
             error={errors.name}
           />
 
-          <InputField
+          <TextInput
+          required
             label={translate("templates.delivery_time")}
             value={deliveryTime}
             onChange={(e) => {
@@ -165,7 +161,8 @@ const AddTemplateContent = () => {
             placeholder="e.g., 6 days"
           />
 
-          <InputField
+          <TextInput
+          required
             label={translate("templates.start_price")}
             type="number"
             value={startPrice}
@@ -177,7 +174,7 @@ const AddTemplateContent = () => {
             placeholder="e.g., 100"
           />
 
-          <TextAreaField
+          <TextAreaInput
             label={translate("templates.template_description")}
             value={description}
             onChange={(e) => {
@@ -185,11 +182,11 @@ const AddTemplateContent = () => {
               setErrors((prev) => ({ ...prev, description: "" }));
             }}
             error={errors.description}
+            required
           />
 
           <div className="flex flex-col">
-            <SkillsField onSkillsChange={setSkills} />
-            {errors.skills && <span className="text-red-500 text-sm mt-1">{errors.skills}</span>}
+            <SkillsField onSkillsChange={setSkills} error={errors.skills} />
           </div>
         </div>
 
@@ -204,11 +201,12 @@ const AddTemplateContent = () => {
               multiple={false}
             />
             {errors.coverImage && (
-              <span className="text-red-500 text-sm mt-1">{errors.coverImage}</span>
+              <span className="text-redwarn text-sm mt-1">{errors.coverImage}</span>
             )}
           </div>
 
-          <InputField
+          <TextInput
+          required
             label={translate("templates.template_url")}
             type="url"
             value={link}
@@ -221,7 +219,7 @@ const AddTemplateContent = () => {
           />
         </div>
         <div className="mt-6 flex justify-end w-full">
-          <MainBtn text={translate("btns.add")} />
+          <MainBtn text={isLoading ? <Spinner /> :translate("btns.add")} />
         </div>
       </form>
     </div>
@@ -231,7 +229,7 @@ const AddTemplateContent = () => {
 export default AddTemplateContent;
 
 
-const SkillsField = ({ onSkillsChange }) => {
+const SkillsField = ({ onSkillsChange, error }) => {
   const [newSkill, setNewSkill] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -277,7 +275,7 @@ const SkillsField = ({ onSkillsChange }) => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 ">
       <label className="font-medium mb-2">
         {translate("projects.project_skills")}
       </label>
@@ -287,8 +285,11 @@ const SkillsField = ({ onSkillsChange }) => {
           type="text"
           value={newSkill}
           onChange={handleInputChange}
-          className="flex-1 border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300"
+          className={`flex-1 border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300  ${
+            error ? "!border-redwarn" : ""
+          }`}
         />
+
         {newSkill && suggestions?.length > 0 && (
           <div
             data-lenis-prevent="true"
@@ -306,17 +307,18 @@ const SkillsField = ({ onSkillsChange }) => {
           </div>
         )}
       </div>
+      {error && <span className="text-redwarn text-sm block">{error}</span>}
       {skills.length > 0 && (
         <div className="w-full flex justify-start items-center flex-wrap gap-2 md:gap-3 ">
           {skills.map((skill) => (
             <div
               key={skill.id}
-              className="flex items-center gap-2 text-gray-500 rounded-full text-sm md:text-base p-2 px-3 md:px-4 border-gray-800 bg-gray-100 dark:bg-darkinput dark:border-darkinput dark:text-gray-400"
+              className="flex items-center gap-2 text-gray-500 rounded-full text-sm md:text-base p-2 px-3 md:px-4 border-gray-800 bg-gray-200 dark:bg-darkinput dark:border-darkinput dark:text-gray-400"
             >
               <span className="text-xs md:text-base">{skill.name}</span>
               <button
                 onClick={() => handleDelete(skill)}
-                className="text-red-500 hover:text-red-700 animation text-lg md:text-xl"
+                className="text-redwarn hover:text-red-700 animation text-lg md:text-xl"
               >
                 <IoClose />
               </button>
@@ -328,44 +330,9 @@ const SkillsField = ({ onSkillsChange }) => {
   );
 };
 
-const InputField = ({
-  label,
-  type = "text",
-  value,
-  onChange,
-  error,
-  placeholder,
-}) => (
-  <div className="flex flex-col">
-    <label className="font-medium mb-2">{label}</label>
-    <input
-      type={type}
-      className={`border p-2 rounded dark:bg-darknav dark:text-gray-300 outline-none ${
-        error ? "border-red-500" : "border-gray-300 dark:border-gray-600"
-      }`}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-    />
-    {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
-  </div>
-);
 
-const TextAreaField = ({ label, value, onChange, error, placeholder }) => (
-  <div className="flex flex-col">
-    <label className="font-medium mb-2">{label}</label>
-    <textarea
-      className={`border p-2 rounded dark:bg-darknav dark:text-gray-300 outline-none ${
-        error ? "border-red-500" : "border-gray-300 dark:border-gray-600"
-      }`}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      rows={4}
-    />
-    {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
-  </div>
-);
+
+
 
 const FileInput = ({
   label,
@@ -390,7 +357,7 @@ const FileInput = ({
     <label
       className={`w-full cursor-pointer flex justify-center items-center flex-col py-9 dark:text-white text-slate-900 dark:bg-darknav dark:border-darkinput
     rounded-2xl border-blue-300 gap-3 border-dashed border-2 hover:border-blue-700 group animation dark:hover:bg-blue-500/20 ${
-      errors ? "!border-red-500" : "border-gray-300 dark:border-gray-600"
+      errors ? "!border-redwarn" : "border-gray-300 dark:border-gray-600"
     }`}
     >
       <input

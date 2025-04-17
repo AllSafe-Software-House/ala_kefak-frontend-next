@@ -139,7 +139,7 @@ useEffect(() => {
             <span className="text-xs md:text-base">{skill.name}</span>
             <button
               onClick={() => handleDelete(skill)}
-              className="text-red-500 hover:text-red-700 animation text-lg md:text-xl"
+              className="text-redwarn hover:text-red-700 animation text-lg md:text-xl"
             >
               <IoClose />
             </button>

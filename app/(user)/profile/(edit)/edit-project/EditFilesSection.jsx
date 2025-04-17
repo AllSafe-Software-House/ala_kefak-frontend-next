@@ -54,7 +54,7 @@ const FilesSection = ({ files, onRemove }) => {
                   e.stopPropagation();
                   onRemove(file.id);
                 }}
-                className={`absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 z-10 transition-opacity animation ${
+                className={`absolute top-2 right-2 bg-redwarn text-white rounded-full p-1 hover:bg-red-600 z-10 transition-opacity animation ${
                   hoveredFile === file.id ? "opacity-100" : "opacity-0"
                 }`}
                 title={translate("btns.delete_file")}
@@ -77,7 +77,7 @@ const FilesSection = ({ files, onRemove }) => {
                     className="w-full h-full object-cover object-top"
                   />
                 ) : fileType === "pdf" ? (
-                  <FaFilePdf className="text-red-500 text-5xl" />
+                  <FaFilePdf className="text-redwarn text-5xl" />
                 ) : fileType === "video" ? (
                   <FaFileVideo className="text-blue-500 text-5xl" />
                 ) : fileType === "audio" ? (
