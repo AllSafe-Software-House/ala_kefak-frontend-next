@@ -1,10 +1,21 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "react-query";
-// import { ReactQueryDevtools } from "react-query/devtools";
+import { ReactQueryDevtools } from "react-query/devtools";
 import axiosInstance from "./axiosConfig";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0, 
+      cacheTime: 0, 
+      refetchOnWindowFocus: true,
+    },
+    mutations: {
+      retry: false,
+    },
+  },
+});
 
 export default function TheQueryProvider({ children }) {
   return (

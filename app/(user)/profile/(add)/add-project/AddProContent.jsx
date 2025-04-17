@@ -10,23 +10,32 @@ import { useState, useEffect } from "react";
 import { MainBtn } from "@/app/components/generalComps/Btns";
 import { IoClose } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-import { SelectInput } from "@/app/components/generalComps/inputs/GenInputs";
+import {
+  DateInput,
+  FileInput,
+  SelectInput,
+  TextAreaInput,
+  TextInput,
+} from "@/app/components/generalComps/inputs/GenInputs";
+import Spinner from "@/app/components/generalComps/Spinner";
 
 const AddProContent = () => {
   const [categoryId, setCategoryId] = useState("");
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
-  const [skills, setSkills] = useState("");
+  const [skills, setSkills] = useState([]);
   const [projectLink, setProjectLink] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [files, setFiles] = useState([]);
   const [errors, setErrors] = useState({});
   const { translate, language } = useTranslation();
   const router = useRouter();
+  const [isLoading, setisLoading] = useState(false);
 
-  const handleFileChange = (newFiles) => {
-    setFiles(newFiles);
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setFiles(files);
     setErrors((prev) => ({ ...prev, files: "" }));
   };
 
@@ -35,21 +44,31 @@ const AddProContent = () => {
     () => axiosInstance.get("/categories").then((res) => res.data)
   );
 
-  const handleCoverImageChange = (file) => {
-    setCoverImage(file[0]);
+  const handleCoverImageChange = (e) => {
+    const file = e.target.files[0];
+    setCoverImage(file);
     setErrors((prev) => ({ ...prev, coverImage: "" }));
   };
 
   const projectSchema = Yup.object().shape({
-    categoryId: Yup.string().required(translate("validation.category_required")),
+    categoryId: Yup.string().required(
+      translate("validation.category_required")
+    ),
     title: Yup.string().required(translate("validation.title_required")),
     date: Yup.string().required(translate("validation.date_required")),
-    description: Yup.string().required(translate("validation.description_required")),
-    skills: Yup.array().required(translate("validation.skills_required")),
+    description: Yup.string().required(
+      translate("validation.description_required")
+    ),
+    skills: Yup.array()
+      .typeError(translate("validation.skills_array"))
+      .min(1, translate("validation.skills_required")),
+
     projectLink: Yup.string()
       .url(translate("validation.link_invalid"))
       .required(translate("validation.link_required")),
-    files: Yup.array().min(1, translate("validation.files_required")),
+    files: Yup.array()
+      .of(Yup.mixed())
+      .min(1, translate("validation.files_required")),
     coverImage: Yup.mixed().required(translate("validation.cover_required")),
   });
 
@@ -62,7 +81,7 @@ const AddProContent = () => {
         router.push("/profile");
       },
       onError: (error) => {
-        toast.error(translate("status.error"));
+        toast.error(error.response?.data?.message || translate("status.error"));
         console.error("Failed to update about:", error);
       },
     }
@@ -83,6 +102,7 @@ const AddProContent = () => {
     };
 
     try {
+      setisLoading(true);
       await projectSchema.validate(dataToValidate, { abortEarly: false });
       setErrors({});
 
@@ -108,15 +128,21 @@ const AddProContent = () => {
       validationError.inner.forEach((err) => {
         errorMap[err.path] = err.message;
         toast.error(err.message);
+        console.log(validationError)
       });
       setErrors(errorMap);
+    } finally {
+      setisLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen w-[90%] mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100 dark:bg-transparent">
       <div className="head text-3xl mt-3">
-        <Link className="flex justify-start items-center gap-4 font-medium" href={"/profile"}>
+        <Link
+          className="flex justify-start items-center gap-4 font-medium"
+          href={"/profile"}
+        >
           {language === "en" ? <FaArrowLeft /> : <FaArrowRight />}
           <span>{translate("projects.add_project")}</span>
         </Link>
@@ -127,23 +153,26 @@ const AddProContent = () => {
         className="w-full grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8"
       >
         <div>
-        <SelectInput
-  label="projects.project_category"
-  name="categoryId"
-  value={categoryId}
-  onChange={(e) => {
-    setCategoryId(e.target.value);
-    setErrors((prev) => ({ ...prev, categoryId: "" }));
-  }}
-  options={[
-    ...(categories?.data?.map(category => ({ id: category.id, name: category.name })) || [])
-  ]}
-  error={errors.categoryId}
-  required
-  placeholder="projects.select_category"
-/>
+          <SelectInput
+            label="projects.project_category"
+            name="categoryId"
+            value={categoryId}
+            onChange={(e) => {
+              setCategoryId(e.target.value);
+              setErrors((prev) => ({ ...prev, categoryId: "" }));
+            }}
+            options={[
+              ...(categories?.data?.map((category) => ({
+                id: category.id,
+                name: category.name,
+              })) || []),
+            ]}
+            error={errors.categoryId}
+            required
+            placeholder="projects.select_category"
+          />
 
-          <InputField
+          <TextInput
             label={translate("projects.project_name")}
             value={title}
             onChange={(e) => {
@@ -151,9 +180,10 @@ const AddProContent = () => {
               setErrors((prev) => ({ ...prev, title: "" }));
             }}
             error={errors.title}
+            required
           />
 
-          <InputField
+          <DateInput
             label={translate("projects.project_date")}
             type="date"
             value={date}
@@ -161,52 +191,46 @@ const AddProContent = () => {
               setDate(e.target.value);
               setErrors((prev) => ({ ...prev, date: "" }));
             }}
+            required
             error={errors.date}
           />
 
-          <TextAreaField
+          <TextAreaInput
             label={translate("projects.project_description")}
             value={description}
             onChange={(e) => {
               setDescription(e.target.value);
               setErrors((prev) => ({ ...prev, description: "" }));
             }}
+            required
             error={errors.description}
           />
 
-          <div className="flex flex-col">
-            <label className="font-medium mb-2">{translate("projects.project_files")}</label>
-            <FileInput
-              label={translate("files.upload_files")}
-              fileNames={files.map((file) => file.name)}
-              onFileChange={handleFileChange}
-              errors={errors.files}
-              multiple={true}
-            />
-            {errors.files && <span className="text-red-500 text-sm mt-1">{errors.files}</span>}
-          </div>
+          <FileInput
+            label={translate("projects.project_files")}
+            onChange={handleFileChange}
+            error={errors.files}
+            multiple={true}
+            required
+            accept="image/*,video/*,application/pdf"
+          />
 
           <div className="flex flex-col">
-            <SkillsField onSkillsChange={setSkills} />
+            <SkillsField onSkillsChange={setSkills} error={errors.skills} />
           </div>
         </div>
 
-        <div>
-          <div className="flex flex-col">
-            <label className="font-medium mb-2">{translate("projects.project_cover")}</label>
-            <FileInput
-              label={translate("files.upload_cover")}
-              fileNames={coverImage ? [coverImage.name] : []}
-              onFileChange={handleCoverImageChange}
-              errors={errors.coverImage}
-              multiple={false}
-            />
-            {errors.coverImage && (
-              <span className="text-red-500 text-sm mt-1">{errors.coverImage}</span>
-            )}
-          </div>
+        <div className="w-full sticky top-0 h-full">
+          <FileInput
+            label={translate("projects.project_cover")}
+            onChange={handleCoverImageChange}
+            error={errors.coverImage}
+            required
+            accept="image/*"
+            multiple={false}
+          />
 
-          <InputField
+          <TextInput
             label={translate("projects.project_url")}
             type="url"
             value={projectLink}
@@ -215,10 +239,11 @@ const AddProContent = () => {
               setErrors((prev) => ({ ...prev, projectLink: "" }));
             }}
             error={errors.projectLink}
+            required
           />
         </div>
         <div className="mt-6 flex justify-end w-full">
-          <MainBtn text={translate("btns.add")} />
+          <MainBtn text={isLoading ? <Spinner /> : translate("btns.add")} />
         </div>
       </form>
     </div>
@@ -227,7 +252,7 @@ const AddProContent = () => {
 
 export default AddProContent;
 
-const SkillsField = ({ onSkillsChange }) => {
+const SkillsField = ({ onSkillsChange, error }) => {
   const [newSkill, setNewSkill] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -273,7 +298,7 @@ const SkillsField = ({ onSkillsChange }) => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 ">
       <label className="font-medium mb-2">
         {translate("projects.project_skills")}
       </label>
@@ -283,8 +308,11 @@ const SkillsField = ({ onSkillsChange }) => {
           type="text"
           value={newSkill}
           onChange={handleInputChange}
-          className="flex-1 border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300"
+          className={`flex-1 border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300  ${
+            error ? "!border-danger" : ""
+          }`}
         />
+
         {newSkill && suggestions?.length > 0 && (
           <div
             data-lenis-prevent="true"
@@ -302,12 +330,13 @@ const SkillsField = ({ onSkillsChange }) => {
           </div>
         )}
       </div>
+      {error && <span className="text-danger text-sm block">{error}</span>}
       {skills.length > 0 && (
         <div className="w-full flex justify-start items-center flex-wrap gap-2 md:gap-3 ">
           {skills.map((skill) => (
             <div
               key={skill.id}
-              className="flex items-center gap-2 text-gray-500 rounded-full text-sm md:text-base p-2 px-3 md:px-4 border-gray-800 bg-gray-100 dark:bg-darkinput dark:border-darkinput dark:text-gray-400"
+              className="flex items-center gap-2 text-gray-500 rounded-full text-sm md:text-base p-2 px-3 md:px-4 border-gray-800 bg-gray-200 dark:bg-darkinput dark:border-darkinput dark:text-gray-400"
             >
               <span className="text-xs md:text-base">{skill.name}</span>
               <button
@@ -321,84 +350,5 @@ const SkillsField = ({ onSkillsChange }) => {
         </div>
       )}
     </div>
-  );
-};
-
-const InputField = ({
-  label,
-  type = "text",
-  value,
-  onChange,
-  error,
-  placeholder,
-}) => (
-  <div className="flex flex-col">
-    <label className="font-medium mb-2">{label}</label>
-    <input
-      type={type}
-      className={`border p-2 rounded dark:bg-darknav dark:text-gray-300 outline-none ${
-        error ? "border-red-500" : "border-gray-300 dark:border-gray-600"
-      }`}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-    />
-    {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
-  </div>
-);
-
-const TextAreaField = ({ label, value, onChange, error, placeholder }) => (
-  <div className="flex flex-col">
-    <label className="font-medium mb-2">{label}</label>
-    <textarea
-      className={`border p-2 rounded dark:bg-darknav dark:text-gray-300 outline-none ${
-        error ? "border-red-500" : "border-gray-300 dark:border-gray-600"
-      }`}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      rows={4}
-    />
-    {error && <span className="text-red-500 text-sm mt-1">{error}</span>}
-  </div>
-);
-
-const FileInput = ({
-  label,
-  onFileChange,
-  fileNames,
-  errors,
-  multiple = false,
-}) => {
-  const handleFileChange = (e) => {
-    if (multiple) {
-      const files = Array.from(e.target.files);
-
-      onFileChange(files);
-    } else {
-      const file = e.target.files[0];
-
-      onFileChange([file]);
-    }
-  };
-
-  return (
-    <label
-      className={`w-full cursor-pointer flex justify-center items-center flex-col py-9 dark:text-white text-slate-900 dark:bg-darknav dark:border-darkinput
-    rounded-2xl border-blue-300 gap-3 border-dashed border-2 hover:border-blue-700 group animation dark:hover:bg-blue-500/20 ${
-      errors ? "!border-red-500" : "border-gray-300 dark:border-gray-600"
-    }`}
-    >
-      <input
-        type="file"
-        className="hidden"
-        multiple={multiple}
-        onChange={handleFileChange}
-      />
-      <FaImage className="text-4xl text-blue-400 group-hover:text-blue-700 animation" />
-      <h2 className="text-center text-gray-400 text-xs group-hover:text-gray-900 animation">
-        {fileNames.length > 0 ? fileNames.join(", ") : label}
-      </h2>
-    </label>
   );
 };

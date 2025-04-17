@@ -320,7 +320,8 @@
     "file_required": "الملف مطلوب",
     "level_required": "المستوى مطلوب",
     "language_required": "اللغة مطلوبة",
-    "country_required": "الدولة مطلوبة"
+    "country_required": "الدولة مطلوبة",
+    "skills_array":"يجب اختيار مهارة واحدة على الاقل"
   },
   "gen": {
     "days": "يوم/أيام",

@@ -13,6 +13,8 @@ import {
   SelectInput,
 } from "@/app/components/generalComps/inputs/GenInputs";
 import { MdOutlineEdit } from "react-icons/md";
+import * as Yup from "yup";
+
 
 const Title = ({ user, openModal, closeModal }) => {
   const [userData, setUserData] = useState(user || {});
@@ -113,7 +115,6 @@ const TitleForm = ({
   });
   const [errors, setErrors] = useState({});
 
-  // تعريف الـvalidation schema
   const validationSchema = Yup.object().shape({
     title: Yup.string().required(translate("validation.title_required")),
     description: Yup.string().required(translate("validation.description_required")),
@@ -132,14 +133,10 @@ const TitleForm = ({
     e.preventDefault();
     
     try {
-      // Validate form data against the schema
       await validationSchema.validate(formData, { abortEarly: false });
-      
-      // If validation passes, save the data
       await onSave(formData);
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
-        // Convert Yup validation errors to our errors state
         const validationErrors = {};
         error.inner.forEach((err) => {
           validationErrors[err.path] = err.message;
@@ -155,7 +152,6 @@ const TitleForm = ({
   return (
     <div className="flex flex-col gap-4" data-lenis-prevent="true">
       <h1 className="text-3xl">{translate("profile.about_me")}</h1>
-
       <TextInput
         label="profile.title"
         name="title"
@@ -164,23 +160,21 @@ const TitleForm = ({
         error={errors.title}
         required
       />
-
       <SelectInput
         label="profile.country"
         name="country_id"
-        value={formData.country_id}
+        value={formData.countryId}
         onChange={handleInputChange}
         options={[
-          { id: "", name: translate("profile.choose_country") },
           ...countries.map((country) => ({
             id: country.id,
             name: country.name,
           })),
         ]}
         error={errors.country_id}
+        placeholder={translate("profile.choose_country")}
         required
       />
-
       <TextAreaInput
         label="profile.description"
         name="description"

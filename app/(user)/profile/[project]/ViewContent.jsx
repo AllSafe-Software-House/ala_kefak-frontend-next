@@ -78,7 +78,6 @@ const ViewContent = ({ projectId }) => {
 
   return (
     <div className="min-h-screen w-[90%] mx-auto p-6 px-3 md:px-8 lg:px-16 mt-12 flex flex-col gap-16 bg-gray-100 dark:bg-transparent">
-      {/* Confirm Modal */}
       {showConfirmModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[999] p-4">
           <div className="bg-white dark:bg-darknav rounded-lg p-6 max-w-md w-full border dark:border-gray-700 shadow-xl">
@@ -162,7 +161,7 @@ const ViewContent = ({ projectId }) => {
         </div>
       </div>
 
-      <div className="w-full grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-[70%_28%] justify-between gap-4 mb-8 ">
         <div className="w-full flex flex-col justify-start items-start gap-4">
           <ProjectDetails title={translate(`${translationType}.${type}_about`)}>
             <p>{projectData?.data?.description}</p>
@@ -188,7 +187,7 @@ const ViewContent = ({ projectId }) => {
           )}
         </div>
 
-        <div className="w-full flex flex-col justify-start items-start gap-4">
+        <div className="w-full flex flex-col justify-start items-start gap-4 sticky top-24 max-h-[100vh]">
           <ProjectDetails title={translate(`${translationType}.${type}_data`)}>
             <ProjectInfo
               label={translate(`${translationType}.${type}_category`)}
@@ -279,7 +278,6 @@ const ProjectFiles = ({ files }) => {
   const { translate, language } = useTranslation();
 
   const getFileType = (file) => {
-    // const extension = fileUrl?.split(".").pop()?.toLowerCase();
     if (file.type.startsWith("image/")) return "image";
     if (file.type === "application/pdf") return "pdf";
     if (file.type.startsWith("video/")) return "video";
@@ -302,7 +300,7 @@ const ProjectFiles = ({ files }) => {
                 <img
                   src={file?.url}
                   alt={`Project Image ${i + 1}`}
-                  className="w-full h-full max-h-[500px] rounded-xl object-cover object-top "
+                  className="w-full h-full min-h-[500px] max-h-[600px] rounded-xl object-cover object-top "
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-sm">
                   {fileName}

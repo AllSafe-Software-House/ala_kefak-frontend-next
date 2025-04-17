@@ -10,10 +10,10 @@ const Complete = ({ user }) => {
       <div className="mt-4">
         <progress
           className="w-full h-3 rounded-full mt-2"
-          value={user.complete_profile}
-          max={8}
+          value={user?.complete_profile}
+          max={10}
         ></progress>
-        <p>{`${user.complete_profile}/8 ${translate("profile.steps")} `}</p>
+        <p>{`${user?.complete_profile}/10 ${translate("profile.steps")} `}</p>
       </div>
     </div>
   );

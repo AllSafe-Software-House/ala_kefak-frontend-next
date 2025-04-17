@@ -28,6 +28,10 @@ const ProfileContent = () => {
       setUserType(data.data.type);
     }
   }, [data]);
+  useEffect(() => {
+    refetch();
+  }, [])
+  
 
   if (isLoading) return <UserSkeleton />;
   if (error) return <ErrorPage />;

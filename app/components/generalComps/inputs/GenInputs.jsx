@@ -18,7 +18,7 @@ export const TextInput = ({
 }) => {
   const { translate } = useTranslation();
   return (
-    <div className={`flex flex-col gap-1 ${className}`}>
+    <div className={`flex flex-col gap-1 mb-6 ${className}`}>
       {label && (
         <label
           className="flex justify-start items-center gap-1 font-medium"
@@ -26,17 +26,10 @@ export const TextInput = ({
         >
           {translate(label)}
           <span>
-            {required ? (
-              <Note
-                required={required}
-                text="This Field is required 'Mandatory Field' "
-              />
-            ) : (
-              <Note
-                required={required}
-                text="This field is optional 'Optional Field' "
-              />
-            )}
+            <Note
+              required={required}
+              text="This Field is required 'Mandatory Field' "
+            />
           </span>
         </label>
       )}
@@ -48,7 +41,7 @@ export const TextInput = ({
         onChange={onChange}
         placeholder={placeholder ? translate(placeholder) : undefined}
         disabled={disabled}
-        className={`border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none w-full transition-all ${
+        className={`border p-3 rounded-lg dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none w-full transition-all ${
           error ? "!border-red-500" : ""
         } ${disabled ? "opacity-70 cursor-not-allowed" : ""}`}
         {...props}
@@ -75,7 +68,7 @@ export const DateInput = ({
 }) => {
   const { translate } = useTranslation();
   return (
-    <div className={`w-full flex flex-col gap-1 ${className}`}>
+    <div className={`w-full flex flex-col gap-1 mb-6 ${className}`}>
       {label && (
         <label
           className="flex justify-start items-center gap-1 font-medium"
@@ -83,17 +76,10 @@ export const DateInput = ({
         >
           {translate(label)}
           <span>
-            {required ? (
-              <Note
-                required={required}
-                text="This Field is required 'Mandatory Field' "
-              />
-            ) : (
-              <Note
-                required={required}
-                text="This field is optional 'Optional Field' "
-              />
-            )}
+            <Note
+              required={required}
+              text="This Field is required 'Mandatory Field' "
+            />
           </span>
         </label>
       )}
@@ -106,7 +92,7 @@ export const DateInput = ({
         min={min}
         max={max}
         disabled={disabled}
-        className={`border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none ${
+        className={`border p-3 rounded-lg dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none ${
           error ? "!border-red-500" : ""
         } ${disabled ? "opacity-70 cursor-not-allowed" : ""}`}
         {...props}
@@ -133,7 +119,7 @@ export const TextAreaInput = ({
 }) => {
   const { translate } = useTranslation();
   return (
-    <div className={`flex flex-col gap-1 ${className}`}>
+    <div className={`flex flex-col gap-1 mb-6 ${className}`}>
       {label && (
         <label
           className="flex justify-start items-center gap-1 font-medium"
@@ -141,17 +127,10 @@ export const TextAreaInput = ({
         >
           {translate(label)}
           <span>
-            {required ? (
-              <Note
-                required={required}
-                text="This Field is required 'Mandatory Field' "
-              />
-            ) : (
-              <Note
-                required={required}
-                text="This field is optional 'Optional Field' "
-              />
-            )}
+            <Note
+              required={required}
+              text="This Field is required 'Mandatory Field' "
+            />
           </span>
         </label>
       )}
@@ -163,7 +142,7 @@ export const TextAreaInput = ({
         rows={rows}
         placeholder={placeholder ? translate(placeholder) : undefined}
         disabled={disabled}
-        className={`border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 resize-none outline-none w-full ${
+        className={`border p-3 rounded-lg dark:border-darkinput dark:bg-darknav dark:text-gray-300 resize-none outline-none w-full ${
           error ? "!border-red-500" : ""
         } ${disabled ? "opacity-70 cursor-not-allowed" : ""}`}
         {...props}
@@ -191,7 +170,7 @@ export const SelectInput = ({
 }) => {
   const { translate } = useTranslation();
   return (
-    <div className={`flex flex-col gap-1 ${className}`}>
+    <div className={`flex flex-col gap-1 mb-6 ${className}`}>
       {label && (
         <label
           className="flex justify-start items-center gap-1 font-medium"
@@ -199,10 +178,10 @@ export const SelectInput = ({
         >
           {translate(label)}
           <span>
-          <Note
-                required={required}
-                text="This Field is required 'Mandatory Field' "
-              />
+            <Note
+              required={required}
+              text="This Field is required 'Mandatory Field' "
+            />
           </span>
         </label>
       )}
@@ -212,7 +191,7 @@ export const SelectInput = ({
         value={value || ""}
         onChange={onChange}
         disabled={disabled}
-        className={`border p-2 rounded dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none w-full ${
+        className={`border p-3 rounded-lg dark:border-darkinput dark:bg-darknav dark:text-gray-300 outline-none w-full ${
           error ? "!border-red-500" : ""
         } ${disabled ? "opacity-70 cursor-not-allowed" : ""}`}
         {...props}
@@ -265,17 +244,10 @@ export const CheckboxInput = ({
         <label htmlFor={name} className="text-sm dark:text-gray-300">
           {translate(label)}
           <span>
-            {required ? (
-              <Note
-                required={required}
-                text="This Field is required 'Mandatory Field' "
-              />
-            ) : (
-              <Note
-                required={required}
-                text="This field is optional 'Optional Field' "
-              />
-            )}
+            <Note
+              required={required}
+              text="This Field is required 'Mandatory Field' "
+            />
           </span>
         </label>
       )}
@@ -321,17 +293,10 @@ export const RadioInput = ({
         >
           {translate(label)}
           <span>
-            {required ? (
-              <Note
-                required={required}
-                text="This Field is required 'Mandatory Field' "
-              />
-            ) : (
-              <Note
-                required={required}
-                text="This field is optional 'Optional Field' "
-              />
-            )}
+            <Note
+              required={required}
+              text="This Field is required 'Mandatory Field' "
+            />
           </span>
         </label>
       )}
@@ -396,7 +361,6 @@ export const FileInput = ({
       setSelectedFiles(filesArray);
 
       if (onChange) {
-        // Create a synthetic event to match the normal file input change event
         const event = {
           target: {
             name,
@@ -409,7 +373,7 @@ export const FileInput = ({
   };
 
   return (
-    <div className={`flex flex-col gap-1 ${className}`}>
+    <div className={`flex flex-col gap-1 mb-6 ${className}`}>
       {label && (
         <label
           className="flex justify-start items-center gap-1 font-medium"
@@ -417,17 +381,10 @@ export const FileInput = ({
         >
           {translate(label)}
           <span>
-            {required ? (
-              <Note
-                required={required}
-                text="This Field is required 'Mandatory Field' "
-              />
-            ) : (
-              <Note
-                required={required}
-                text="This field is optional 'Optional Field' "
-              />
-            )}
+            <Note
+              required={required}
+              text="This Field is required 'Mandatory Field' "
+            />
           </span>
         </label>
       )}
@@ -472,7 +429,7 @@ export const FileInput = ({
           {selectedFiles.map((file, index) => (
             <div
               key={index}
-              className="flex flex-col items-center justify-center gap-4 bg-gray-100 dark:bg-gray-700 p-2 rounded "
+              className="flex flex-col items-center justify-center gap-4 bg-gray-200 dark:bg-gray-700 p-3 rounded-lg "
             >
               <FaFile className={`text-4xl text-blue-400  animation`} />
               <p className="text-xs text-gray-500 dark:text-gray-400 truncate">

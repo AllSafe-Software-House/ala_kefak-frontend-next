@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaStar, FaRegStar, FaShareSquare, FaEye } from "react-icons/fa";
 import GeneralModal from "./modals/GeneralModal";
 import { useMutation } from "react-query";
@@ -42,6 +42,11 @@ const FreelancerProfile = ({ user, refetch }) => {
   };
 
   const handleImageChange = (e) => {};
+
+useEffect(() => {
+  refetch();
+}, [])
+
 
   return (
     <div className="min-h-screen mx-auto p-6 px-3 md:px-8 lg:px-16 flex flex-col gap-16 bg-gray-100 dark:bg-transparent ">
@@ -330,7 +335,7 @@ const AboutContent = ({ user, openModal, closeModal }) => {
 
       <div className="w-full flex flex-col justify-start items-start gap-10">
         <Badges user={user} openModal={openModal} closeModal={closeModal} />
-        {user?.complete_profile === 1 && (
+        {user?.complete_profile > 0 && (
           <Complete user={user} openModal={openModal} closeModal={closeModal} />
         )}
         {user?.verify_account === false && (
